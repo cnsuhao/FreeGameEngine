@@ -9,7 +9,19 @@
 #ifndef __liborange__util_config__
 #define __liborange__util_config__
 
-#include "cstdmf/stdmf.hpp"
+
+//namespace ora{
+
+typedef signed char     int8;
+typedef unsigned char   uint8;
+typedef short           int16;
+typedef unsigned short  uint16;
+typedef int             int32;
+typedef unsigned int    uint32;
+
+typedef uint32          uint;
+//}
+
 
 #define MAKE_UNCOPYABLE(CLASS)              \
 private:                                    \

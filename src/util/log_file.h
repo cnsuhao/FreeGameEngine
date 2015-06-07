@@ -1,4 +1,4 @@
-﻿//
+//
 //  log_to_file.h
 //  orange
 //
@@ -10,6 +10,7 @@
 #define __orange__log_to_file__
 
 #include "object.h"
+#include "file_tool.h"
 
 namespace ora
 {
@@ -24,12 +25,12 @@ namespace ora
         
         void onEvent(IEventSender *sender, uint32 eventType, VariantVector & args) override;
         
-        void log(int lvl, const std::string & msg);
+        void log(const std::string & msg);
         
     private:
         void write(const std::string & text);
     
-        FILE *stream_;
+        FilePtr _stream;
     };
     
 }

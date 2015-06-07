@@ -1,4 +1,4 @@
-﻿//
+//
 //  log_to_file.cpp
 //  orange
 //
@@ -6,19 +6,14 @@
 //
 //
 
-#include "assert_tool.h"
-
 #include "log_file.h"
+#include "assert_tool.h"
 #include "time_tool.h"
 #include "event_def.h"
-
-#include "resmgr/bwresource.hpp"
-#include "resmgr/multi_file_system.hpp"
 
 namespace ora
 {
     LogFile::LogFile()
-        : stream_(nullptr)
     {
     }
     
@@ -28,26 +23,26 @@ namespace ora
     
     bool LogFile::init(const std::string & filename)
     {
-        ASSERT_1(!stream_);
+        ASSERT_1(!_stream);
         
-        stream_ = BWResource::instance().fileSystem()->posixFileOpen(filename, "w");
-        if(stream_)
+        _stream = FileSystemMgr::instance()->fileSystem()->openFile(filename, IFile::Mode::ModeWrite);
+        if(_stream)
         {
             subscribeEvent(ET::Log);
             
             write("----logfile system start----");
         }
         
-        return stream_ != NULL;
+        return bool(_stream);
     }
     
     void LogFile::fini()
     {
-        if(stream_)
+        if(_stream)
         {
             write("----logfile system stop----");
-            fclose(stream_);
-            stream_ = nullptr;
+            _stream->close();
+            _stream = nullptr;
         }
     }
     
@@ -55,30 +50,28 @@ namespace ora
     {
         if(eventType == ET::Log)
         {
-            int lvl;
             std::string msg;
-            if (parse_arguments(args, &lvl, &msg))
+            if(args[1].getv(msg))
             {
-                log(lvl, msg);
+                log(msg);
             }
         }
     }
     
-    void LogFile::log(int lvl, const std::string & msg)
+    void LogFile::log(const std::string & msg)
     {
         write( time2desc(getWorldTime()) );
-        write( getLogPrefix(lvl) );
         write( msg );
         write( "\n" );
         
-        //stream_->flush();
+        _stream->flush();
     }
     
     void LogFile::write(const std::string & text)
     {
         if(!text.empty())
         {
-            fwrite(text.c_str(), text.length(), 1, stream_);
+            _stream->write(text.c_str(), text.length());
         }
     }
     
