@@ -1,0 +1,28 @@
+
+class LayoutManager
+{
+	VectorWidgetPtr loadLayout(
+		const std::string& _file,
+		const std::string& _prefix,
+		Widget* _parent = NULL
+		);
+
+	void unloadLayout(VectorWidgetPtr& _widgets);
+
+	bool isExist(const std::string& _name) const;
+	const std::string& getCurrentLayout() const;
+
+};
+
+${
+	
+LayoutManager *layoutInstance()
+{
+	return LayoutManager::getInstancePtr();
+}
+
+$}
+
+LayoutManager *layoutInstance();
+
+$renaming vector<Widget*> @ VectorWidgetPtr

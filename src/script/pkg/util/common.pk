@@ -1,0 +1,53 @@
+
+$#include <luaplus/LuaPlus.h>
+$#include "cstdmf/smartpointer.hpp"
+
+typedef char int8;
+typedef unsigned char uint8;
+
+typedef short int16;
+typedef unsigned short uint16;
+
+typedef int int32;
+typedef unsigned int uint32;
+
+typedef long long int64;
+typedef unsigned long long uint64;
+
+typedef unsigned int size_t;
+typedef unsigned int uint;
+
+${
+namespace{
+
+inline void * _new_pointer(void * p)
+{
+    return p;
+}
+
+inline void * _new_pointer(ReferenceCount *p)
+{
+    p->incRef();
+    return p;
+}
+
+template<typename T>
+inline void _delete_pointer(T * p, void * /*traits*/)
+{
+    delete p;
+}
+
+template<typename T>
+inline void _delete_pointer(T * p, ReferenceCount * /*traits*/)
+{
+    p->decRef();
+}
+
+#undef Mtolua_new
+#define Mtolua_new(EXP) _new_pointer(new EXP)
+
+#undef Mtolua_delete
+#define Mtolua_delete(EXP) _delete_pointer(EXP, EXP)
+
+}
+$}

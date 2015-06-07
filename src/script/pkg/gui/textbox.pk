@@ -1,0 +1,33 @@
+
+class TextBox : public Widget
+{
+	IntCoord getTextRegion();
+	IntSize getTextSize();
+
+	std::string getCaption();
+	void setCaption(const std::string & text);
+
+	std::string getCaption @ getText();
+	void setCaption @ setText(const std::string & text);
+
+	void setFontName(const std::string& _value);
+	const std::string& getFontName();
+
+	virtual void setFontHeight(int _value);
+	int getFontHeight();
+
+	virtual void setTextAlign(Align _value);
+	Align getTextAlign();
+
+	virtual void setTextColour(const Colour& _value);
+	const Colour& getTextColour();
+
+	void setCaptionWithReplacing(const std::string& _value);
+
+	virtual void setTextShadowColour(const Colour& _value);
+	const Colour& getTextShadowColour();
+
+	virtual void setTextShadow(bool _value);
+	bool getTextShadow();
+};
+

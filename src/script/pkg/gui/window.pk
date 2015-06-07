@@ -1,0 +1,33 @@
+
+class Window : public TextBox
+{
+
+	void setVisibleSmooth(bool _value);
+	void destroySmooth();
+
+	void setAutoAlpha(bool _value);
+	bool getAutoAlpha() const;
+
+
+	TextBox* getCaptionWidget();
+
+	void setMinSize(const IntSize& _value);
+	void setMinSize(int _width, int _height);
+	IntSize getMinSize();
+
+	void setMaxSize(const IntSize& _value);
+	void setMaxSize(int _width, int _height);
+	IntSize getMaxSize();
+
+
+	void setSnap(bool _value);
+	bool getSnap() const;
+
+	const IntCoord& getActionScale() const;
+
+	void setMovable(bool _value);
+	bool getMovable() const;
+
+	tolua_outside void* window_addEvent_buttonClick @ addEventButtonClick(lua_State * L, lua_Function funID);
+	tolua_outside void window_delEvent_buttonClick @ delEventButtonClick(void *p);
+};

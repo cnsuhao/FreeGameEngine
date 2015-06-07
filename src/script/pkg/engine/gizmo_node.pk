@@ -1,0 +1,8 @@
+$#include "core/gizmo.h"
+
+class Gizmo : public SceneNode
+{
+public:
+	Gizmo();
+    void createGizmo(float x, float y, float z, uint32 color);
+};

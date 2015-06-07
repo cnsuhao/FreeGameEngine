@@ -1,0 +1,38 @@
+
+$#include "moo/visual.hpp"
+$#include "moo/visual_manager.hpp"
+$#include "moo/primitive_manager.hpp"
+$#include "moo/vertices_manager.hpp"
+$#include "moo/animation_manager.hpp"
+$#include "moo/node_catalogue.hpp"
+$#include "moo/render_context.hpp"
+$#include "model/model.hpp"
+$#include "duplo/py_attachment.hpp"
+
+
+class MatrixLiaison
+{
+	bool detach( PyAttachment * );
+};
+
+
+class PyAttachment @ AttachmentNode : public SceneNode
+{
+	void prepareShadow();
+	void tossed( bool outside );
+
+	bool attach( MatrixLiaison * pOwnWorld = NULL );
+	void detach();
+
+	bool detachMe();
+
+	void enterWorld();
+	void leaveWorld();
+
+	bool isAttached();
+	bool isInWorld();
+
+	bool visible @ getVisible();
+	void visible @ setVisible( bool v );
+};
+

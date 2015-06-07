@@ -1,0 +1,13 @@
+
+$#include "core/ground_node.h"
+
+class GroundNode : public SceneNode
+{
+public:
+	GroundNode();
+
+	void setBackGround(const std::string & material, const std::string & key);
+
+    const std::string & getBackGroundMtl();
+    const std::string & getBackGroundKey();
+};

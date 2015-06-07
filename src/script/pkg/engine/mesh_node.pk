@@ -1,0 +1,42 @@
+$#include "core/mesh_node.h"
+
+class MeshNode : public SceneNode
+{
+    bool load(const std::string & name);
+};
+
+
+MeshNode * createMeshNode(const std::string & resource);
+
+${
+
+/* function: createMeshNode */
+#define TOLUA_DISABLE_tolua_engine_createMeshNode00
+static int tolua_engine_createMeshNode00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_iscppstring(tolua_S,1,0,&tolua_err) ||
+		!tolua_isnoobj(tolua_S,2,&tolua_err)
+		)
+		goto tolua_lerror;
+	else
+#endif
+	{
+		const std::string resource = ((const std::string)  tolua_tocppstring(tolua_S,1,0));
+		{
+			MeshNode* tolua_ret = (MeshNode*)  MeshNode::create(resource);
+			tolua_pushusertype(tolua_S,(void*)tolua_ret,"MeshNode");
+			tolua_pushcppstring(tolua_S,(const char*)resource);
+		}
+	}
+	return 2;
+#ifndef TOLUA_RELEASE
+	tolua_lerror:
+	tolua_error(tolua_S,"#ferror in function 'createMeshNode'.",&tolua_err);
+	return 0;
+#endif
+}
+
+$}

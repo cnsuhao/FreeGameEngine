@@ -1,0 +1,70 @@
+$#include "util/timer.h"
+$#include "util/time_tool.h"
+
+typedef unsigned int TimerHandle;
+typedef long long time_t;
+
+/** 世界时间。即格林威治时间，单位为秒。*/
+time_t getWorldTime();
+
+/** 本地时间。即本机时间，单位为秒。*/
+time_t getLocalTime();
+
+/** 游戏时间。即游戏服务器的时间，单位为秒。*/
+time_t getGameTime();
+
+/** tick时间。进程启动到现在，所经过的时间。单位为秒。*/
+float getTickTime();
+
+/** tick时间。进程启动到现在，所经过的时间。单位为毫秒。*/
+uint32 getTickTime_ms();
+
+std::string time2desc(time_t t);
+
+
+TimerHandle addTimer(float delay, void *func, bool loop=false);
+void delTimer(TimerHandle handle);
+
+${
+struct ScriptTimerCB
+{
+    LuaPlus::LuaFunction<void> _fun;
+
+public:
+    ScriptTimerCB(LuaPlus::LuaObject fun)
+        : _fun(fun)
+    {}
+
+    void operator()()
+    {
+        _fun();
+    }
+};
+
+#define TOLUA_DISABLE_tolua_util_addTimer00
+static int tolua_util_addTimer00(lua_State* tolua_S)
+{
+    tolua_Error tolua_err;
+    if (tolua_isnumber(tolua_S, 1, 0, &tolua_err) &&
+        tolua_isfunction(tolua_S, 2, 0, &tolua_err) &&
+        tolua_isboolean(tolua_S, 3, 1, &tolua_err) &&
+        tolua_isnoobj(tolua_S, 4, &tolua_err))
+    {
+        float delay = ((float) tolua_tonumber(tolua_S, 1, 0));
+        void* func = ((void*) tolua_touserdata(tolua_S, 2, 0));
+        bool loop = ((bool) tolua_toboolean(tolua_S, 3, 0));
+        
+        LuaPlus::LuaObject fun(tolua_S, 2);
+        TimerHandle handle = Timer::instance()->addTimer(delay, ScriptTimerCB(fun), loop);
+        tolua_pushnumber(tolua_S, (lua_Number) handle);
+        return 1;
+    }
+    tolua_error(tolua_S, "#ferror in function 'addTimer'.", &tolua_err);
+    return 0;
+}
+
+static void delTimer(TimerHandle handle)
+{
+    Timer::instance()->delTimer(handle);
+}
+$}

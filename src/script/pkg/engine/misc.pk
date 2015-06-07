@@ -1,0 +1,66 @@
+
+$#include "script/script.h"
+
+Vector3 World2Proj(const Vector3 &);
+bool isRetail();
+
+void flush_output();
+void log_debug(const char * msg);
+void log_info(const char * msg);
+void log_warn(const char * msg);
+void log_error(const char * msg);
+void log_fatal(const char * msg);
+
+${
+namespace
+{
+
+inline void flush_output()
+{
+	ora::ScriptMgr::instance()->flushOutput();
+}
+
+inline Vector3 World2Proj(const Vector3 & worldPos)
+{
+	Vector4 posInProj;
+	renderDev()->getViewProjection().applyPoint( posInProj, worldPos );
+	posInProj *= 1.0f / posInProj.w;
+
+	return Vector3(posInProj.x, posInProj.y, posInProj.z);
+}
+
+inline bool isRetail()
+{
+#ifdef _RELEASE
+	return true;
+#else
+	return false;
+#endif
+}
+
+inline void log_debug(const char * msg)
+{
+	ora::ora_log_directly(ORA_LOG_LVL_DEBUG, msg);
+}
+
+inline void log_info(const char * msg)
+{
+	ora::ora_log_directly(ORA_LOG_LVL_INFO, msg);
+}
+
+inline void log_warn(const char * msg)
+{
+	ora::ora_log_directly(ORA_LOG_LVL_WARN, msg);
+}
+
+inline void log_error(const char * msg)
+{
+	ora::ora_log_directly(ORA_LOG_LVL_ERROR, msg);
+}
+
+inline void log_fatal(const char * msg)
+{
+	ora::ora_log_directly(ORA_LOG_LVL_FATAL, msg);
+}
+} // end namespace
+$}

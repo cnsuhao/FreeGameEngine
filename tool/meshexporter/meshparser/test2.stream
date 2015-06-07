@@ -1,0 +1,9 @@
+position
+{
+	x = 1
+}
+group = this is the group value
+{
+	identify = name
+	null
+}

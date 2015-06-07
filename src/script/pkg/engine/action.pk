@@ -1,0 +1,113 @@
+$#include "core/action.h"
+$#include "core/action_alpha.h"
+$#include "core/action_motion.h"
+$#include "core/action_container.h"
+$#include "core/action_self_destruction.h"
+$#include "duplo/action_bezier.h"
+$#include "duplo/action_animation.h"
+
+class IAction
+{
+public:
+    virtual void pause();
+    
+	SceneNode* owner();
+    
+    float interval_ @ interval;
+};
+
+class ActionAlpha : public IAction
+{
+public:
+    ActionAlpha();
+    float src_ @ src;
+    float dst_ @ dst;
+};
+
+enum ACTION_INTER_TYPE
+{
+	inter_liner = 0,
+	inter_sin,
+	inter_exp,
+	inter_log
+};
+
+class ActionMove : public IAction
+{
+public:
+	ActionMove();
+
+    Vector3             src_ @ src;
+    Vector3             dst_ @ dst;
+    ACTION_INTER_TYPE	interType_ @ interType;
+};
+
+class ActionScale : public ActionMove
+{
+public:
+    ActionScale();
+    
+    Vector3             src_ @ src;
+    Vector3             dst_ @ dst;
+};
+
+class ActionContainerBase : public IAction
+{
+public:
+    ActionContainerBase();
+
+    void clear();
+    void push(IAction* action);
+    void pop(IAction* action);
+};
+
+class ActionContainerOder : public ActionContainerBase
+{
+public:
+    ActionContainerOder();
+};
+
+class ActionContainerOnce : public ActionContainerBase
+{
+public:
+    ActionContainerOnce();
+    
+};
+
+class ActionSelfDestruction : public IAction
+{
+public:
+	ActionSelfDestruction();
+	
+	float interval_ @ interval;
+};
+
+class ActionBezier : public IAction
+{
+public:
+	ActionBezier();
+	
+	Vector3 p0_ @ p0;
+	Vector3 p1_ @ p1;
+	Vector3 p2_ @ p2;
+	Vector3 p3_ @ p3;
+	float interval_ @ interval;
+
+	std::string action_ @ action;
+    void start();
+    void stop();
+
+};
+	
+class ActionAnimation : public IAction
+{
+public:
+	ActionAnimation();
+
+    void start();
+    void stop();
+
+	std::string action_ @ action;
+
+	float interval_ @ interval;
+};

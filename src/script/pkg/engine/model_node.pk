@@ -1,0 +1,136 @@
+$#include "duplo/pymodel.hpp"
+$#include "duplo/pymodelnode.hpp"
+$#include "duplo/action_queue.hpp"
+
+
+class PyModel @ ModelNode : public PyAttachment
+{
+public:
+    
+	void relatch();
+	void straighten();
+
+	float height @ getHeight();
+	void height @ setHeight( float h ); 
+
+	float yaw @ getYaw();
+	void yaw @ setYaw(float yaw);
+
+    bool setHP( const std::string & identifier, PyAttachment *toAttach);
+
+	void shouldDrawSkeleton( bool drawIt );
+
+	std::string	 name() const;
+	bool origin( const std::string & nodeName );
+
+    PyModelNode * node @ bone(const std::string & nodeName);
+	ActionQueuer  action(const std::string & actionName);
+
+	void purgeAnimations();
+};
+
+
+
+class ActionQueuer
+{
+public:
+	ActionQueuer();
+	~ActionQueuer();
+
+    ActionQueuer go(float afterTime = 0, bool promoteMotion = false);
+    void stop();
+
+	ActionQueuer action( const std::string & aname, bool errIfNotFound = true );
+
+    float duration();
+    float blendInTime() ;
+    float blendOutTime();
+    int   track();
+    bool  filler();
+    bool  blended();
+};
+
+
+class PyModelNode @ ModelBone : public MatrixLiaison
+{
+    PyAttachment * pyGetHardPoint();
+	int pySetHardPoint( PyAttachment * value, const std::string & pName);
+
+    bool isInWorld();
+	bool hasAttachments();
+	bool noRotate();
+
+	void latch();
+    void detach @ detachAll();
+	bool attach( PyAttachment *pAttachment );
+	bool detach( PyAttachment *pAttachment );
+};
+
+
+PyModel * createModelNode();
+void * fetchModelNode();
+void debugModel(bool b);
+
+${
+#define TOLUA_DISABLE_tolua_engine_createModelNode00
+static int tolua_engine_createModelNode00(lua_State* tolua_S)
+{
+    tolua_Error tolua_err;
+
+    std::vector<std::string> modelNames;
+    for(size_t i = 1; tolua_isstring(tolua_S, i, 0, &tolua_err); ++i)
+    {
+        modelNames.push_back(tolua_tostring(tolua_S, i, 0));
+    }
+
+    if(!modelNames.empty())
+    {
+        PyModel* tolua_ret = PyModel::loadModel(modelNames);
+        tolua_pushusertype(tolua_S,(void*)tolua_ret,"PyModel");
+        return 1;
+    }
+
+    tolua_error(tolua_S, "#ferror in function 'createModelNode', need at leat one string type.", &tolua_err);
+    return 0;
+}
+
+#define TOLUA_DISABLE_tolua_engine_fetchModelNode00
+static int tolua_engine_fetchModelNode00(lua_State* tolua_S)
+{
+    tolua_Error tolua_err;
+    if (tolua_isfunction(tolua_S,1,0,&tolua_err) &&
+        tolua_isnumber(tolua_S,2,0,&tolua_err) &&
+        tolua_isstring(tolua_S,3,0,&tolua_err))
+    {
+        std::vector<std::string> modelNames;
+        for(size_t i = 3; tolua_isstring(tolua_S, i, 0, &tolua_err); ++i)
+        {
+            modelNames.push_back(tolua_tostring(tolua_S, i, 0));
+        }
+
+        LuaPlus::LuaObject bgLoadCallback(tolua_S, 1);
+        int priority = (int) tolua_tonumber(tolua_S, 2, 64);
+
+        void *tolua_ret = PyModel::fetchModel(bgLoadCallback, priority, modelNames);
+        lua_pushlightuserdata(tolua_S, tolua_ret);
+        return 1;
+    }
+    tolua_error(tolua_S, "#ferror in function 'fetchModelNode'.", &tolua_err);
+    return 0;
+}
+
+#define TOLUA_DISABLE_tolua_engine_debugModel00
+static int tolua_engine_debugModel00(lua_State* tolua_S)
+{
+    tolua_Error tolua_err;
+    if (tolua_isboolean(tolua_S,1,0,&tolua_err) &&
+        tolua_isnoobj(tolua_S,2,&tolua_err))
+    {
+        bool b = ((bool)  tolua_toboolean(tolua_S,1,0));
+        PyModel::debugModel(b);
+        return 0;
+    }
+    tolua_error(tolua_S,"#ferror in function 'debugModel'.",  &tolua_err);
+    return 0;
+}
+$}

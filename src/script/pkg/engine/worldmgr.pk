@@ -1,0 +1,38 @@
+$#include "core/world.h"
+
+class World
+{
+    void setRoot(RootScene *root);
+    RootScene * getRoot();
+
+    void setPause(bool pause);
+    
+    float getElapse();
+    float getFps();
+    uint32 getTotalFrame();
+
+    float getTimeScale();
+    void setTimeScale(float s);
+
+    Vector3 screenPosToWorld(const Vector2 & pos);
+    Vector3 worldPosToProj(const Vector3 & pos);
+    Vector2 worldPosToScreen(const Vector3 & pos);
+    Vector2 getViewSize();
+
+    Camera* getCamera();
+
+	void	setLineMode(bool b);
+	bool	getLineMode() const;
+
+};
+
+${
+
+World * worldInstance()
+{
+    return World::instance();
+}
+
+$}
+
+World * worldInstance();

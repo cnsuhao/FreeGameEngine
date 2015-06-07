@@ -1,0 +1,14 @@
+$#include "core/scene_node.h"
+$#include "core/font_node.h"
+
+class FontNode : public SceneNode
+{
+public:
+	
+	FontNode();
+
+	void target(SceneNode* t);
+	SceneNode* target() const;
+
+    void setText(const std::string & text, const std::string & font);
+};

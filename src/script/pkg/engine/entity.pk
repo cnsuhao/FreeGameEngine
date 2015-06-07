@@ -1,0 +1,30 @@
+
+$#include "script/entity.h"
+$#include "core/action.h"
+
+
+typedef unsigned int size_t;
+
+class IEntity : public SceneNode
+{
+public:
+	
+	IEntity();
+	~IEntity();
+
+    inline void velocity(Vector3 v);
+    inline Vector3 velocity() const;
+	
+	inline float yaw() const;
+	inline float pitch() const;
+	inline float roll() const;
+
+	inline void setYaw(float y);
+
+	inline void setModel(PyModel* model);
+	inline PyModel* getModel() const;
+
+	ActionMatcher* getAM() const;
+};
+
+$renaming IEntity @ Entity

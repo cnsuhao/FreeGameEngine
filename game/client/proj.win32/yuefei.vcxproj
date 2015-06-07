@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C8CDA620-68C8-45E8-9F6F-125C78C75E27}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>client</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\bin\</OutDir>
+    <TargetName>$(ProjectName)_d</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\bin\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;DCODE_INLINE;MYGUI_STATIC;MYGUI_USE_FREETYPE;GLEW_STATIC;GLEW_NO_GLU;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>../../../src;../../../src/third_party;../../../src/third_party/SDL/include;../../../src/third_party/glew;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;opengl32.lib;libcurl_imp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\lib\curl\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;DCODE_INLINE;MYGUI_STATIC;MYGUI_USE_FREETYPE;GLEW_STATIC;GLEW_NO_GLU;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>../../../src;../../../src/third_party;../../../src/third_party/SDL/include;../../../src/third_party/glew;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;opengl32.lib;libcurl_imp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\lib\curl\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\application.cpp" />
+    <ClCompile Include="..\src\input_mgr.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\application.h" />
+    <ClInclude Include="..\src\input_mgr.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\build.win32\src\orange.vcxproj">
+      <Project>{b1e130c4-934a-4d08-9074-8359983e48dd}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\build.win32\src\script\script.vcxproj">
+      <Project>{640edef1-510d-44ee-b25a-20ba4d2e6d57}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\build.win32\src\third_party\FreeType\FreeType.vcxproj">
+      <Project>{b1b3814a-3285-48ac-bb5e-978607d66cbe}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\build.win32\src\third_party\glew\glew.vcxproj">
+      <Project>{45bb35c5-50e7-47c3-9627-0c923a31ac83}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\build.win32\src\third_party\luaplus\luaplus.vcxproj">
+      <Project>{9f3e4b20-5137-46b6-b6eb-bcd73ff0699d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\build.win32\src\third_party\lua\lua.vcxproj">
+      <Project>{c6a5e8d6-b93a-496f-81a7-b2785a254ab5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\build.win32\src\third_party\mygui\mygui.vcxproj">
+      <Project>{dd023ff8-78ba-4e1e-89e7-9828e66980fa}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\build.win32\src\third_party\SDL\SDL.vcxproj">
+      <Project>{a4e6e3a0-61fc-486d-aa6e-1a9350e00c7b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\build.win32\src\third_party\stb\stb.vcxproj">
+      <Project>{ab271f48-afe6-4f69-88e3-e2341d3aa034}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\build.win32\src\third_party\toluaplus\src\lib\tolualib.vcxproj">
+      <Project>{744f3722-46d3-4b35-860a-567fdc79a4e1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\build.win32\ZERO_CHECK.vcxproj">
+      <Project>{ee0ac958-bca6-4ae0-9b08-be945065ec0b}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

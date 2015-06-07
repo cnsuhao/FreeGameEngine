@@ -1,0 +1,238 @@
+
+typedef unsigned int Char;
+
+struct Align
+{
+	enum Enum
+	{
+		HCenter,
+		VCenter,
+		Center,
+
+		Left,
+		Right,
+		HStretch,
+
+		Top,
+		Bottom,
+		VStretch,
+
+		Stretch,
+		Default
+	};
+
+	Align(Enum _value = Default);
+};
+
+struct WidgetStyle
+{
+	enum Enum
+	{
+		Child,
+		Popup,
+		Overlapped,
+		MAX
+	};
+
+	WidgetStyle(Enum _value = MAX);
+};
+
+struct TPoint
+{
+	TOLUA_TEMPLATE_BIND(T, int, float);
+
+
+	T left;
+	T top;
+
+	TPoint();
+	TPoint(const T& _left, const T& _top);
+	TPoint(const TPoint<T> & _obj);
+
+	TPoint<T> operator - ( const TPoint<T> & _obj) const;
+	TPoint<T> operator + ( const TPoint<T> & _obj) const;
+	bool operator == ( const TPoint<T> & _obj) const;
+
+	void clear();
+	void set(const T& _left, const T& _top);
+	void swap(TPoint<T>& _value);
+	bool empty() const;
+	std::string print() const;
+
+	static TPoint<T> parse(const std::string& _value);
+};
+
+class TSize
+{
+	TOLUA_TEMPLATE_BIND(T, int, float);
+
+	T width;
+	T height;
+
+	TSize();
+	TSize(const T& _width, const T& _height);
+	TSize(const TSize<T> & _obj);
+
+	TSize<T> operator - (const TSize<T> & _obj) const;
+	TSize<T> operator + (const TSize<T> & _obj) const;
+	bool operator == (const TSize<T> & _obj) const;
+
+	void clear();
+	void set(const T& _width, const T& _height);
+	void swap(TSize<T>& _value);
+	bool empty() const;
+	std::string print() const;
+
+	static TSize<T><T> parse(const std::string& _value);
+};
+
+class TRect
+{
+	TOLUA_TEMPLATE_BIND(T, int, float);
+
+	T left;
+	T top;
+	T right;
+	T bottom;
+
+	TRect();
+	TRect(const T& _left, const T& _top, const T& _right, const T& _bottom);
+	TRect(const TRect<T> & _obj);
+
+	TRect<T> operator - (const TRect<T> &_obj) const;
+	TRect<T> operator + (const TRect<T> &_obj) const;
+	bool operator == (const TRect<T> &_obj) const;
+
+	T width() const;
+	T height() const;
+	void clear();
+	void set(const T& _left, const T& _top, const T& _right, const T& _bottom);
+	void swap(TRect<T>& _value);
+	bool empty() const;
+	bool inside(const TRect<T>&  _value) const;
+	bool intersect(const TRect<T>&  _value) const;
+	bool inside(const TPoint<T>&  _value) const;
+	std::string print() const;
+
+	static TRect<T> parse(const std::string& _value);
+};
+
+
+class TCoord
+{
+	TOLUA_TEMPLATE_BIND(T, int, float);
+
+	T left;
+	T top;
+	T width;
+	T height;
+
+	TCoord();
+	TCoord(const T& _left, const T& _top, const T& _width, const T& _height);
+	TCoord(const TPoint<T>& _point, const TSize<T> & _size);
+	TCoord(const TCoord<T> & obj);
+
+	TCoord<T> operator - (const TCoord<T> & _obj) const;
+	TCoord<T> operator - (const TPoint<T> & _obj) const;
+	TCoord<T> operator - (const TSize<T> & _obj) const;
+	TCoord<T> operator + (const TCoord<T> & _obj) const;
+	TCoord<T> operator + (const TPoint<T> & _obj) const;
+	TCoord<T> operator + (const TSize<T> & _obj) const;
+	bool operator == (const TCoord<T> & _obj) const;
+
+	T right() const;
+	T bottom() const;
+	void clear();
+	void set(const T& _left, const T& _top, const T& _width, const T& _height);
+	void swap(TCoord<T>& _value);
+	bool empty() const;
+	TPoint<T> point() const;
+	TSize<T> size() const;
+	bool inside(const TPoint<T>&  _value) const;
+	std::string print() const;
+
+	static TCoord<T> parse(const std::string& _value);
+};
+
+class Colour
+{
+	Colour();
+	Colour(float _red, float _green, float _blue, float _alpha);
+	Colour(const std::string& _value);
+
+	bool operator == (const Colour& _value) const;
+
+	void set(float _red, float _green, float _blue, float _alpha);
+	void clear();
+
+	std::string print() const;
+
+	static Colour parse(const std::string& _value);
+
+
+	float red;
+	float green;
+	float blue;
+	float alpha;
+
+	static const Colour Zero;
+	static const Colour Black;
+	static const Colour White;
+	static const Colour Red;
+	static const Colour Green;
+	static const Colour Blue;
+};
+
+$using std::vector;
+
+class vector
+{
+	TOLUA_TEMPLATE_BIND(T, std::string, Widget*);
+
+	vector();
+	~vector();
+
+	size_t size() const;
+	T at(size_t i) const;
+	bool empty();
+
+	T front();
+	T back();
+	void pop_back();
+	void push_back(T v);
+
+	const T & operator [] (  size_t i ) const ;
+	T & operator [] (  size_t i ) ;
+};
+
+
+typedef TPoint<int> IntPoint;
+typedef TPoint<float> FloatPoint;
+
+typedef TSize<int> IntSize;
+typedef TSize<float> FloatSize;
+
+typedef TRect<int> IntRect;
+typedef TRect<float> FloatRect;
+
+typedef TCoord<int> IntCoord;
+typedef TCoord<float> FloatCoord;
+
+typedef vector<std::string> VectorString;
+typedef vector<Widget*> VectorWidgetPtr;
+
+$renaming TPoint<int> @ IntPoint
+$renaming TPoint<float> @ FloatPoint
+
+$renaming TSize<int> @ IntSize
+$renaming TSize<float> @ FloatSize
+
+$renaming TRect<int> @ IntRect
+$renaming TRect<float> @ FloatRect
+
+$renaming TCoord<int> @ IntCoord
+$renaming TCoord<float> @ FloatCoord
+
+$renaming vector<std::string> @ VectorString
+
+

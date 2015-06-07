@@ -1,0 +1,262 @@
+﻿//
+//  vertex_buffer.cpp
+//  liborange
+//
+//  Created by zhoubao on 14-2-20.
+//  Copyright (c) 2014 jjgame. All rights reserved.
+//
+
+#include "vertex_buffer.h"
+#include "render_device.h"
+
+#include "util/assert_tool.h"
+#include "util/log_tool.h"
+#include "cstdmf/guard.hpp"
+
+namespace ora
+{
+    int g_vb_counter = 0;
+    int g_ib_counter = 0;
+
+    size_t indexType2Size(IndexType type)
+    {
+        switch(type)
+        {
+        case IndexType::Index8:
+            return sizeof(uint8);
+
+        case IndexType::Index16:
+            return sizeof(uint16);
+
+        case IndexType::Index32:
+            return sizeof(uint32);
+
+        default:
+            ASSERT_2(0, "Invalid IndexType");
+            return 0;
+        }
+    }
+
+    IndexType size2IndexType(size_t n)
+    {
+        if(n <= sizeof(uint8))
+            return IndexType::Index8;
+
+        else if(n <= sizeof(uint16))
+            return IndexType::Index16;
+
+        else
+            return IndexType::Index32;
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    /// BufferBase
+    //////////////////////////////////////////////////////////////////////
+
+    BufferBase::BufferBase(BufferType type, BufferUsage usage, size_t stride)
+        : type_(type)
+        , usage_(usage)
+        , stride_(stride)
+        , capacity_(0)
+        , size_(0)
+        , vb_(0)
+        , pData_(0)
+        , dirty_(false)
+    {
+    }
+
+    BufferBase::~BufferBase()
+    {
+        destroy();
+    }
+
+    bool BufferBase::isValid() const
+    {
+        return vb_ != 0;
+    }
+
+    char * BufferBase::lock(bool readOnly /*= false*/)
+    {
+        if(nullptr == pData_)
+        {
+            pData_ = new char[capacity_];
+        }
+
+        if(!readOnly)
+        {
+            dirty_ = true;
+        }
+
+        return pData_;
+    }
+
+    bool BufferBase::unlock()
+    {
+        return true;
+    }
+
+    void BufferBase::resize(size_t nCount, const void *data /*= nullptr*/)
+    {
+        size_ = stride_ * nCount;
+        if (size_ > capacity_)
+        {
+            capacity_ = (size_ + 7) & (~7);
+            
+            delete [] pData_;
+            pData_ = new char[capacity_];
+        }
+        else if(capacity_ > 128 && capacity_ > (size_ << 1))
+        {
+            delete [] pData_;
+            pData_ = new char[capacity_];
+        }
+
+        if(data != nullptr)
+        {
+            memcpy(pData_, data, size_);
+        }
+
+        dirty_ = true;
+    }
+
+    void BufferBase::fill(size_t iStart, size_t nCount, const void *data)
+    {
+        BW_GUARD;
+
+        ASSERT_2((iStart + nCount) * stride_ <= size_, "BufferBase::fill - invalid offset and size!");
+        ASSERT_1(pData_ != nullptr);
+
+        memcpy(pData_ + iStart * stride_, data, nCount * stride_);
+        dirty_ = true;
+    }
+
+    void BufferBase::destroy()
+    {
+        BW_GUARD;
+        if(vb_ != 0)
+        {
+            GL_ASSERT( glDeleteBuffers(1, &vb_) );
+            vb_ = 0;
+        }
+
+        if(pData_ != nullptr)
+        {
+            delete [] pData_;
+            pData_ = nullptr;
+        }
+    }
+
+    bool BufferBase::bind()
+    {
+        BW_GUARD;
+        if(0 == vb_)
+        {
+            GL_ASSERT(glGenBuffers(1, &vb_));
+        }
+
+        if(0 == vb_)
+        {
+            return false;
+        }
+
+        GL_ASSERT(glBindBuffer(GLenum(type_), vb_));
+
+        if(dirty_)
+        {
+            dirty_ = false;
+            GL_ASSERT(glBufferData(GLenum(type_), size_, pData_, GLenum(usage_)));
+        }
+        return true;
+    }
+
+    void BufferBase::unbind()
+    {
+        BW_GUARD;
+        GL_ASSERT( glBindBuffer(GLenum(type_), 0) );
+    }
+
+    void BufferBase::onDeviceClose()
+    {
+        destroy();
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    /// VertexBuffer
+    //////////////////////////////////////////////////////////////////////
+
+    VertexBuffer::VertexBuffer(BufferUsage usage, size_t stride, size_t nVertex, const void *data)
+        : BufferBase(BufferType::Vertex, usage, stride)
+    {
+        ++g_vb_counter;
+        
+        resize(nVertex, data);
+    }
+
+    VertexBuffer::~VertexBuffer()
+    {
+        --g_vb_counter;
+        
+        if (renderDevValid())
+            renderDev()->unsetVertexBuffer(this);
+    }
+
+    bool VertexBuffer::bind()
+    {
+        if(!BufferBase::bind())
+        {
+            return false;
+        }
+
+        renderDev()->setVertexBuffer(this);
+        return true;
+    }
+
+    void VertexBuffer::unbind()
+    {
+        BufferBase::unbind();
+        renderDev()->unsetVertexBuffer(this);
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    /// IndexBuffer
+    //////////////////////////////////////////////////////////////////////
+
+    IndexBuffer::IndexBuffer(BufferUsage usage, size_t stride, size_t nCount, const void *data)
+        : BufferBase(BufferType::Index, usage, stride)
+    {
+        ++g_ib_counter;
+        
+        resize(nCount, data);
+    }
+
+    IndexBuffer::~IndexBuffer()
+    {
+        --g_ib_counter;
+        
+        if (renderDevValid())
+            renderDev()->unsetIndexBuffer(this);
+    }
+
+    IndexType IndexBuffer::getIndexType() const
+    {
+        return size2IndexType(stride_);
+    }
+
+    bool IndexBuffer::bind()
+    {
+        if(!BufferBase::bind())
+        {
+            return false;
+        }
+        renderDev()->setIndexBuffer(this);
+        return true;
+    }
+
+    void IndexBuffer::unbind()
+    {
+        BufferBase::unbind();
+        renderDev()->unsetIndexBuffer(this);
+    }
+
+
+}//end namespace ora

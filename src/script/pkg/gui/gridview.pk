@@ -1,0 +1,26 @@
+
+class GridView : public ScrollView
+{
+    int getRows() const;
+    int getCols() const;
+    void setRowCol(int rows, int cols);
+    
+    const std::string & getItemLayout() const;
+    void setItemLayout(const std::string & itemLayout);
+    
+    void resetItems(int rows, int cols, const std::string & itemLayout);
+    
+    IntSize getItemInterval() const;
+    void setItemInterval(const IntSize & space);
+    
+    bool getVertical();
+    void setVertical(bool vertical);
+    
+    Widget * getItem(int index);
+    Widget * getItem @ getItemByRowCol(int row, int col);
+    
+    const VectorWidgetPtr & getItems() const;
+
+    tolua_outside void gridView_addEvent_itemClick @ addEventGridViewItemClick(lua_State * L, lua_Function funID);
+    tolua_outside void gridView_delEvent_itemClick @ delEventGridViewItemClick(void * p);
+};

@@ -1,0 +1,45 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "meshparser", "meshparser\meshparser.vcxproj", "{2F49199C-CC6D-4529-9C0B-FB30F5B3CE83}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "meshexporter", "meshexporter.vcxproj", "{9E887A0D-CF73-44E9-B83B-14EBD9E1065E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Max2009 Debug|Win32 = Max2009 Debug|Win32
+		Max2009 Release|Win32 = Max2009 Release|Win32
+		Max2012 Debug|Win32 = Max2012 Debug|Win32
+		Max2012 Release|Win32 = Max2012 Release|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2F49199C-CC6D-4529-9C0B-FB30F5B3CE83}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2F49199C-CC6D-4529-9C0B-FB30F5B3CE83}.Debug|Win32.Build.0 = Debug|Win32
+		{2F49199C-CC6D-4529-9C0B-FB30F5B3CE83}.Max2009 Debug|Win32.ActiveCfg = Debug|Win32
+		{2F49199C-CC6D-4529-9C0B-FB30F5B3CE83}.Max2009 Debug|Win32.Build.0 = Debug|Win32
+		{2F49199C-CC6D-4529-9C0B-FB30F5B3CE83}.Max2009 Release|Win32.ActiveCfg = Release|Win32
+		{2F49199C-CC6D-4529-9C0B-FB30F5B3CE83}.Max2009 Release|Win32.Build.0 = Release|Win32
+		{2F49199C-CC6D-4529-9C0B-FB30F5B3CE83}.Max2012 Debug|Win32.ActiveCfg = Debug|Win32
+		{2F49199C-CC6D-4529-9C0B-FB30F5B3CE83}.Max2012 Debug|Win32.Build.0 = Debug|Win32
+		{2F49199C-CC6D-4529-9C0B-FB30F5B3CE83}.Max2012 Release|Win32.ActiveCfg = Release|Win32
+		{2F49199C-CC6D-4529-9C0B-FB30F5B3CE83}.Max2012 Release|Win32.Build.0 = Release|Win32
+		{2F49199C-CC6D-4529-9C0B-FB30F5B3CE83}.Release|Win32.ActiveCfg = Release|Win32
+		{2F49199C-CC6D-4529-9C0B-FB30F5B3CE83}.Release|Win32.Build.0 = Release|Win32
+		{9E887A0D-CF73-44E9-B83B-14EBD9E1065E}.Debug|Win32.ActiveCfg = Max2012 Debug|Win32
+		{9E887A0D-CF73-44E9-B83B-14EBD9E1065E}.Debug|Win32.Build.0 = Max2012 Debug|Win32
+		{9E887A0D-CF73-44E9-B83B-14EBD9E1065E}.Max2009 Debug|Win32.ActiveCfg = Max2009 Debug|Win32
+		{9E887A0D-CF73-44E9-B83B-14EBD9E1065E}.Max2009 Debug|Win32.Build.0 = Max2009 Debug|Win32
+		{9E887A0D-CF73-44E9-B83B-14EBD9E1065E}.Max2009 Release|Win32.ActiveCfg = Max2009 Release|Win32
+		{9E887A0D-CF73-44E9-B83B-14EBD9E1065E}.Max2009 Release|Win32.Build.0 = Max2009 Release|Win32
+		{9E887A0D-CF73-44E9-B83B-14EBD9E1065E}.Max2012 Debug|Win32.ActiveCfg = Max2012 Debug|Win32
+		{9E887A0D-CF73-44E9-B83B-14EBD9E1065E}.Max2012 Debug|Win32.Build.0 = Max2012 Debug|Win32
+		{9E887A0D-CF73-44E9-B83B-14EBD9E1065E}.Max2012 Release|Win32.ActiveCfg = Max2012 Release|Win32
+		{9E887A0D-CF73-44E9-B83B-14EBD9E1065E}.Max2012 Release|Win32.Build.0 = Max2012 Release|Win32
+		{9E887A0D-CF73-44E9-B83B-14EBD9E1065E}.Release|Win32.ActiveCfg = Max2012 Release|Win32
+		{9E887A0D-CF73-44E9-B83B-14EBD9E1065E}.Release|Win32.Build.0 = Max2012 Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

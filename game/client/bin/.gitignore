@@ -1,0 +1,13 @@
+
+#windows
+*.exe
+*.exp
+*.ilk
+*.lib
+*.pdb
+*.temp
+*.log
+*.dll
+*.ck
+/res/
+/RelWithDebInfo/

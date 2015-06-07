@@ -1,0 +1,15 @@
+$#include "core/camera.h"
+
+class Camera : public SceneNode
+{
+public:
+	Camera();
+
+    void setControled(bool controled);
+    bool getControled();
+
+    void doRotation(const Vector3 & axis, float speed);
+    void doTranslation(const Vector3 & axis, float speed);
+
+    void active();
+};

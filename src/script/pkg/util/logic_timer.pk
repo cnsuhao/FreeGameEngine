@@ -1,0 +1,78 @@
+$#include "util/logic_timer.h"
+
+typedef uint64 LGTimeVal;
+typedef uint64 LGTimerHandle;
+
+
+class LogicTimer
+{
+public:
+    LogicTimer(LGTimeVal interval);
+    ~LogicTimer();
+
+    LGTimerHandle addTimer( LGTimeVal start, void * cb, LGTimeVal interval );
+    void cancelTimer( LGTimerHandle handle );
+
+    LGTimeVal time @ itime();
+    tolua_outside double logicTimer_ftime @ ftime();
+
+    void play();
+    void stop();
+    void clear();
+};
+
+${
+static double logicTimer_ftime(LogicTimer *p)
+{
+    return p->time() * 0.001;
+}
+
+class ScriptTimerCallback : public TimerCallback
+{
+	LuaPlus::LuaFunction<void> fun_;
+public:
+	ScriptTimerCallback(LuaPlus::LuaObject fun)
+		: fun_(fun)
+	{}
+
+    virtual void callback( LogicTimer & system, LGTimerHandle handle )
+    {
+    	fun_(handle);
+    }
+
+    virtual void finished()
+    {
+    	delete this;
+    }
+};
+
+#define TOLUA_DISABLE_tolua_util_LogicTimer_addTimer00
+static int tolua_util_LogicTimer_addTimer00(lua_State* tolua_S)
+{
+    tolua_Error tolua_err;
+    if (tolua_isusertype(tolua_S, 1, "LogicTimer", 0, &tolua_err) &&
+        tolua_isnumber(tolua_S, 2, 0, &tolua_err) &&
+        tolua_isfunction(tolua_S, 3, 0, &tolua_err) &&
+        (tolua_isnumber(tolua_S, 4, 0, &tolua_err) || tolua_isnoobj(tolua_S, 4, &tolua_err))
+        )
+    {
+        LogicTimer* self = (LogicTimer*) tolua_tousertype(tolua_S, 1, 0);
+        if (NULL == self)
+        {
+            tolua_error(tolua_S, "invalid 'self' in function 'addTimer'", NULL);
+        }
+        else
+        {
+            LGTimeVal start = (LGTimeVal) tolua_tonumber(tolua_S, 2, 0);
+            ScriptTimerCallback *cb = new ScriptTimerCallback(LuaPlus::LuaObject(tolua_S, 3));
+            LGTimeVal interval = (LGTimeVal) tolua_tonumber(tolua_S, 4, 0);
+
+            LGTimerHandle tolua_ret = (LGTimerHandle) self->addTimer(start, cb, interval);
+            tolua_pushnumber(tolua_S, (lua_Number) tolua_ret);
+            return 1;
+        }
+    }
+    tolua_error(tolua_S, "#ferror in function 'addTimer'.", &tolua_err);
+    return 0;
+}
+$}

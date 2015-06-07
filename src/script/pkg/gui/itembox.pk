@@ -1,0 +1,103 @@
+
+class ItemBox : public Widget
+{
+	size_t getItemCount() const;
+
+	void removeItemAt(size_t _index);
+	void removeAllItems();
+
+	void redrawItemAt(size_t _index);
+	void redrawAllItems();
+
+
+	size_t getIndexSelected() const;
+	void setIndexSelected(size_t _index);
+	void clearIndexSelected();
+
+	void clearItemDataAt(size_t _index);
+
+	void setVerticalAlignment(bool _value);
+	bool getVerticalAlignment() const;
+
+	size_t getIndexByWidget(Widget* _widget);
+	Widget* getWidgetDrag();
+	Widget* getWidgetByIndex(size_t _index);
+
+	void resetDrag();
+
+	void setViewOffset(const IntPoint& _value);
+	IntPoint getViewOffset();
+	IntSize getViewSize();
+
+	//! Insert an item into a array at a specified position
+	tolua_outside void ItemBox_insertItemAt @  insertItemAt(size_t _index, void* _data);
+
+	//! Add an item to the end of a array
+	tolua_outside void ItemBox_addItem @ addItem(void* _data);
+
+	//! Replace an item data at a specified position
+	tolua_outside void ItemBox_setItemDataAt @ setItemDataAt(size_t _index, void* _data);
+
+	tolua_outside void* itemBox_addEvent_createItem @ addEventCreateWidgetItem(lua_State * L, lua_Function funID);
+	tolua_outside void  itemBox_delEvent_createItem @ delEventCreateWidgetItem(void *p);
+};
+
+${
+
+/* method: ItemBox_insertItemAt of class  ItemBox */
+#define TOLUA_DISABLE_tolua_gui_ItemBox_insertItemAt00
+static int tolua_gui_ItemBox_insertItemAt00(lua_State* tolua_S)
+{
+    ItemBox * self = (ItemBox*)tolua_touserdata(tolua_S, 1, nullptr);
+    if(self == nullptr)
+    {
+        luaL_error(tolua_S, "ItemBox_addItem: argument 1 ItemBox self needed.");
+        return 0;
+    }
+
+    size_t index = (size_t)tolua_tonumber(tolua_S, 2, 0);
+    self->insertItemAt(index, LuaPlus::LuaObject(tolua_S, 3));
+    
+	return 0;
+}
+
+/* method: ItemBox_addItem of class  ItemBox */
+#define TOLUA_DISABLE_tolua_gui_ItemBox_addItem00
+static int tolua_gui_ItemBox_addItem00(lua_State* tolua_S)
+{
+    ItemBox * self = (ItemBox*)tolua_touserdata(tolua_S, 1, nullptr);
+    if(self == nullptr)
+    {
+        luaL_error(tolua_S, "ItemBox_addItem: argument 1 ItemBox self needed.");
+        return 0;
+    }
+    
+    LuaPlus::LuaObject data(tolua_S, 2);
+    if(data.IsNil())
+    {
+        luaL_error(tolua_S, "ItemBox_addItem: need argument 2.");
+        return 0;
+    }
+
+    self->addItem(data);
+    
+	return 0;
+}
+
+/* method: ItemBox_setItemDataAt of class  ItemBox */
+#define TOLUA_DISABLE_tolua_gui_ItemBox_setItemDataAt00
+static int tolua_gui_ItemBox_setItemDataAt00(lua_State* tolua_S)
+{
+    ItemBox * self = (ItemBox*)tolua_touserdata(tolua_S, 1, nullptr);
+    if(self == nullptr)
+    {
+        luaL_error(tolua_S, "ItemBox_addItem: argument 1 ItemBox self needed.");
+        return 0;
+    }
+
+    size_t index = (size_t)tolua_tonumber(tolua_S, 2, 0);
+    self->setItemDataAt(index, LuaPlus::LuaObject(tolua_S, 3));
+	return 0;
+}
+$}
+

@@ -1,0 +1,151 @@
+$#include "util/event_listener.h"
+$#include "util/event_def.h"
+
+typedef unsigned int size_t;
+typedef unsigned int uint32;
+
+namespace ET
+{
+	enum ET_xxx{
+	    None,
+	    Log,
+	    Exit,
+	    Destroy,
+	    SystemEvent,
+
+	    Keyboard,
+	    Touch,
+	    MouseButton,
+	    MouseMove,
+	    MouseWheel,
+	    TextEditing,
+	    TextInput,
+	};
+    
+};// end namespace ET
+
+
+class Variant
+{
+    Variant();
+    ~Variant();
+
+    void setv @ setString(const std::string & v);
+    void setv @ setInt(int v);
+    void setv @ setNumber(double v);
+
+    std::string getv2<std::string> @ getString();
+    int getv2<int> @ getInt();
+    double getv2<double> @ getNumber();
+
+};
+
+$using std::vector;
+
+
+class vector
+{
+	TOLUA_TEMPLATE_BIND(T, Variant);
+
+	vector();
+	~vector();
+
+	size_t size() const;
+	T at(size_t i);
+	bool empty();
+
+	T front();
+	T back();
+	void pop_back();
+	void push_back(T v);
+
+	const T & operator [] (  size_t i ) const ;
+	T & operator [] (  size_t i ) ;
+};
+
+typedef vector<Variant> VariantVector;
+$renaming vector<Variant> @ VariantVector
+
+class IEventSender
+{ 
+    IEventSender();
+    ~IEventSender();
+    
+    void sendEvent(unsigned int eventType, VariantVector & args);
+};
+
+class IEventListener
+{
+    void subscribeEvent(unsigned int eventType, IEventSender *sender/*=nullptr*/);
+    void unsubscribeEvent(unsigned int eventType, IEventSender *sender/*=nullptr*/);
+};
+
+${
+IEventSender * globalSender()
+{
+	return GlobalSender::instance();
+}
+
+class LuaEventListener : public IEventListener
+{
+	LuaPlus::LuaFunction<void> _fun;
+public:
+    LuaEventListener(LuaPlus::LuaObject fun)
+    	: _fun(fun)
+    {}
+
+    ~LuaEventListener()
+    {}
+    
+    void onEvent(IEventSender * sender, uint32 eventType, VariantVector & args) override
+    {
+    	//_fun->call<>(sender, eventType, &args);
+    }
+};
+
+#define TOLUA_DISABLE_tolua_util_LuaEventListener_new00
+static int tolua_util_LuaEventListener_new00(lua_State* tolua_S)
+{
+    LuaPlus::LuaStack stack(tolua_S);
+    //stack[1] is class self
+    LuaPlus::LuaObject fun = stack[2];
+    if(!fun.IsFunction())
+    {
+        luaL_error(tolua_S, "LuaEventListener_new: argument 2 need a function.");
+        return 0;
+    }
+
+    LuaEventListener* tolua_ret = (LuaEventListener*)Mtolua_new((LuaEventListener)(fun));
+    tolua_pushusertype(tolua_S, (void*)tolua_ret, "LuaEventListener");
+    return 1;
+}
+
+#define TOLUA_DISABLE_tolua_util_LuaEventListener_new00_local
+static int tolua_util_LuaEventListener_new00_local(lua_State* tolua_S)
+{
+	LuaPlus::LuaStack stack(tolua_S);
+    //stack[1] is class self
+    LuaPlus::LuaObject fun = stack[2];
+    if(!fun.IsFunction())
+    {
+        luaL_error(tolua_S, "LuaEventListener_new: argument 2 need a function.");
+        return 0;
+    }
+    
+    LuaEventListener* tolua_ret = (LuaEventListener*)Mtolua_new((LuaEventListener)(fun));
+    tolua_pushusertype(tolua_S, (void*)tolua_ret, "LuaEventListener");
+	tolua_register_gc(tolua_S,lua_gettop(tolua_S));
+
+	return 1;
+}
+
+$}
+
+IEventSender * globalSender();
+
+class LuaEventListener : public IEventListener
+{
+	LuaEventListener();
+	~LuaEventListener();
+};
+

@@ -1,0 +1,10 @@
+$#include "script/root_scene.h"
+
+class RootScene : public SceneNode
+{
+public:
+    RootScene();
+    ~RootScene();
+
+	bool init();
+};

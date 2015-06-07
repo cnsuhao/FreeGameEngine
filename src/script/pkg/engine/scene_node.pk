@@ -1,0 +1,108 @@
+$#include "core/scene_node.h"
+
+class SceneNode
+{
+public:
+    SceneNode();
+    ~SceneNode();
+
+    void incRef() const;
+    void decRef() const;
+    long refCount() const;
+
+    void setTransform(const Vector3& scale, const Quaternion& rotation, const Vector3& translation);
+    void setIdentity();
+
+    void setScale(const Vector3& scale);
+    void setScaleX(float sx);
+    void setScaleY(float sy);
+    void setScaleZ(float sz);
+
+    void setRotation(const Quaternion& rotation);
+    void setRotation @ setRotationMatrix (const Matrix& rotation);
+    void setRotation @ setRotationAxis (const Vector3& axis, float angle);
+    void setRotationAlong(const Vector3& point, const Vector3& axis, float angle);
+    void setRotationX(float angle);
+    void setRotationY(float angle);
+    void setRotationZ(float angle);
+
+    void setPosition(const Vector3& translation);
+    void setPositionX(float tx);
+    void setPositionY(float ty);
+    void setPositionZ(float tz);
+
+
+    const Matrix& getMatrix() const;
+    void setMatrix(const Matrix & mat);
+
+    const Vector3& getScale() const;
+    float getScaleX() const;
+    float getScaleY() const;
+    float getScaleZ() const;
+
+    const Quaternion& getRotation() const;
+
+    const Vector3& getPosition() const;
+    float getPositionX() const;
+    float getPositionY() const;
+    float getPositionZ() const;
+
+    Vector3 getForwardVector() const;
+    Vector3 getUpVector() const;
+    Vector3 getRightVector() const;
+
+
+    void rotate (const Quaternion& rotation);
+    void rotate @ rotateAxis (const Vector3& axis, float angle);
+    void rotate @ rotateMatrix (const Matrix& rotation);
+    void rotateAlong(const Vector3& point, const Vector3& axis, float angle);
+    void rotateX(float angle);
+    void rotateY(float angle);
+    void rotateZ(float angle);
+
+    void scale(const Vector3& scale);
+    void scale @ scaleXYZ(float sx, float sy, float sz);
+    void scaleX(float sx);
+    void scaleY(float sy);
+    void scaleZ(float sz);
+
+    void translate(const Vector3& translation);
+    void translateX(float tx);
+    void translateY(float ty);
+    void translateZ(float tz);
+    void translateRight(float amount);
+    void translateUp(float amount);
+    void translateForward(float amount);
+
+    void lookAt(const Vector3& up, const Vector3& target);
+    void setLook(const Vector3 & look, const Vector3 & up);
+
+public:
+
+    virtual bool init();
+    virtual void destroy();
+
+    const std::string & getName() const;
+    void setName(const std::string & name);
+
+    SceneNode * getParent() { return _parent; }
+    SceneNode * getRoot();
+
+	bool isInWorld() const;
+    SceneNode * getChild(const std::string & name);
+
+    void topmost();
+
+    void removeFromParent();
+
+    void addChild(SceneNode * child);
+    void removeChild @ delChild(SceneNode * child);
+    void removeChildByName @ delChildByName(const std::string & name);
+
+    void clearChildren();
+
+    void addAction(IAction* action);
+    /// 影响效率,慎重使用
+    void removeAction(IAction* action);
+    void clearActions();
+};

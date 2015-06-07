@@ -1,0 +1,118 @@
+$#include "util/file_tool.h"
+$#include "util/section_factory.h"
+$#include <sstream>
+
+//typedef vector<SectionPtr>          SectionPtrVector;
+
+
+class ISection
+{
+public:
+    virtual uint32 getType() const;
+    virtual bool valid() const;
+
+    virtual const char* ctag() const;
+    virtual std::string getTag() const;
+    virtual void setTag(const std::string &tag);
+
+public:
+    virtual void setString(const std::string & value);
+    virtual void setInt(int value);
+    virtual void setUint(uint32 value);
+    virtual void setFloat(float value);
+    virtual void setDouble(double value);
+    virtual void setBool(bool value);
+
+    virtual std::string getString() const;
+    virtual int         getInt() const;
+    virtual uint32      getUint() const;
+    virtual float       getFloat() const;
+    virtual double      getDouble() const;
+    virtual bool        getBool() const;
+    
+    virtual SectionPtr read(const std::string &tag) const;
+    virtual SectionPtr write(const std::string &tag);
+    
+    virtual SectionPtr newChild(const std::string & tag) ;
+    virtual SectionPtr getFirstChild() const;
+    
+    //virtual void getChildren(SectionPtrVector & children);
+    virtual void clearChildren();
+
+
+    //bool reads(const std::string & tag, SectionPtrVector & vector);
+    
+    void writeString(const std::string & tag, const std::string & value);
+    void writeInt(const std::string & tag, int value);
+    void writeUint(const std::string & tag, uint32 value);
+    void writeFloat(const std::string & tag, float value);
+    void writeDouble(const std::string & tag, double value);
+    void writeBool(const std::string & tag, bool value);
+
+    std::string readString(const std::string & tag, const std::string & value);
+    int readInt(const std::string & tag, int value);
+    uint32 readUint(const std::string & tag, uint32 value);
+    float readFloat(const std::string & tag, float value);
+    double readDouble(const std::string & tag, double value);
+    bool readBool(const std::string & tag, bool value);
+
+    tolua_outside std::string Section_getContent @ getContent();
+};
+
+class SectionFactory
+{
+public:
+    static SectionPtr loadXml(const std::string & filename);
+    static SectionPtr loadJson(const std::string & filename);
+    static SectionPtr loadDS(const std::string & filename);
+    
+    static SectionPtr parseXml(std::string & content);
+    static SectionPtr parseJson(const std::string & content);
+    static SectionPtr parseDS(const std::string & content);
+    
+    static bool saveXml(const std::string & filename, SectionPtr root);
+    static bool saveJson(const std::string & filename, SectionPtr root);
+    static bool saveDS(const std::string & filename, SectionPtr root);
+    
+    static void purge(ISection * p);
+};
+
+$renaming ISection @ Section
+
+${
+static std::string Section_getContent(ISection * self)
+{
+    std::ostringstream ss;
+    self->print(ss);
+
+    return ss.str();
+}
+
+/* function: readFile */
+#define TOLUA_DISABLE_tolua_util_readFile00
+static int tolua_util_readFile00(lua_State* tolua_S)
+{
+   tolua_Error tolua_err;
+   if (tolua_iscppstring(tolua_S,1,0,&tolua_err) &&
+       tolua_isboolean(tolua_S,2,0,&tolua_err) &&
+       tolua_isnoobj(tolua_S,3,&tolua_err))
+    {
+        const std::string filename = ((const std::string)  tolua_tocppstring(tolua_S,1,0));
+        bool isBinary = ((bool)  tolua_toboolean(tolua_S,2,0));
+
+        std::string content;
+        bool tolua_ret = (bool)  readFile(content,filename,isBinary);
+        if(tolua_ret)
+            tolua_pushcppstring(tolua_S,(const char*)content);
+        else
+            lua_pushnil(tolua_S);
+        return 1;
+    }
+    tolua_error(tolua_S,"#ferror in function 'readFile'.",&tolua_err);
+    return 0;
+}
+
+$}
+
+bool readFile(std::string & content, const std::string & filename, bool isBinary);
+bool writeFile(const std::string & content, const std::string & filename, bool isBinary);

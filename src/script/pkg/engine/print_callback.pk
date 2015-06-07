@@ -1,0 +1,54 @@
+${
+
+typedef std::function<void(const char *)> PrintHandle;
+PrintHandle printCB;
+
+struct PrintCB
+{
+	LuaPlus::LuaFunction<const char *> _fun;
+
+public:
+    PrintCB(LuaPlus::LuaObject fun)
+        : _fun(fun)
+    {}
+
+    void operator()(const char * str)
+    {
+        _fun(str);
+    }
+};
+
+/* function: setPrintCB */
+#define TOLUA_DISABLE_tolua_engine_setPrintCB00
+static int tolua_engine_setPrintCB00(lua_State* tolua_S)
+{
+ 	tolua_Error tolua_err;
+	if ( tolua_isnoobj(tolua_S, 1, &tolua_err) )
+	{
+		printCB = nullptr;
+		return 0;
+	}
+
+    LuaPlus::LuaStack stack(tolua_S);
+    LuaPlus::LuaObject fun = stack[1];
+
+	if (fun.IsNil())
+	{
+		printCB = nullptr;
+		return 0;
+	}
+
+    if(!fun.IsFunction())
+    {
+        luaL_error(tolua_S, "setPrintCB: argument 1 need a function or nil object.");
+        return 0;
+    }
+
+	printCB = PrintCB(fun);
+    return 0;
+}
+
+$}
+
+static int setPrintCB(void *func);
+

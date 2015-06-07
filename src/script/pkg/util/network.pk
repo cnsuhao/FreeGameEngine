@@ -1,0 +1,89 @@
+$#include "network/HttpClient.h"
+
+enum PROTOCOL_KIND
+{
+    UNKNOW,
+    POST,
+    GET,
+    SEND
+};
+
+enum HTTP_CODE
+{
+    CODE_ERROR_UNKNOW,
+    CODE_ERROR_CONNET_CREATE_URL,
+    CODE_ERROR_ERROR_BUFFER,
+    CODE_ERROR_TIMEOUT,
+    CODE_ERROR_INVALID_URL,
+    
+    CODE_ERROR_SET_URL,
+    CODE_ERROR_POST,
+    CODE_ERROR_WRITE,
+    CODE_ERROR_SET_WRITE_DATA,
+    CODE_ERROR_PERFORM,
+    
+    CODE_OK,
+};
+
+${
+
+struct ScriptNetworkCB
+{
+    LuaPlus::LuaFunction<void> _fun;
+
+public:
+    ScriptNetworkCB(LuaPlus::LuaObject fun)
+        : _fun(fun)
+    {}
+
+    void operator()(const std::string & key, const std::string & data, PROTOCOL_KIND kind, HTTP_CODE code)
+    {
+        _fun(key, data, (int)kind, (int)code);
+    }
+};
+
+#define TOLUA_DISABLE_tolua_util_httpPost00
+static int tolua_util_httpPost00(lua_State* tolua_S)
+{
+    LuaPlus::LuaStack stack(tolua_S);
+    
+    std::string key = stack[1].GetString();
+    std::string data = stack[2].GetString();
+
+    LuaPlus::LuaObject fun = stack[3];
+    if(!fun.IsFunction())
+    {
+        luaL_error(tolua_S, "httpPost: argument 3 need a function.");
+        return 0;
+    }
+
+    HttpClient::instance()->httpPost(key, data, ScriptNetworkCB(fun));
+
+    return 0;
+}
+
+/* function: httpGet */
+#define TOLUA_DISABLE_tolua_util_httpGet00
+static int tolua_util_httpGet00(lua_State* tolua_S)
+{
+    LuaPlus::LuaStack stack(tolua_S);
+    
+    std::string key = stack[1].GetString();
+    std::string data = stack[2].GetString();
+    
+    LuaPlus::LuaObject fun = stack[3];
+    if(!fun.IsFunction())
+    {
+        luaL_error(tolua_S, "httpGet: argument 3 need a function.");
+        return 0;
+    }
+    
+    HttpClient::instance()->httpGet(key, data, ScriptNetworkCB(fun));
+
+    return 0;
+}
+
+$}
+
+void httpPost();
+void httpGet();

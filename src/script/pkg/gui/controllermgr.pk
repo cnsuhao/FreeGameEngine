@@ -1,0 +1,30 @@
+
+class ControllerItem
+{};
+
+class ControllerPosition : public ControllerItem
+{
+public:
+	ControllerPosition();
+	void setCoord(int left, int top, int width, int height);
+	void setSize(int width, int height);
+	void setPosition(int left, int top);
+	void setTime(float _value);
+	void setFunction(const std::string& _value);
+};
+
+class ControllerManager
+{
+public:
+	void addItem(Widget* _widget, ControllerItem* _item);
+	void removeItem(Widget* _widget);
+};
+
+${
+ControllerManager * controllerMgrInstance()
+{
+	return ControllerManager::getInstancePtr();
+}
+$}
+
+ControllerManager * controllerMgrInstance();

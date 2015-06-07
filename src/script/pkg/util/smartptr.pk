@@ -1,0 +1,13 @@
+$#include "util/smartptr.h"
+
+class SmartPtr
+{
+    TOLUA_TEMPLATE_BIND(T, ISection);
+
+    T* get() const;
+    operator bool () const;
+};
+
+typedef SmartPtr<ISection> SectionPtr;
+
+$renaming SmartPtr<ISection> @ SectionPtr

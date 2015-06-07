@@ -1,0 +1,90 @@
+$#include "util/random.h"
+
+bool srand(uint32 seed);
+int randint(int min, int max);
+float randfloat(float min, float max);
+float random(float min, float max);
+
+${
+
+/* function: srand */
+#define TOLUA_DISABLE_tolua_util_srand00
+static int tolua_util_srand00(lua_State* tolua_S)
+{
+	tolua_Error tolua_err;
+
+	if ( 
+		!tolua_isnumber(tolua_S, 1, 0, &tolua_err)
+	)
+	{
+		tolua_error(tolua_S,"#ferror in function 'srand'.",&tolua_err);
+		tolua_pushboolean(tolua_S, false);
+		return 1;
+	}
+
+	uint32 seed = ((uint32)  tolua_tonumber(tolua_S, 1, 0));
+	Random::instance()->init(seed);
+	
+	tolua_pushboolean(tolua_S, true);
+
+    return 1;
+}
+
+/* function: randint */
+#define TOLUA_DISABLE_tolua_util_randint00
+static int tolua_util_randint00(lua_State* tolua_S)
+{
+	tolua_Error tolua_err;
+
+	if ( 
+		!tolua_isnumber(tolua_S, 1, 0, &tolua_err) ||
+		!tolua_isnumber(tolua_S, 2, 0, &tolua_err)
+	)
+	{
+		tolua_error(tolua_S,"#ferror in function 'randint'.",&tolua_err);
+		return 0;
+	}
+	
+	int min = ((int)  tolua_tonumber(tolua_S, 1, 0));
+	int max = ((int)  tolua_tonumber(tolua_S, 2, 0));
+
+	tolua_pushnumber(tolua_S, (lua_Number)Random::instance()->generate(min, max));
+
+    return 1;
+}
+
+/* function: randfloat */
+#define TOLUA_DISABLE_tolua_util_randfloat00
+static int tolua_util_randfloat00(lua_State* tolua_S)
+{
+	tolua_Error tolua_err;
+
+	if ( 
+		!tolua_isnumber(tolua_S, 1, 0, &tolua_err) ||
+		!tolua_isnumber(tolua_S, 2, 0, &tolua_err)
+	)
+	{
+		tolua_error(tolua_S,"#ferror in function 'randfloat'.",&tolua_err);
+		return 0;
+	}
+	
+	float min = ((float)  tolua_tonumber(tolua_S, 1, 0));
+	float max = ((float)  tolua_tonumber(tolua_S, 2, 0));
+
+	tolua_pushnumber(tolua_S, (lua_Number)Random::instance()->generate(min, max));
+
+    return 1;
+}
+
+/* function: random */
+#define TOLUA_DISABLE_tolua_util_random00
+static int tolua_util_random00(lua_State* tolua_S)
+{
+    LuaPlus::LuaStack stack(tolua_S);
+
+	tolua_pushnumber(tolua_S, (lua_Number)Random::instance()->generate(0.0f, 1.0f));
+
+    return 1;
+}
+
+$}

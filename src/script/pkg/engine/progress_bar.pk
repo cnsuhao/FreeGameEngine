@@ -1,0 +1,12 @@
+$#include "core/progress_bar.h"
+
+class ProgressReference : public SceneNode
+{
+public:
+	ProgressReference();
+
+	void setMaterial(const std::string &);
+
+	void setRange(float range);
+	float getRange() const;
+}

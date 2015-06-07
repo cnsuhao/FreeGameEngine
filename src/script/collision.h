@@ -1,0 +1,5 @@
+﻿#ifndef ORA_COLLISION_H
+#define ORA_COLLISION_H
+
+
+#endif //ORA_COLLISION_H

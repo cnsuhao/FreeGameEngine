@@ -1,0 +1,18 @@
+material = 0
+{
+	identifier = BWom0001-M3-Head
+	fx = effect/test3.shader
+	texture = model/BWom0001-M3-Head-D.jpg
+}
+material = 1
+{
+	identifier = BWom0001-M3-Body
+	fx = effect/test3.shader
+	texture = model/BWom0001-M3-Body-D.jpg
+}
+material = 2
+{
+	identifier = BWom0001-M3-Hair
+	fx = effect/test3.shader
+	texture = model/BWom0001-M3-Hair-D.jpg
+}

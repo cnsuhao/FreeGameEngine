@@ -1,0 +1,8 @@
+
+class TabItem : public TextBox
+{
+	void setCaption(const std::string& _value);
+	const std::string & getCaption();
+
+	void setButtonWidth();
+};

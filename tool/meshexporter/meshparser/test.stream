@@ -1,0 +1,16 @@
+
+#this is comment
+position
+{
+	x = 1 #this is comment
+}
+
+
+group = this is the group value
+{
+	identify = name
+	null #this is comment
+}
+
+size = {
+width = 1\n\0\\\#\{\}\abc }

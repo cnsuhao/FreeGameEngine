@@ -1,0 +1,28 @@
+
+$#include "duplo/pch.hpp"
+
+$pfile "util/common.pk"
+$pfile "engine/worldmgr.pk"
+$pfile "engine/entity.pk"
+$pfile "engine/math.pk"
+$pfile "engine/scene_node.pk"
+$pfile "engine/camera.pk"
+$pfile "engine/attachment.pk"
+$pfile "engine/model_node.pk"
+$pfile "engine/mesh_node.pk"
+$pfile "engine/particle.pk"
+$pfile "engine/pixel.pk"
+$pfile "engine/action_matcher.pk"
+$pfile "engine/action.pk"
+$pfile "engine/cstdmf.pk"
+$pfile "engine/font_node.pk"
+$pfile "engine/progress_bar.pk"
+$pfile "engine/attachment_line.pk"
+$pfile "engine/root_scene.pk"
+$pfile "engine/ground_node.pk"
+$pfile "engine/print_callback.pk"
+$pfile "engine/gui_camera.pk"
+$pfile "engine/misc.pk"
+$pfile "engine/gizmo_node.pk"
+
+$using namespace ora;

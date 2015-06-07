@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="expmain.cpp" />
+    <ClCompile Include="expsets.cpp" />
+    <ClCompile Include="file_stream.cpp" />
+    <ClCompile Include="mfxexp.cpp" />
+    <ClCompile Include="mfxnode.cpp" />
+    <ClCompile Include="mmath.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="quick_file_reader.cpp" />
+    <ClCompile Include="utility.cpp" />
+    <ClCompile Include="visual_mesh.cpp" />
+    <ClCompile Include="visual_type.cpp" />
+    <ClCompile Include="string_tool.cpp" />
+    <ClCompile Include="aboutbox.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="expsets.hpp" />
+    <ClInclude Include="file_stream.h" />
+    <ClInclude Include="index_buffer.hpp" />
+    <ClInclude Include="max.h" />
+    <ClInclude Include="mfxexp.hpp" />
+    <ClInclude Include="mfxnode.hpp" />
+    <ClInclude Include="mmath.h" />
+    <ClInclude Include="pch.hpp" />
+    <ClInclude Include="primitive_file_structs.hpp" />
+    <ClInclude Include="quick_file_reader.h" />
+    <ClInclude Include="quick_file_writer.hpp" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="smartpointer.hpp" />
+    <ClInclude Include="utility.hpp" />
+    <ClInclude Include="vertex_formats.hpp" />
+    <ClInclude Include="visual_mesh.hpp" />
+    <ClInclude Include="visual_type.h" />
+    <ClInclude Include="string_tool.h" />
+    <ClInclude Include="aboutbox.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="meshexporter.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mfxexp.ipp" />
+    <None Include="mfxnode.ipp" />
+  </ItemGroup>
+</Project>
