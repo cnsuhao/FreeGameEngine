@@ -30,7 +30,7 @@ static std::string s_msg;
 
 extern FILE* ora_open(const char *file, const char *mode)
 {
-    return nullptr;
+    return ora::FileSystemMgr::getInstance()->openRawFile(file, mode);
 }
 
 inline void flush_output()

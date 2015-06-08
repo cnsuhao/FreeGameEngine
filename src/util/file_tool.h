@@ -14,19 +14,19 @@ namespace ora
     class IFile : public IReferenceCount
     {
     public:
-    
         enum Mode
         {
-            ModeRead   = 1,
-            ModeWrite  = 2,
-            ModeBinary = 4,
+            MD_READ   = 1,
+            MD_WRITE  = 2,
+            MD_BINARY = 4,
+            MD_CREATE = 8,
         };
         
         enum Seek
         {
-            SeekBeg,
-            SeekCur,
-            SeekEnd,
+            SK_BEG,
+            SK_CUR,
+            SK_END,
         };
         
         IFile();
@@ -43,60 +43,45 @@ namespace ora
         virtual void close() = 0;
     };
     typedef SmartPtr<IFile> FilePtr;
-
+    
+    enum FileAccess
+    {
+        FA_NONE = 0,
+        FA_READ = 1,
+        FA_WRITE = 2,
+        FA_REMOVE = 4,
+        FA_ALL = 0x7f,
+    };
 
     class IFileSystem : public IReferenceCount
     {
     public:
         IFileSystem();
         virtual ~IFileSystem();
-    
-        virtual bool init();
+ 
+        virtual bool exist(const std::string & path) = 0;
+        virtual bool isFile(const std::string & path) = 0;
+        virtual bool isDir(const std::string & path) = 0;
         
-        virtual bool isFileExist(const std::string & filename);
+        virtual FilePtr openFile(const std::string & path, IFile::Mode mode) = 0;
+        virtual FILE* openRawFile(const char* path, const char * mode) = 0;
         
-        /** 如果获取失败，返回空字符串 */
-        std::string getFullPath(const std::string & filename);
-        std::string getRelativePath(const std::string & fullPath);
+        virtual bool removeFile(const std::string & path) = 0;
+        virtual bool renameFile(const std::string & oldpath, const std::string & newpath) = 0;
         
-        //@{ 这里的path，是相对于ModulePath而言的
-        void addSearchPath(const std::string & path);
-        void setSearchPath(const StringVector & path);
-        const StringVector & getSearchPath() const { return _paths; }
-        //@}
+        virtual bool createDir(const std::string & path) = 0;
+        virtual bool removeDir(const std::string & path) = 0;
+        virtual bool listDir(const std::string & path, StringVector & files) = 0;
         
-        FilePtr openFile(const std::string & filename, IFile::Mode mode=IFile::ModeRead);
+        FileAccess getAccess() const { return access_; }
+        void setAccess(FileAccess ac){ access_ = ac; }
         
-    public:
-        
-        virtual std::string getCurrentPath() = 0;
-        
-        /** ios & android，返回是res路径，其他平台返回app所在路径 */
-        virtual std::string getModulePath() = 0;
-        
-        virtual std::string getWritablePath() = 0;
-        
-        //@{ 以下几个方法，参数必须是绝对路径
-        
-        virtual bool createDir(const std::string & fullPath) = 0;
-        virtual bool deleteDir(const std::string & fullPath) = 0;
-        
-        virtual bool existFile(const std::string & fullPath) = 0;
-        virtual bool deleteFile(const std::string & fullPath) = 0;
-        virtual bool renameFile(const std::string & fullPath) = 0;
-
-        virtual FilePtr openFileInternal(const std::string & filename, const std::string & mode);
-        //@}
-
-        static void canonicalizePath(std::string & path);
-        
-    protected:
-        /** 默认路径。对资源的读取，要以此为参考路径，派生类需要设置此值。*/
-        std::string     _defaultPath;
-        StringVector    _paths;
+    private:
+        FileAccess access_;
     };
     
     typedef SmartPtr<IFileSystem> FileSystemPtr;
+    FileSystemPtr createFileSystem(const std::string & path);
     
     
     class FileSystemMgr :
@@ -106,16 +91,37 @@ namespace ora
         FileSystemMgr();
         ~FileSystemMgr();
         
-        static FileSystemPtr fileSystem()
-        {
-            return instance()->fileSystem();
-        }
+        void addSearchPath(const std::string & path, bool front=false);
+        void addSearchPath(const std::string & path, FileSystemPtr fs, bool front=false);
         
-        FileSystemPtr getFileSystem() { return _fileSystem; }
-        void setFileSystem(FileSystemPtr fileSystem){ _fileSystem = fileSystem; }
+        void setSearchPath(const StringVector & path);
+        const StringVector & getSearchPath() const { return searchPaths_; }
+        
+        bool isFileExist(const std::string & filename);
+        FilePtr openFile(const std::string & filename, IFile::Mode mode);
+        FILE* openRawFile(const std::string & file, const char * mode);
+        
+        std::string getFullPath(const std::string & filename);
+        std::string getRelativePath(const std::string & fullPath);
+        
+        bool createDir(const std::string & path);
+        bool removeDir(const std::string & path);
+        
+        bool removeFile(const std::string & path);
+        bool renameFile(const std::string & oldpath, const std::string & newpath);
+        
+        const std::string & getWritablePath() const { return writablePath_; }
+        void setWritablePath(const std::string & path);
         
     private:
-        FileSystemPtr   _fileSystem;
+        std::string                     writablePath_;
+        std::vector<std::string>        searchPaths_;
+        std::vector<FileSystemPtr>      fileSystems_;
     };
+    
+    std::string getCurrentPath();
+    
+    /** ios & android，返回是document路径，其他平台返回app所在路径 */
+    std::string getModulePath();
     
 }// end namespace ora

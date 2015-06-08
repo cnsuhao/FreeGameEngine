@@ -63,7 +63,7 @@ namespace ora
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
-        int multiSample = g_sysConfig->readBool("app/multiSample");
+        int multiSample = g_sysConfig->readInt("app/multiSample", 0);
         if (multiSample > 1)
         {
             SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
@@ -77,7 +77,7 @@ namespace ora
 
         //SDL_SetHint(SDL_HINT_ORIENTATIONS, orientations_.CString());
 
-        std::string title = g_sysConfig->readString("app/title", "orange");
+        std::string title = g_sysConfig->readString("app/title", "freegame");
 #ifndef _RELEASE
         do
         {

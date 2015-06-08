@@ -14,6 +14,7 @@
 #include "util/watcher.h"
 #include "util/random.h"
 #include "util/timer.h"
+#include "util/file_tool.h"
 
 #include "graphics/graphics.h"
 #include "core/world.h"
@@ -44,22 +45,27 @@ const wchar_t * compileTimeStringW = WIDE_S(__DATE__) L" " WIDE_S(__TIME__);
 
 Application::Application()
 {
+    ORA_STACK_TRACE;
+    ora::FileSystemMgr::initInstance();
 }
 
 Application::~Application()
 {
     ORA_STACK_TRACE;
+    ora::FileSystemMgr::finiInstance();
 }
 
 bool Application::onSetup()
 {
     ORA_STACK_TRACE;
     
-//    ORA_LOG_INFO("AppDocDir: %s", BWUtil::getAppDocDir().c_str());
-//    ORA_LOG_INFO("AppHomeDir: %s", BWUtil::getAppHomeDir().c_str());
-//    ORA_LOG_INFO("AppTmpDir: %s", BWUtil::getAppTmpDir().c_str());
-//    ORA_LOG_INFO("AppResDir: %s", BWUtil::getAppResPath().c_str());
+    ORA_LOG_INFO("Document dir: %s", ora::getModulePath().c_str());
+    ORA_LOG_INFO("Current path: %s", ora::getCurrentPath().c_str());
 
+    ora::FileSystemMgr::instance()->setWritablePath(ora::getModulePath());
+    ora::FileSystemMgr::instance()->addSearchPath(ora::getModulePath());
+    ora::FileSystemMgr::instance()->addSearchPath(ora::getModulePath() + "../../res");
+    
 #ifdef WIN32
     SDL_ICON_RESOURCE = IDI_GLFW_ICON;
 #elif defined(ANDROID)

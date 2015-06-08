@@ -1,7 +1,13 @@
 
 
 #include "file_tool_imp.h"
+#include "util/file_imp.h"
+
 #include <unistd.h>
+#include <dirent.h>
+#include <sys/stat.h>
+
+#include <SDL/include/SDL.h>
 
 #ifndef MAX_PATH
 #define MAX_PATH 1024
@@ -11,7 +17,7 @@ namespace ora
 {
 	FileSystemImp::FileSystemImp()
 	{
-
+        setAccess(FA_ALL);
 	}
 
     FileSystemImp::~FileSystemImp()
@@ -19,68 +25,124 @@ namespace ora
 
     }
     
-    bool FileSystemImp::init()
+    bool FileSystemImp::exist(const std::string & path)
     {
-        _defaultPath = getModulePath();
+        return access(path.c_str(), F_OK) == 0;
+    }
 
-        return IFileSystem::init();
+    bool FileSystemImp::isFile(const std::string & path)
+    {
+        struct stat statbuf;
+        if(0 == lstat(path.c_str(), &statbuf))
+        {
+            return (S_ISREG(statbuf.st_mode));
+        }
+        return false;
+    }
+
+    bool FileSystemImp::isDir(const std::string & path)
+    {
+        struct stat statbuf;
+        if(0 == lstat(path.c_str(), &statbuf))
+        {
+            return (S_ISDIR(statbuf.st_mode));
+        }
+        return false;
     }
     
-    std::string FileSystemImp::getCurrentPath()
+    FilePtr FileSystemImp::openFile(const std::string & path, IFile::Mode mode)
     {
+        std::string smode;
+        if (mode & IFile::MD_READ && mode & IFile::MD_CREATE) smode += "w+";
+        else if(mode & IFile::MD_READ && mode & IFile::MD_WRITE) smode += "r+";
+        else if(mode & IFile::MD_CREATE) smode += 'w';
+        else if(mode & IFile::MD_READ) smode += 'r';
         
+        if(smode.empty()) smode += 'r';
+        if(mode & IFile::MD_BINARY) smode += 'b';
+        
+        FILE *fp = fopen(path.c_str(), smode.c_str());
+        if(fp != nullptr) return new FileImp(fp);
+        
+        return nullptr;
+    }
+
+    FILE* FileSystemImp:: openRawFile(const char* path, const char * mode)
+    {
+        return fopen(path, mode);
+    }
+    
+    bool FileSystemImp::removeFile(const std::string & path)
+    {
+        return remove(path.c_str());
+    }
+
+    bool FileSystemImp::renameFile(const std::string & oldpath, const std::string & newpath)
+    {
+        return rename(oldpath.c_str(), newpath.c_str());
+    }
+
+    
+    bool FileSystemImp::createDir(const std::string & path)
+    {
+        return mkdir(path.c_str(), 0);
+    }
+
+    bool FileSystemImp::removeDir(const std::string & path)
+    {
+        return rmdir(path.c_str());
+    }
+    
+    bool FileSystemImp::listDir(const std::string & path, StringVector & files)
+    {
+        DIR *dp;
+        struct dirent *entry;
+        if((dp = opendir(path.c_str())) == NULL)
+        {
+            return false;
+        }
+        
+        while((entry = readdir(dp)) != NULL)
+        {
+            if(strcmp(entry->d_name, ".") == 0 ||
+               strcmp(entry->d_name, "..") == 0)
+            {
+                continue;
+            }
+            
+            files.push_back(entry->d_name);
+        }
+        closedir(dp);
+        return true;
+    }
+
+
+    std::string getCurrentPath()
+    {
         char path[MAX_PATH];
         path[0] = 0;
         getcwd(path, MAX_PATH);
         
         std::string strPath = path;
         formatFilePath(strPath);
-    	return strPath;
+        return strPath;
     }
     
     /** ios & android，返回是res路径，其他平台返回app所在路径 */
-    std::string FileSystemImp::getModulePath()
+    std::string getModulePath()
     {
-        char path[MAX_PATH];
-        readlink ("/proc/self/exe", path, MAX_PATH);
+        char * path = SDL_GetBasePath();
         
         std::string strPath = path;
         formatFilePath(strPath);
-    	return strPath;
+        SDL_free(path);
+        
+        return strPath;
     }
     
-    std::string FileSystemImp::getWritablePath()
+    FileSystemPtr createFileSystem(const std::string & path)
     {
-	    return getModulePath();
+        return new FileSystemImp();
     }
     
-    
-    bool FileSystemImp::createDir(const std::string & fullPath)
-    {
-    	return false;
-    }
-
-    bool FileSystemImp::deleteDir(const std::string & fullPath)
-    {
-    	return false;
-    }
-    
-    bool FileSystemImp::existFile(const std::string & fullPath)
-    {
-    	if (fullPath.empty())
-	        return false;
-	    
-        return access(fullPath.c_str(), F_OK);
-    }
-
-    bool FileSystemImp::deleteFile(const std::string & fullPath)
-    {
-    	return false;
-    }
-
-    bool FileSystemImp::renameFile(const std::string & fullPath)
-    {
-    	return false;
-    }
-
 } // end namespace ora

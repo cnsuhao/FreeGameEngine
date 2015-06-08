@@ -123,7 +123,7 @@ namespace ora
 
                 //try the given path first.
                 std::string name = texturePath + getFileName(textureFile);
-                if(!textureFile.empty() && FileSystemMgr::fileSystem()->isFileExist(name))
+                if(!textureFile.empty() && FileSystemMgr::instance()->isFileExist(name))
                 {
 
                     if ( isCompressed )

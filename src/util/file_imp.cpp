@@ -17,9 +17,9 @@ namespace ora
         if(_length == -1)
         {
             size_t cur = tell();
-            seek(0, SeekEnd);
+            seek(0, SK_END);
             _length = tell();
-            seek(cur, SeekBeg);
+            seek(cur, SK_BEG);
         }
         return _length;
     }
@@ -36,8 +36,8 @@ namespace ora
         assert(_pFile);
         
         int seek_mode = SEEK_CUR;
-        if(seekMode == SeekBeg) seek_mode = SEEK_SET;
-        else if(seekMode == SeekEnd) seek_mode = SEEK_END;
+        if(seekMode == SK_BEG) seek_mode = SEEK_SET;
+        else if(seekMode == SK_END) seek_mode = SEEK_END;
         
         fseek(_pFile, pos, seek_mode);
     }

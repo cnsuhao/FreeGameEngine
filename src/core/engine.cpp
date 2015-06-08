@@ -17,6 +17,7 @@
 #include "util/watcher.h"
 #include "util/time_tool.h"
 
+#include "platform/platform.h"
 #include "graphics/render_device.h"
 
 #include "core.h"

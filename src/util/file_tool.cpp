@@ -7,8 +7,8 @@ namespace ora
 
     bool readFile(std::string & content, const std::string & filename, bool isBinary)
     {
-        IFile::Mode mode = IFile::Mode(IFile::ModeRead | (isBinary ? IFile::ModeBinary : 0));
-        FilePtr file = FileSystemMgr::instance()->fileSystem()->openFile(filename, mode);
+        IFile::Mode mode = IFile::Mode(IFile::MD_READ | (isBinary ? IFile::MD_BINARY : 0));
+        FilePtr file = FileSystemMgr::instance()->openFile(filename, mode);
         if (!file)
         {
             ORA_LOG_ERROR("Failed to open file '%s'", filename.c_str());
@@ -26,8 +26,8 @@ namespace ora
 
     bool writeFile(const std::string & content, const std::string & filename, bool isBinary)
     {
-        IFile::Mode mode = IFile::Mode(IFile::ModeWrite | (isBinary ? IFile::ModeBinary : 0));
-        FilePtr file = FileSystemMgr::instance()->fileSystem()->openFile(filename, mode);
+        IFile::Mode mode = IFile::Mode(IFile::MD_CREATE | (isBinary ? IFile::MD_BINARY : 0));
+        FilePtr file = FileSystemMgr::instance()->openFile(filename, mode);
         if (!file)
         {
             ORA_LOG_ERROR("Failed to create file '%s'", filename.c_str());
@@ -42,7 +42,6 @@ namespace ora
         return true;
     }
 
-    
     ////////////////////////////////////////////////////////////////////////////
     ///
     ////////////////////////////////////////////////////////////////////////////
@@ -59,169 +58,12 @@ namespace ora
     ////////////////////////////////////////////////////////////////////////////
     
     IFileSystem::IFileSystem()
+        : access_(FileAccess::FA_NONE)
     {
     }
     
     IFileSystem::~IFileSystem()
     {
-    }
-    
-    bool IFileSystem::init()
-    {
-        ORA_LOG_DEBUG("default path:  %s", _defaultPath.c_str());
-        ORA_LOG_DEBUG("current path:  %s", getCurrentPath().c_str());
-        ORA_LOG_DEBUG("module path:   %s", getModulePath().c_str());
-        ORA_LOG_DEBUG("writable path: %s", getWritablePath().c_str());
-        return true;
-    }
-    
-    bool IFileSystem::isFileExist(const std::string & filename)
-    {
-        return !((getFullPath(filename)).empty());
-    }
-    
-    std::string IFileSystem::getFullPath(const std::string & filename)
-    {
-        std::string destPath;
-        for(const std::string & path : _paths)
-        {
-            destPath = path + filename;
-            canonicalizePath(destPath);
-            
-            if(existFile(destPath)) return destPath;
-        }
-        
-        destPath.clear();
-        return destPath;
-    }
-    
-    std::string IFileSystem::getRelativePath(const std::string & fullPath)
-    {
-    	std::string destPath;
-        for(const std::string & path : _paths)
-        {
-            if(stringBeginWith(fullPath, path))
-                return fullPath.substr(path.length());
-        }
-        
-        destPath.clear();
-        return destPath;
-    }
-    
-    void IFileSystem::addSearchPath(const std::string & path)
-    {
-        std::string relPath = _defaultPath + path;
-        canonicalizePath(relPath);
-        if(!relPath.empty() && relPath.back() != '/')
-            relPath += '/';
-        
-        _paths.push_back(relPath);
-        
-        ORA_LOG_INFO("add search path: %s", relPath.c_str());
-    }
-    
-    void IFileSystem::setSearchPath(const StringVector & paths)
-    {
-        _paths.clear();
-        
-        for(const std::string & path : paths)
-        {
-            addSearchPath(path);
-        }
-    }
-    
-    FilePtr IFileSystem::openFile(const std::string & filename, IFile::Mode mode)
-    {
-        std::string fullPath;
-        std::string strMode;
-        if(mode & IFile::ModeRead)
-        {
-            fullPath = getFullPath(filename);
-            if(fullPath.empty())
-            {
-                return nullptr;
-            }
-            
-            strMode += "r";
-            if(mode & IFile::ModeBinary)
-                strMode += "b";
-            if(mode & IFile::ModeWrite)
-                strMode += "+";
-        }
-        else if(mode & IFile::ModeWrite)
-        {
-            fullPath = getWritablePath() + filename;
-            
-            strMode += "w";
-            if(mode & IFile::ModeBinary)
-                strMode += "b";
-            
-            //ORA_LOG_DEBUG("Write File: %s", fullPath.c_str());
-        }
-        else
-        {
-            return nullptr;
-        }
-        
-        return openFileInternal(fullPath, strMode);
-    }
-
-    FilePtr IFileSystem::openFileInternal(const std::string & filename, const std::string & mode)
-    {
-        FILE *pFile = fopen(filename.c_str(), mode.c_str());
-        if(!pFile) return nullptr;
-        
-        return new FileImp(pFile);
-    }
-
-    /*static*/ void IFileSystem::canonicalizePath(std::string & path)
-    {
-        formatPathSlash(path);
-
-        std::vector<size_t> slashes;
-        slashes.push_back(0);
-
-        size_t plength = path.length();
-
-        std::string ret;
-        ret.reserve(plength);
-
-        size_t i = 0;
-        while (i < plength)
-        {
-            ret.push_back(path[i]);
-
-            if (path[i] != '/')
-            {
-                ++i;
-                continue;
-            }
-
-            slashes.push_back(ret.size());
-
-            ++i;
-            for (; i < plength && path[i] == '/'; ++i) // '//'
-                ; //do nothing.
-
-            if (i < plength && path[i] == '.')
-            {
-                if (i + 1 < plength && path[i + 1] == '.') // '..'
-                {
-                    if (i + 2 >= plength || path[i + 2] == '/') // '../'
-                    {
-                        slashes.pop_back();
-                        ret.resize(slashes.back());
-
-                        i += 3; // '../next'
-                    }
-                }
-                else if (i + 1 < plength && path[i + 1] == '/') // './'
-                {
-                    i += 2; // './next'
-                }
-            }
-        }
-        path.swap(ret);
     }
     
     ////////////////////////////////////////////////////////////////////////////
@@ -235,6 +77,201 @@ namespace ora
     
     FileSystemMgr::~FileSystemMgr()
     {
+    }
+    
+    void FileSystemMgr::addSearchPath(const std::string & path, bool front)
+    {
+        FileSystemPtr fs = createFileSystem(path);
+        if(!fs)
+        {
+            ORA_LOG_ERROR("the search path '%s' doens't exist.", path.c_str());
+            return;
+        }
+        
+        addSearchPath(path, fs, front);
+    }
+    
+    void FileSystemMgr::addSearchPath(const std::string & path, FileSystemPtr fs, bool front)
+    {
+        std::string relPath = path;
+        canonicalizePath(relPath);
+        if(!relPath.empty() && relPath.back() != '/')
+            relPath += '/';
+        
+        searchPaths_.push_back(relPath);
+        fileSystems_.push_back(fs);
+        
+        ORA_LOG_INFO("add search path: %s", relPath.c_str());
+    }
+    
+    void FileSystemMgr::setSearchPath(const StringVector & paths)
+    {
+        searchPaths_.clear();
+        fileSystems_.clear();
+        
+        for(const std::string & path : paths)
+        {
+            addSearchPath(path);
+        }
+    }
+    
+    bool FileSystemMgr::isFileExist(const std::string & path)
+    {
+        for(size_t i = 0; i < searchPaths_.size(); ++i)
+        {
+            FileSystemPtr & fs = fileSystems_[i];
+            if(fs->getAccess() & FA_READ && fs->exist(searchPaths_[i] + path))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    FilePtr FileSystemMgr::openFile(const std::string & path, IFile::Mode mode)
+    {
+        for(size_t i = 0; i < searchPaths_.size(); ++i)
+        {
+            FileSystemPtr & fs = fileSystems_[i];
+            
+            if(mode & (IFile::MD_WRITE | IFile::MD_CREATE))
+            {
+                if(!(fs->getAccess() & FA_WRITE)) continue; // no write access
+            }
+            else if(!(fs->getAccess() & FA_READ))
+            {
+                continue; // no read access
+            }
+            
+            FilePtr file = fs->openFile(searchPaths_[i] + path, mode);
+            if(file)
+            {
+                return file;
+            }
+        }
+        return nullptr;
+    }
+    
+    FILE* FileSystemMgr::openRawFile(const std::string & file, const char * mode)
+    {
+        for(size_t i = 0; i < searchPaths_.size(); ++i)
+        {
+            FileSystemPtr & fs = fileSystems_[i];
+            
+            if(strchr(mode, 'w') != nullptr || strchr(mode, '+') != nullptr)
+            {
+                if(!(fs->getAccess() & FA_WRITE)) continue; // no write access
+            }
+            else if(!(fs->getAccess() & FA_READ))
+            {
+                continue; // no read access
+            }
+            
+            FILE *fp = fs->openRawFile((searchPaths_[i] + file).c_str(), mode);
+            if(fp)
+            {
+                return fp;
+            }
+        }
+        return nullptr;
+    }
+    
+    void FileSystemMgr::setWritablePath(const std::string & path)
+    {
+        writablePath_ = path;
+        canonicalizePath(writablePath_);
+        
+        if(!writablePath_.empty() && writablePath_.back() != '/')
+            writablePath_ += '/';
+    }
+    
+    std::string FileSystemMgr::getFullPath(const std::string & path)
+    {
+        std::string destPath;
+        for(size_t i = 0; i < searchPaths_.size(); ++i)
+        {
+            FileSystemPtr & fs = fileSystems_[i];
+            if(!(fs->getAccess() & FA_READ)) continue;
+            
+            destPath = searchPaths_[i] + path;
+            canonicalizePath(destPath);
+            
+            if(fs->exist(destPath))
+            {
+                return destPath;
+            }
+        }
+
+        destPath.clear();
+        return destPath;
+    }
+    
+    std::string FileSystemMgr::getRelativePath(const std::string & fullPath)
+    {
+        std::string destPath = fullPath;
+        canonicalizePath(destPath);
+        
+        for(const std::string & path : searchPaths_)
+        {
+            if(stringBeginWith(destPath, path))
+                return fullPath.substr(path.length());
+        }
+        
+        destPath.clear();
+        return destPath;
+    }
+    
+    bool FileSystemMgr::createDir(const std::string & path)
+    {
+        for(size_t i = 0; i < searchPaths_.size(); ++i)
+        {
+            FileSystemPtr & fs = fileSystems_[i];
+            if(fs->getAccess() & FA_WRITE && fs->createDir(searchPaths_[i] + path))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    bool FileSystemMgr::removeDir(const std::string & path)
+    {
+        for(size_t i = 0; i < searchPaths_.size(); ++i)
+        {
+            FileSystemPtr & fs = fileSystems_[i];
+            if(fs->getAccess() & FA_REMOVE && fs->removeDir(searchPaths_[i] + path))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    bool FileSystemMgr::removeFile(const std::string & path)
+    {
+        for(size_t i = 0; i < searchPaths_.size(); ++i)
+        {
+            FileSystemPtr & fs = fileSystems_[i];
+            if(fs->getAccess() & FA_REMOVE && fs->removeFile(searchPaths_[i] + path))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    bool FileSystemMgr::renameFile(const std::string & oldpath, const std::string & newpath)
+    {
+        for(size_t i = 0; i < searchPaths_.size(); ++i)
+        {
+            FileSystemPtr & fs = fileSystems_[i];
+            if(fs->getAccess() & (FA_WRITE | FA_WRITE) &&
+               fs->renameFile(searchPaths_[i] + oldpath, searchPaths_[i] + newpath))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 }// end namespace ora

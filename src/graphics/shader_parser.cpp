@@ -205,7 +205,7 @@ namespace ora
             std::string includeFile = code.substr(iStart, iEnd - iStart);
             std::string filePath = getFilePath(filename);
 
-            if(FileSystemMgr::fileSystem()->isFileExist(filePath + includeFile))
+            if(FileSystemMgr::instance()->isFileExist(filePath + includeFile))
                 includeFile = filePath + includeFile;
 
             if (!parseInclude(includeFile, shader))

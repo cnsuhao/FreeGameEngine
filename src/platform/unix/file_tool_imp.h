@@ -11,23 +11,19 @@ namespace ora
         FileSystemImp();
         ~FileSystemImp();
         
-        bool init();
-
-        virtual std::string getCurrentPath() override;
+        virtual bool exist(const std::string & path) override;
+        virtual bool isFile(const std::string & path) override;
+        virtual bool isDir(const std::string & path) override;
         
-        /** ios & android，返回是res路径，其他平台返回app所在路径 */
-        virtual std::string getModulePath() override;
+        virtual FilePtr openFile(const std::string & path, IFile::Mode mode) override;
+        virtual FILE* openRawFile(const char* path, const char * mode) override;
         
-        virtual std::string getWritablePath() override;
+        virtual bool removeFile(const std::string & path) override;
+        virtual bool renameFile(const std::string & oldpath, const std::string & newpath) override;
         
-        //@{ 以下几个方法，参数必须是绝对路径
-        virtual bool createDir(const std::string & fullPath) override;
-        virtual bool deleteDir(const std::string & fullPath) override;
-        
-        virtual bool existFile(const std::string & fullPath) override;
-        virtual bool deleteFile(const std::string & fullPath) override;
-        virtual bool renameFile(const std::string & fullPath) override;
-        //@}
+        virtual bool createDir(const std::string & path) override;
+        virtual bool removeDir(const std::string & path) override;
+        virtual bool listDir(const std::string & path, StringVector & files) override;
     };
 }
 

@@ -100,7 +100,7 @@ namespace ora
         std::vector<size_t> dirs;
 
         char ch;
-        bool startWithPath = true;
+        bool startWithPath = false;
         for(size_t i = 0; i < path.size(); ++i)
         {
             ch = path[i];

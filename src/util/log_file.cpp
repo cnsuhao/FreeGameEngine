@@ -25,7 +25,7 @@ namespace ora
     {
         ASSERT_1(!_stream);
         
-        _stream = FileSystemMgr::instance()->fileSystem()->openFile(filename, IFile::Mode::ModeWrite);
+        _stream = FileSystemMgr::instance()->openFile(filename, IFile::MD_CREATE);
         if(_stream)
         {
             subscribeEvent(ET::Log);

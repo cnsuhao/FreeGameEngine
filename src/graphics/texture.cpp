@@ -175,7 +175,7 @@ namespace ora
         glBindTexture(GL_TEXTURE_2D, 0);
 
         int ret = 0;
-        std::string fullpath = FileSystemMgr::fileSystem()->getWritablePath() + filename;
+        std::string fullpath = FileSystemMgr::instance()->getWritablePath() + filename;
         ret = stbi_write_tga(fullpath.c_str(), width_, height_, saveChannels, pData);
         
         delete pData;
