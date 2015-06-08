@@ -1,0 +1,8 @@
+<xyztuv.xml>
+	<POSITIONT>
+		<type> FLOAT4 </type>
+	</POSITIONT>
+	<TEXCOORD>
+		<type> FLOAT2 </type>
+	</TEXCOORD>
+</xyztuv.xml>

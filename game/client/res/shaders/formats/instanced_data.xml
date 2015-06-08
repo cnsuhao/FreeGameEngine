@@ -1,0 +1,19 @@
+<instanced_data.xml>
+	<TEXCOORD>
+		2
+    <stream> 1 </stream>
+		<type> FLOAT4 </type>
+	</TEXCOORD>
+	<TEXCOORD>
+		3
+		<type> FLOAT4 </type>
+	</TEXCOORD>
+  <TEXCOORD>
+    4
+    <type> FLOAT4 </type>
+  </TEXCOORD>
+  <TEXCOORD>
+    5
+    <type> FLOAT4 </type>
+  </TEXCOORD>
+</instanced_data.xml>

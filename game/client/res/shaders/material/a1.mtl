@@ -1,0 +1,46 @@
+font = 0
+{
+	identifier = font
+	fx = texture_alpha
+	minfilter = nearMipmapNear
+	maxfilter = liner
+    depthWriteEnabled = false
+}
+cold_down = 2
+{
+	identifier = cold_down
+	fx = cold_down
+	texture = gui/ui/cd.png
+	minfilter = nearMipmapNear
+	maxfilter = liner
+    depthWriteEnabled = true
+}
+progress_bar = 3
+{
+	identifier = progress_bar
+	state = 2
+	fx = progress_reference
+	texture = gui/ui/test_progress_bar_bg.png
+	texture2 = gui/ui/test_progress_bar_pr.png
+	minfilter = nearMipmapNear
+	maxfilter = liner
+    depthWriteEnabled = true
+}
+chant_bar = 4
+{
+	identifier = chant_bar
+	state = 2
+	fx = progress_reference
+	texture = gui/ui/test_chant_bar_bg.png
+	texture2 = gui/ui/test_chant_bar_pr.png
+	minfilter = nearMipmapNear
+	maxfilter = liner
+    depthWriteEnabled = true
+}
+color_only = 5
+{
+	identifier = color_only
+	fx = color_only
+    depthWriteEnabled = true
+	cullFaceEnabled = false
+}

@@ -1,0 +1,15 @@
+<sprit.xml>
+	<POSITION/>
+	<COLOR>
+		<type> D3DCOLOR </type>
+	</COLOR>
+	<TEXCOORD> 2
+		<type> SHORT4 </type>
+	</TEXCOORD>
+	<TEXCOORD> 0
+		<type> FLOAT4 </type>
+	</TEXCOORD>
+	<TEXCOORD> 1
+		<type> UBYTE4 </type>
+	</TEXCOORD>
+</sprit.xml>

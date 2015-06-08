@@ -1,0 +1,13 @@
+<xyznuviiiww.xml>
+	<POSITION/> 
+	<NORMAL/>
+	<TEXCOORD>
+		<type> FLOAT2 </type>
+	</TEXCOORD>
+	<BLENDINDICES>
+		<type> UBYTE4 </type>
+	</BLENDINDICES>
+	<BLENDWEIGHT>
+		<type> UBYTE4N </type>
+	</BLENDWEIGHT>
+</xyznuviiiww.xml>

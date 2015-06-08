@@ -1,0 +1,32 @@
+<VertexShadowSkinned.xml>
+  <POSITION> 0
+    <type> FLOAT3 </type>
+  </POSITION>
+  <POSITION> 1
+    <type> FLOAT3 </type>
+  </POSITION>
+  <POSITION> 2
+    <type> FLOAT3 </type>
+  </POSITION>
+  <NORMAL>
+    <type> FLOAT3 </type>
+  </NORMAL>
+  <BLENDINDICES> 0
+		<type> D3DCOLOR </type>
+	</BLENDINDICES>
+	<BLENDWEIGHT> 0
+		<type> D3DCOLOR </type>
+	</BLENDWEIGHT>
+  <BLENDINDICES> 1
+    <type> D3DCOLOR </type>
+  </BLENDINDICES>
+  <BLENDWEIGHT> 1
+    <type> D3DCOLOR </type>
+  </BLENDWEIGHT>
+  <BLENDINDICES> 2
+    <type> D3DCOLOR </type>
+  </BLENDINDICES>
+  <BLENDWEIGHT> 2
+    <type> D3DCOLOR </type>
+  </BLENDWEIGHT>
+</VertexShadowSkinned.xml>

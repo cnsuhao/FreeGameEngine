@@ -1,0 +1,11 @@
+<xyztduv.xml>
+	<POSITIONT>
+		<type> FLOAT4 </type>
+	</POSITIONT>
+	<COLOR>
+		<type> D3DCOLOR </type>
+	</COLOR>
+	<TEXCOORD>
+		<type> FLOAT2 </type>
+	</TEXCOORD>
+</xyztduv.xml>

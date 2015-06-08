@@ -1,0 +1,42 @@
+background1 = 1
+{
+    identifier = background1
+    fx = background
+    texture = gui/scene/1.png
+}
+background2 = 2
+{
+    identifier = background2
+    fx = background
+    texture = gui/scene/2.png
+}
+background3 = 3
+{
+    identifier = background3
+    fx = background
+    texture = gui/scene/3.png
+}
+background4 = 4
+{
+    identifier = background4
+    fx = background
+    texture = gui/scene/4.png
+}
+background5 = 5
+{
+    identifier = background5
+    fx = background
+    texture = gui/scene/5.png
+}
+background6 = 6
+{
+    identifier = background6
+    fx = background
+    texture = gui/scene/6.png
+}
+background7 = 7
+{
+    identifier = background7
+    fx = background
+    texture = gui/scene/7.png
+}

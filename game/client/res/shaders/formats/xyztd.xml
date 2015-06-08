@@ -1,0 +1,8 @@
+<xyztd.xml>
+	<POSITIONT>
+		<type> FLOAT4 </type>
+	</POSITIONT>
+	<COLOR>
+		<type> D3DCOLOR </type>
+	</COLOR>
+</xyztd.xml>

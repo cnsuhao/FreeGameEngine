@@ -1,0 +1,14 @@
+<xyznduv2.xml>
+	<POSITION/>
+	<NORMAL/>
+	<COLOR>
+		<type> D3DCOLOR </type>
+	</COLOR>
+	<TEXCOORD> 0
+		<type> FLOAT2 </type>
+	</TEXCOORD>
+	<TEXCOORD> 1
+		<type> FLOAT2 </type>
+	</TEXCOORD>
+	
+</xyznduv2.xml>
