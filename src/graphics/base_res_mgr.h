@@ -3,7 +3,10 @@
 
 #include "util/smartptr.h"
 #include "util/singleton.h"
+
 #include <map>
+#include <string>
+#include <thread>
 
 namespace ora
 {
@@ -14,7 +17,7 @@ namespace ora
         virtual bool load(const std::string & path) { return false; };
 
     };
-    typedef SmartPointer<IRes> ResPtr;
+    typedef SmartPtr<IRes> ResPtr;
 
     class IResMgr
     {
@@ -59,14 +62,14 @@ namespace ora
         size_t          nbCapacity_;
         TCache          cache_;
         LRUElement      LRUHead_;
-        class SimpleMutex * pMutex_;
+        std::mutex*     pMutex_;
     };
     
     template<typename TSelf, typename TRes>
     class BaseResMgr : public IResMgr, public Singleton<TSelf>
     {
     public:
-        typedef SmartPointer<TRes> TResPtr;
+        typedef SmartPtr<TRes> TResPtr;
 
         explicit BaseResMgr(const char * name)
             : IResMgr(name)

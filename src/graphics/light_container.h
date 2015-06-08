@@ -11,6 +11,8 @@
 
 #include "light_dir.h"
 
+#include <vector>
+
 namespace ora
 {
     typedef std::vector<DirLightPtr> DirLightVector;

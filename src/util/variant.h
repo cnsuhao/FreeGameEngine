@@ -12,6 +12,10 @@
 #include "smartptr.h"
 #include "log_tool.h"
 
+#include <typeinfo>
+#include <string>
+#include <vector>
+
 namespace ora
 {
     

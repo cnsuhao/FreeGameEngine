@@ -63,7 +63,7 @@ namespace ora
         mtl->setEffect(EffectMgr::instance()->get(shader));
 
         TextureStage stage;
-        stage.setTexture(CompressedTextureMgr::instance()->get(texture));
+        stage.setTexture(TextureMgr::instance()->get(texture));
         stage.setUWrap(TextureWrap::Repeat);
         stage.setVWrap(TextureWrap::Repeat);
         mtl->addTextureStage(stage);

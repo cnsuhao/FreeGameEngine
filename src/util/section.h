@@ -3,6 +3,9 @@
 
 #include "smartptr.h"
 
+#include <string>
+#include <vector>
+
 namespace ora
 {
   

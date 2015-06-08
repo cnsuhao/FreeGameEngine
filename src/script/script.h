@@ -4,6 +4,7 @@
 #include "util/smartptr.h"
 #include "util/singleton.h"
 
+#include <string>
 
 //pre definations
 

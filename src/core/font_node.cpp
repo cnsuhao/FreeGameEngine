@@ -7,17 +7,20 @@
 //
 
 #include "font_node.h"
+
 #include "graphics/mesh.h"
 #include "graphics/vertex.h"
 #include "graphics/effect_mgr.h"
 #include "graphics/texture_mgr.h"
-#include "util/section_factory.h"
 #include "graphics/render_device.h"
+
+#include "util/section_factory.h"
+#include "util/file_tool.h"
+
 #include "action_alpha.h"
 #include "action_container.h"
 #include "action_motion.h"
 #include "world.h"
-#include "resmgr/bwresource.hpp"
 
 namespace ora{
     
@@ -168,7 +171,7 @@ namespace ora{
 				TexturePtr tex;
 
                 //try the given path first.
-                if(!textureFile.empty() && BWResource::fileExists(textureFile))
+                if(!textureFile.empty() && FileSystemMgr::fileSystem()->isFileExist(textureFile))
                 {
                     tex = TextureMgr::instance()->get(textureFile);
                 }

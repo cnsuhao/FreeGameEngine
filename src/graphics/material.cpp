@@ -9,8 +9,6 @@
 #include "util/file_tool.h"
 #include "util/section_factory.h"
 
-#include "resmgr/bwresource.hpp"
-
 namespace ora
 {
     TextureWrap string2wrap(const std::string & wrap)
@@ -125,11 +123,11 @@ namespace ora
 
                 //try the given path first.
                 std::string name = texturePath + getFileName(textureFile);
-                if(!textureFile.empty() && BWResource::fileExists(name))
+                if(!textureFile.empty() && FileSystemMgr::fileSystem()->isFileExist(name))
                 {
 
                     if ( isCompressed )
-                        tex = CompressedTextureMgr::instance()->get(name);
+                        tex = TextureMgr::instance()->get(name);
                     else
                         tex = TextureMgr::instance()->get(name);
                 }
@@ -138,7 +136,7 @@ namespace ora
                 if(!tex)
                 {
                     if ( isCompressed )
-                        tex = CompressedTextureMgr::instance()->get(textureFile);
+                        tex = TextureMgr::instance()->get(textureFile);
                     else
                         tex = TextureMgr::instance()->get(textureFile);
                 }

@@ -16,9 +16,6 @@
 #include "util/event_dispatch.h"
 #include "util/event_def.h"
 
-#include "gui/gui_render_manager.h"
-#include "cstdmf/guard.hpp"
-
 #include <thread>
 
 IMPLEMENT_SINGLETON(ora::World);
@@ -35,18 +32,14 @@ namespace ora
         , timeScale_(1.0f)
 		, lineMode_(0)
     {
-        BW_GUARD;
     }
 
     World::~World()
     {
-        BW_GUARD;
     }
 
     void World::setRoot(SceneNodePtr root, bool cleanup)
     {
-        BW_GUARD;
-
         if(root_ == root) return;
         if(root_)
         {
@@ -70,8 +63,6 @@ namespace ora
 
     void World::update()
     {
-        BW_GUARD;
-
         updateTime();
 		updateTime_ms();
 
@@ -125,15 +116,12 @@ namespace ora
 
 	void World::doUpdate()
 	{
-        BW_GUARD;
-
         WATCH_TIME(world_tick);
         VariantVector args;
         build_arguments(args, elapse_, elapse_ms_);
         sendEvent(ET::TickBeg, args);
         
         Timer::instance()->tick();
-        MyGUI::OrangeRenderManager::getInstancePtr()->tickOneFrame(elapse_);
 
         updateCamera();
 
@@ -145,8 +133,6 @@ namespace ora
 
 	void World::doRender()
 	{
-        BW_GUARD;
-
 #if defined(_DEBUG) && defined(_WIN32)
 		GLenum mode = getLineMode() ? GL_LINE : GL_FILL;
 		glPolygonMode(GL_FRONT_AND_BACK, mode);
@@ -161,8 +147,7 @@ namespace ora
             
             if(root_) root_->draw();
             
-            MyGUI::OrangeRenderManager::getInstancePtr()->drawOneFrame();
-        
+
             sendEvent(ET::RenderEnd, NullArgument);
             
 			renderDev()->endDraw();

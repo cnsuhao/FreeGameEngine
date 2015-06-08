@@ -32,12 +32,12 @@ namespace ora
 
     int maxAxis(const Vector3 & pos)
     {
-        int axis = X_AXIS;
+        int axis = AXIS_X;
         if(pos.x < pos.y)
-            axis = Y_AXIS;
+            axis = AXIS_Y;
 
         if(pos[axis] < pos.z)
-            axis = Z_AXIS;
+            axis = AXIS_Z;
 
         return axis;
     }

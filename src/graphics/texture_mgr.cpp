@@ -30,15 +30,15 @@ namespace ora
     
 #if defined(USE_PVRTC) || defined(USE_ETC)
     //////////////////////
-    IMPLEMENT_SINGLETON(CompressedTextureMgr);
+    IMPLEMENT_SINGLETON(TextureMgr);
     
-    CompressedTextureMgr::CompressedTextureMgr()
-        : BaseResMgr<CompressedTextureMgr, CompressedTexture>("cache/resource/compressed_texture")
+    TextureMgr::TextureMgr()
+        : BaseResMgr<TextureMgr, CompressedTexture>("cache/resource/compressed_texture")
     {
         ORA_STACK_TRACE;
     }
     
-    CompressedTextureMgr::~CompressedTextureMgr()
+    TextureMgr::~TextureMgr()
     {
         ORA_STACK_TRACE;
     }

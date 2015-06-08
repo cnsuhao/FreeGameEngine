@@ -15,7 +15,6 @@
 #include "effect.h"
 #include "vertex.h"
 #include "vertex_buffer.h"
-#include "moo/vertex_formats.hpp"
 
 
 namespace ora
@@ -23,7 +22,7 @@ namespace ora
     const size_t MaxBatchTriangles = 5000;
     const size_t MaxBatchVertices = (MaxBatchTriangles * 3 + 63) & ~63; //64 byte align.
 
-    typedef Moo::VertexXYZDUV UIVertex;
+    typedef VertexXYZColorUV UIVertex;
     
     struct UIBatchNode
     {

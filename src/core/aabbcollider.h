@@ -4,6 +4,8 @@
 #include "util/smartptr.h"
 #include "math/vector3.hpp"
 
+#include <vector>
+
 namespace ora
 {
     class AABBTree;

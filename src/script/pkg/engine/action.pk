@@ -3,8 +3,6 @@ $#include "core/action_alpha.h"
 $#include "core/action_motion.h"
 $#include "core/action_container.h"
 $#include "core/action_self_destruction.h"
-$#include "duplo/action_bezier.h"
-$#include "duplo/action_animation.h"
 
 class IAction
 {

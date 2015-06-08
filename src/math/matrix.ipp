@@ -673,6 +673,12 @@ namespace ora
         (*this)[3] = v;
         m[3][3] = 1;
     }
+    
+    INLINE
+    Vector3 Matrix::translation() const
+    {
+        return Vector3(_41, _42, _43);
+    }
 
     /**
      *	This method sets this matrix to the identity matrix.

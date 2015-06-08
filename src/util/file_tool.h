@@ -3,6 +3,7 @@
 #include "string_tool.h"
 #include "singleton.h"
 #include "smartptr.h"
+#include <cassert>
 
 namespace ora
 {
@@ -105,19 +106,16 @@ namespace ora
         FileSystemMgr();
         ~FileSystemMgr();
         
-        
-        //如果文件系统为null，会发生assert（getFileSystem不会）。推荐使用此方法。
-        inline FileSystemPtr fileSystem()
+        static FileSystemPtr fileSystem()
         {
-            assert(_fileSystem);
-            return _fileSystem;
+            return instance()->fileSystem();
         }
         
+        FileSystemPtr getFileSystem() { return _fileSystem; }
         void setFileSystem(FileSystemPtr fileSystem){ _fileSystem = fileSystem; }
-        FileSystemPtr getFileSystem(){ return _fileSystem; }
         
     private:
-        FileSystemPtr _fileSystem;
+        FileSystemPtr   _fileSystem;
     };
     
 }// end namespace ora

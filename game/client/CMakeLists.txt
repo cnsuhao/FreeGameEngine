@@ -16,7 +16,7 @@ set(INCLUDE_DIRECTORIES
 )
 
 set(LINK_LIBRARIES
-	util core math graphics script platform
+	util core math graphics platform script
 	FreeType SDL luasocket luaplus tolualib lua stb zip
 )
 

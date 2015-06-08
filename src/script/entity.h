@@ -10,22 +10,13 @@
 #define __libserver_enitty__
 
 #include "util/smartptr.h"
-
-#if defined (ORA_SERVER)
-#else
 #include "math/vector3.hpp"
-#include "duplo/pymodel.hpp"
-#include "duplo/action_matcher.h"
-#endif
+#include "core/scene_node.h"
 
 namespace ora{
     typedef SmartPtr<class IEntity> EntityPtr;
 
-#if defined (ORA_SERVER)
-	class IEntity : public IReferenceCount
-#else
 	class IEntity : public SceneNode
-#endif
 	{
 	public:
 
@@ -34,13 +25,9 @@ namespace ora{
 		IEntity();
 		virtual ~IEntity();
 		
-#if defined (ORA_SERVER)
-#else
 
 		inline void velocity(Vector3 v){ velocity_ = v; }
 		inline Vector3 velocity() const { return velocity_; }
-
-		inline PyModel* getModel() const { return pyModel_.get(); }
 
         float yaw() const;
 		float pitch() const;
@@ -48,20 +35,10 @@ namespace ora{
 
 		void setYaw(float y);
 
-		void setModel(PyModelPtr model);
-
-		ActionMatcher* getAM() const { return am_.get(); }
-
 		virtual void tick(float dtime);
 
 	protected:
-
-
-	private:
-		PyModelPtr          pyModel_;
 		Vector3             velocity_;
-		ActionMatcherPtr	am_;
-#endif
 	};
 
 }; // end of namespace ora

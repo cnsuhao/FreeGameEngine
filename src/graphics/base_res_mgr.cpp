@@ -5,8 +5,6 @@
 #include "util/log_tool.h"
 #include "util/watcher.h"
 
-#include "cstdmf/concurrency.hpp"
-
 namespace ora
 {
 
@@ -18,7 +16,7 @@ namespace ora
         LRUHead_.prev = &LRUHead_;
         LRUHead_.next = &LRUHead_;
 
-        pMutex_ = new SimpleMutex();
+        pMutex_ = new std::mutex();
 
         ADD_WATCHER(name, nbCached_);
     }
@@ -35,7 +33,7 @@ namespace ora
     {
         ASSERT_1(n > 0);
 
-        SimpleMutexHolder holder(*pMutex_);
+        std::lock_guard<std::mutex> holder(*pMutex_);
         nbCapacity_ = n;
 
         while(nbCached_ >= nbCapacity_)
@@ -51,7 +49,7 @@ namespace ora
             return nullptr;
         }
 
-        SimpleMutexHolder holder(*pMutex_);
+        std::lock_guard<std::mutex> holder(*pMutex_);
 
         TCache::iterator it = cache_.find(name);
         if(it != cache_.end())
@@ -72,7 +70,7 @@ namespace ora
 
     void IResMgr::purgeByName(const std::string & name)
     {
-        SimpleMutexHolder holder(*pMutex_);
+        std::lock_guard<std::mutex> holder(*pMutex_);
 
         TCache::iterator it = cache_.find(name);
         if(it != cache_.end())
@@ -86,7 +84,7 @@ namespace ora
     {
         IF_NOT_ASSERT(pRes) return;
 
-        SimpleMutexHolder holder(*pMutex_);
+        std::lock_guard<std::mutex> holder(*pMutex_);
 
         TCache::iterator it = cache_.begin();
         for(; it != cache_.end(); ++it)
@@ -102,7 +100,7 @@ namespace ora
 
     void IResMgr::purgeAll()
     {
-        SimpleMutexHolder holder(*pMutex_);
+        std::lock_guard<std::mutex> holder(*pMutex_);
 
         cache_.clear();
         LRUClear();
@@ -115,7 +113,7 @@ namespace ora
             return;
         }
 
-        SimpleMutexHolder holder(*pMutex_);
+        std::lock_guard<std::mutex> holder(*pMutex_);
 
         TCache::iterator it = cache_.find(name);
         if(it != cache_.end())

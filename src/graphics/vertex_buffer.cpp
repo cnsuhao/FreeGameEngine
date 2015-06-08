@@ -11,7 +11,6 @@
 
 #include "util/assert_tool.h"
 #include "util/log_tool.h"
-#include "cstdmf/guard.hpp"
 
 namespace ora
 {
@@ -121,8 +120,6 @@ namespace ora
 
     void BufferBase::fill(size_t iStart, size_t nCount, const void *data)
     {
-        BW_GUARD;
-
         ASSERT_2((iStart + nCount) * stride_ <= size_, "BufferBase::fill - invalid offset and size!");
         ASSERT_1(pData_ != nullptr);
 
@@ -132,7 +129,6 @@ namespace ora
 
     void BufferBase::destroy()
     {
-        BW_GUARD;
         if(vb_ != 0)
         {
             GL_ASSERT( glDeleteBuffers(1, &vb_) );
@@ -148,7 +144,6 @@ namespace ora
 
     bool BufferBase::bind()
     {
-        BW_GUARD;
         if(0 == vb_)
         {
             GL_ASSERT(glGenBuffers(1, &vb_));
@@ -171,7 +166,6 @@ namespace ora
 
     void BufferBase::unbind()
     {
-        BW_GUARD;
         GL_ASSERT( glBindBuffer(GLenum(type_), 0) );
     }
 

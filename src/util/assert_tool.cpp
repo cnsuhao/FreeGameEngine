@@ -9,7 +9,8 @@
 #ifndef _RELEASE
 
 #include "assert_tool.h"
-#include "cstdmf/debug.hpp"
+#include "log_tool.h"
+#include <cstdlib>
 
 namespace ora
 {
@@ -19,7 +20,7 @@ namespace ora
                   const char * func,
                   int line)
     {
-        DebugMsgHelper().criticalMessage("ASSERT FAILED: %s\r\n%s\r\nFILE: %s(%d)\r\nFUNC: %s\r\n",
+        ORA_LOG_FATAL("ASSERT FAILED: %s\r\n%s\r\nFILE: %s(%d)\r\nFUNC: %s\r\n",
             exp, desc, file, line, func);
         return false;
     }

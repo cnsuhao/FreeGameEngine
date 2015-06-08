@@ -7,8 +7,6 @@
 #include "shader_parser.h"
 #include "vertex_declaration.h"
 
-#include "resmgr/bwresource.hpp"
-
 namespace ora
 {
     static const char * ShaderMagic = "\xff\x6f\x73\x68";
@@ -109,7 +107,7 @@ namespace ora
 
     ShaderCodePtr ShaderParser::loadShader(const std::string & filename)
     {
-        SimpleMutexHolder holder(mutex_);
+        std::lock_guard<std::mutex> holder(mutex_);
 
         CodeCache::iterator it = codeCache_.find(filename);
         if (it != codeCache_.end())
@@ -207,7 +205,7 @@ namespace ora
             std::string includeFile = code.substr(iStart, iEnd - iStart);
             std::string filePath = getFilePath(filename);
 
-            if(BWResource::fileExists(filePath + includeFile))
+            if(FileSystemMgr::fileSystem()->isFileExist(filePath + includeFile))
                 includeFile = filePath + includeFile;
 
             if (!parseInclude(includeFile, shader))

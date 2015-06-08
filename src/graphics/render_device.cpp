@@ -186,7 +186,7 @@ namespace ora
         RenderConfig::initInstance();
         TextureMgr::initInstance();
 #if defined(USE_PVRTC) || defined(USE_ETC)
-        CompressedTextureMgr::initInstance();
+        TextureMgr::initInstance();
 #endif
         EffectMgr::initInstance();
         MeshMgr::initInstance();
@@ -226,7 +226,7 @@ namespace ora
         VertexDeclMgr::finiInstance();
         TextureMgr::finiInstance();
 #if defined(IOS)
-        CompressedTextureMgr::finiInstance();
+        TextureMgr::finiInstance();
 #endif
         RenderConfig::finiInstance();
         

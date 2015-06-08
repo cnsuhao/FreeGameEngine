@@ -1,7 +1,4 @@
-﻿#if defined(ORA_SERVER)
-#else
-#include "duplo/pch.hpp"
-#endif
+﻿
 #include "entity.h"
 #include "util/watcher.h"
 
@@ -22,30 +19,17 @@ namespace ora{
             ADD_WATCHER("counter/Entity", g_numEntity);
         }
         ++g_numEntity;
-
-#ifndef ORA_SERVER
-		am_ = new ActionMatcher(this);
-#endif
 	}
 
 	void IEntity::tick(float dtime)
 	{
-#ifndef ORA_SERVER
 		SceneNode::tick(dtime);
-		am_->rev(dtime);
-#endif
+
 	}
 
 	IEntity::~IEntity()
 	{
         --g_numEntity;
-	}
-
-    void IEntity::setModel(PyModelPtr model) 
-	{
-		pyModel_ = model; 
-        if(pyModel_)
-            pyModel_->pSuperModel()->getMatchableActions(am_->matchedActions_);
 	}
 
     float IEntity::yaw() const 

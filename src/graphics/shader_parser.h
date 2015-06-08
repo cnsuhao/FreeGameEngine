@@ -3,9 +3,9 @@
 
 #include "util/smartptr.h"
 #include "util/singleton.h"
-#include "cstdmf/concurrency.hpp"
 
 #include <map>
+#include <thread>
 
 namespace ora
 {
@@ -57,7 +57,7 @@ namespace ora
         //file  -> code
         typedef std::map<std::string, ShaderCodePtr> CodeCache;
         CodeCache       codeCache_;
-        SimpleMutex     mutex_;
+        std::mutex      mutex_;
     };
 
 } // end namespace ora

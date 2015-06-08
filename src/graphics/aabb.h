@@ -3,7 +3,6 @@
 
 #include "math/vector3.hpp"
 #include "math/matrix.hpp"
-#include "math/boundbox.hpp"
 
 namespace ora
 {
@@ -17,9 +16,6 @@ namespace ora
 
         AABB();
         AABB(const Vector3 & min, const Vector3 & max);
-        AABB(const BoundingBox & bb);
-
-        const AABB & operator = (const BoundingBox & bb);
 
         void reset();
 

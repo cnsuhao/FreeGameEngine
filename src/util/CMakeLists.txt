@@ -7,6 +7,8 @@ set(INCLUDE_DIRECTORIES
 	${THIRD_PARTY_DIR}
 )
 
+message(${THIRD_PARTY_DIR})
+
 define_source_files()
 
 setup_library()

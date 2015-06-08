@@ -14,10 +14,10 @@
 #include "transform.h"
 #include "action_container.h"
 
-extern Vector4 actionAlphaToken; // defined in effect_auto_const_imp.cpp
-
 namespace ora
 {
+    extern Vector4 actionAlphaToken; // defined in effect_auto_const_imp.cpp
+
     class ActionContainerOder;
     typedef SmartPtr<class SceneNode> SceneNodePtr;
 

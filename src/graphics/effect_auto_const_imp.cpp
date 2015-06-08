@@ -2,10 +2,9 @@
 #include "render_device.h"
 #include "effect.h"
 
-Vector4 actionAlphaToken = Vector4(1.f, 1.f, 1.f, 1.f);
-
 namespace ora
 {
+    Vector4 actionAlphaToken = Vector4(1.f, 1.f, 1.f, 1.f);
     
 	float coldDownAlphaToken = 0.f;
 	float progressReferenceToken = 1.f;

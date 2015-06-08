@@ -1,7 +1,7 @@
 ﻿
 #include "camera.h"
 #include "world.h"
-#include "math/mathdef.hpp"
+#include "math/math.hpp"
 #include <SDL/include/SDL.h>
 
 // Camera dirty bits

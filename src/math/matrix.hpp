@@ -122,8 +122,15 @@ namespace ora
                                     float nearPlane, float farPlane );
         void perspectiveProjectionRH( float fov, float aspectRatio,
                                    float nearPlane, float farPlane );
+        
+        // GL的视椎体z取值为[-1, 1]，与dx的[0, 1]不同，所以投影矩阵也不同
+        void perspectiveProjectionGL( float fov, float aspectRatio, float nearPlane, float farPlane );
+        void orthogonalProjectionGL(float w, float h, float zn, float zf);
+        void orthogonalProjectionOffCenterGL(float left, float right, float bottom, float top, float zn, float zfar);
 
+        Vector3 translation() const;
         void translation( const Vector3& v );
+
 
         float yaw() const;
         float pitch() const;

@@ -4,6 +4,8 @@
 #include "util/smartptr.h"
 #include "aabbrigid.h"
 
+#include <vector>
+
 namespace ora
 {
     class IABTreeBase;

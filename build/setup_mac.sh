@@ -11,7 +11,7 @@ pwd
 echo "---------------------------------"
 echo "-------generate lua script-------"
 echo "---------------------------------"
-python tool/toluaplus/tolua.py src/script/pkg/ src/script/luamid
+python tool/tolua++/tolua.py src/script/pkg/ src/script/luamid
 
 
 cd $root_path
@@ -23,6 +23,6 @@ cd build.mac
 echo "---------------------------------"
 echo "-------------cmake---------------"
 echo "---------------------------------"
-cmake -GXcode -DCLIENT=true ../
+cmake -GXcode ../
 
 popd #1

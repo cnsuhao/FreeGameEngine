@@ -10,10 +10,6 @@
 #include "stb/stb_image.h"
 #include "stb/stb_image_write.h"
 
-#include "resmgr/bwresource.hpp"
-
-#include "cstdmf/guard.hpp"
-
 namespace ora
 {
     int g_texture_counter = 0;
@@ -64,7 +60,6 @@ namespace ora
 
     bool Texture::load(const std::string & filename)
     {
-        BW_GUARD;
         resource_ = filename;
 
         std::string buffer;
@@ -133,7 +128,6 @@ namespace ora
 
     void Texture::doLoading()
     {
-        BW_GUARD;
         ASSERT_1(pLoadingInfo_ != nullptr);
 
         GLenum internalFormat = GLenum(format_);
@@ -179,16 +173,11 @@ namespace ora
         glPixelStorei(GL_PACK_ALIGNMENT, oldAligment);
 
         glBindTexture(GL_TEXTURE_2D, 0);
-        DataSectionPtr section = BWResource::openSection(filename, true);
-        section->save(filename);
 
         int ret = 0;
-        std::string fullpath = filename;
-        if (IFileSystem::FT_FILE == BWResource::resolveToAbsolutePath(fullpath))
-        {
-            ret = stbi_write_tga(fullpath.c_str(), width_, height_, saveChannels, pData);
-        }
-
+        std::string fullpath = FileSystemMgr::fileSystem()->getWritablePath() + filename;
+        ret = stbi_write_tga(fullpath.c_str(), width_, height_, saveChannels, pData);
+        
         delete pData;
         return ret != 0;
     }

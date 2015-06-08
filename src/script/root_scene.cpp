@@ -6,8 +6,6 @@
 //
 //
 
-#include "cstdmf/pch.hpp"
-
 #include "root_scene.h"
 #include "core/camera.h"
 #include "graphics/graphics.h"
@@ -17,6 +15,7 @@
 #include "graphics/render_target.h"
 #include "core/world.h"
 
+using namespace ora;
 
 RootScene::RootScene()
 {}

@@ -13,7 +13,7 @@
 #include "assert_tool.h"
 #include "time_tool.h"
 
-#include "math/mathdef.hpp"
+#include "math/math.hpp"
 
 namespace ora
 {

@@ -15,9 +15,6 @@
 #include "util/log_tool.h"
 #include "util/file_tool.h"
 
-#include "cstdmf/guard.hpp"
-#include "cstdmf/bw_util.hpp"
-
 namespace ora
 {
     /*static*/ Effect * Effect::s_pActiveEffect = nullptr;
@@ -38,9 +35,9 @@ namespace ora
 
     //////////////////////////////////////////////////////////
     Effect::Effect(const std::string & resource)
-        : program_(0)
+        : resouce_(resource)
+        , program_(0)
         , pConstRoot_(nullptr)
-        , resouce_(resource)
         , pLoadingInfo_(nullptr)
     {
         ++g_effect_counter;
@@ -53,7 +50,6 @@ namespace ora
 
     Effect::~Effect()
     {
-        BW_GUARD;
         --g_effect_counter;
         
         if (this == s_pActiveEffect)
@@ -76,7 +72,6 @@ namespace ora
 
     void Effect::onDeviceClose()
     {
-        BW_GUARD;
         if(program_ != 0)
         {
 #ifndef _RELEASE
@@ -96,7 +91,6 @@ namespace ora
 
     bool Effect::load(const std::string & resouce)
     {
-        BW_GUARD;
         resouce_ = resouce;
 
         ShaderCodePtr shader = ShaderParser::instance()->loadShader(resouce);
@@ -117,7 +111,6 @@ namespace ora
 
     bool Effect::load(ShaderCodePtr code, const std::string & macros)
     {
-        BW_GUARD;
         ORA_LOG_TRACE("Load Effect: %s", resouce_.c_str());
         ASSERT_2(pConstRoot_ == nullptr, "the effect has been loaded.");
 
@@ -130,7 +123,7 @@ namespace ora
         {
             std::string tempname = resouce_ + ".temp";
             std::replace(tempname.begin(), tempname.end(), '/', ' ');
-            writeFile(codes, BWUtil::getAppTmpDir() + tempname, true);
+            writeFile(codes, FileSystemMgr::fileSystem()->getWritablePath() + tempname, true);
         }
 #endif
 
@@ -144,7 +137,6 @@ namespace ora
 
     void Effect::doLoading()
     {
-        BW_GUARD;
         ASSERT_1(pLoadingInfo_ != nullptr);
 
         std::string codes = pLoadingInfo_->macros;
@@ -310,7 +302,6 @@ namespace ora
 
     bool Effect::begin()
     {
-        BW_GUARD;
         ASSERT_2(s_pActiveEffect == nullptr, "Effect::begin - invalid operation!");
 
         if(pLoadingInfo_ != nullptr)
@@ -339,7 +330,6 @@ namespace ora
 
     void Effect::end()
     {
-        BW_GUARD;
         ASSERT_2(s_pActiveEffect == this, "Effect::end invalied");
 
         unbindAttributes();
@@ -350,7 +340,6 @@ namespace ora
 
     void Effect::bindUniforms()
     {
-        BW_GUARD;
         for (auto it : autoConsts_)
         {
             it.first->apply(it.second);
@@ -359,8 +348,6 @@ namespace ora
 
     void Effect::bindAttributes()
     {
-        BW_GUARD;
-
         VertexDeclaration *decl = VertexDeclaration::getActiveDecl();
 
         GLsizei vertexSize = GLsizei(decl->getVertexSize());

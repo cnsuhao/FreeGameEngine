@@ -16,19 +16,6 @@ namespace ora
 
     }
 
-    AABB::AABB(const BoundingBox & bb)
-        : min(bb.minBounds())
-        , max(bb.maxBounds())
-    {
-    }
-
-    const AABB & AABB::operator = (const BoundingBox & bb)
-    {
-        min = bb.minBounds();
-        max = bb.maxBounds();
-        return *this;
-    }
-
     void AABB::reset()
     {
         min.set(FloatMax, FloatMax, FloatMax);

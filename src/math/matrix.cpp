@@ -778,6 +778,56 @@ namespace ora
         rotation.fromMatrix(m);
     }
 
+    void Matrix::perspectiveProjectionGL( float fov, float aspectRatio,
+                                         float nearPlane, float farPlane )
+    {
+        float yScale = 1.0f / tanf(fov * 0.5f);
+        float xScale = yScale / aspectRatio;
+        
+        float a = (farPlane + nearPlane) / (farPlane - nearPlane);
+        float b = -2.0f * farPlane * nearPlane / (farPlane - nearPlane);
+        
+        m[0][0] = xScale;   m[0][1] = 0;        m[0][2] = 0; m[0][3] = 0;
+        m[1][0] = 0;        m[1][1] = yScale;   m[1][2] = 0; m[1][3] = 0;
+        m[2][0] = 0;        m[2][1] = 0;        m[2][2] = a; m[2][3] = 1;
+        m[3][0] = 0;        m[3][1] = 0;        m[3][2] = b; m[3][3] = 0;
+    }
+    
+    // 原点落在屏幕中间，x轴向右为正，y轴向上为正
+    void Matrix::orthogonalProjectionGL(float w, float h, float zn, float zf)
+    {
+        float halfW = w * 0.5f;
+        float halfH = h * 0.5f;
+        orthogonalProjectionOffCenterGL(-halfW, halfW, -halfH, halfH, zn, zf);
+    }
+    
+    void Matrix::orthogonalProjectionOffCenterGL(float left, float right, float bottom, float top, float zn, float zf)
+    {
+        float w1 = 1.f / (right - left);
+        float h1 = 1.f / (top - bottom);
+        float z1 = 1.f / (zf - zn);
+        
+        m00 = 2 * w1;
+        m10 = 0;
+        m20 = 0;
+        m30 = -(right + left) * w1;
+        
+        m01 = 0;
+        m11 = 2 * h1;
+        m21 = 0;
+        m31 = -(top + bottom) * h1;
+        
+        m02 = 0;
+        m12 = 0;
+        m22 = 2 * z1;
+        m32 = -(zf + zn) * z1;
+        
+        m03 = 0;
+        m13 = 0;
+        m23 = 0;
+        m33 = 1;
+    }
+    
 }// end namespace ora
 
 // matrix.cpp

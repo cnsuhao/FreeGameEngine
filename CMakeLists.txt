@@ -1,5 +1,6 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+PROJECT(freegame)
 
 message(STATUS "cmake orange src dir: " ${PROJECT_SOURCE_DIR})
 message(STATUS "cmake orange bin dir: " ${PROJECT_BINARY_DIR})
@@ -15,12 +16,9 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(ORANGE_GAME true)
 set(THIRD_PARTY_DIR ${PROJECT_SOURCE_DIR}/third_party)
 
-MESSAGE(STATUS "build on client")
-
 ##################################################
 ###
 ##################################################
-PROJECT(freegame)
 
 add_subdirectory(src)
 add_subdirectory(third_party)
@@ -28,4 +26,3 @@ add_subdirectory(third_party)
 if(NOT IOS)
 	add_subdirectory(game/client)
 endif()
-

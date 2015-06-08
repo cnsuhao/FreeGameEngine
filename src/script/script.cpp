@@ -1,45 +1,36 @@
-﻿#include "duplo/pch.hpp"
+﻿
 #include "script.h"
+
 #include "util/data_stream.h"
 #include "util/assert_tool.h"
 #include "util/log_tool.h"
 #include "util/file_tool.h"
 #include "util/timer.h"
-#include "resmgr/bwresource.hpp"
-#include "resmgr/multi_file_system.hpp"
 
 #include "helper.h"
-#include <toluaplus/include/tolua++.h>
-
-#include "duplo/py_effect.hpp"
-
-#include "input_mgr.h"
+#include <tolua++/include/tolua++.h>
 
 extern "C"
 {
 #include "lualib.h"
 #include "lauxlib.h"
 #include "luasocket/src/luasocket.h"
+    
+int luaopen_lpeg (lua_State *L);
 }
 
-TOLUA_API int  tolua_engine_open(lua_State* tolua_S);
-TOLUA_API int  tolua_gui_open (lua_State* tolua_S);
-TOLUA_API int  tolua_util_open (lua_State* tolua_S);
-
-extern "C" int luaopen_lpeg (lua_State *L);
-int pick_model(lua_State *L);
-int pick_gizmo(lua_State *L);
-
-
 #ifndef _RELEASE
-typedef std::function<void(const char *)> PrintHandle;
-extern PrintHandle printCB;
+void printCB(const char *msg)
+{
+    
+}
+
 static std::string s_msg;
 #endif
 
 extern FILE* ora_open(const char *file, const char *mode)
 {
-    return BWResource::instance().fileSystem()->posixFileOpen(file, mode);
+    return nullptr;
 }
 
 inline void flush_output()
@@ -48,7 +39,7 @@ inline void flush_output()
     if (s_msg.empty())
         return;
 
-    ora::ora_log_directly(ORA_LOG_LVL_DEBUG, s_msg.c_str());
+    ora::ora_log(ORA_LOG_LVL_DEBUG, s_msg.c_str());
 
     if (printCB)
         printCB(s_msg.c_str());
@@ -74,29 +65,8 @@ extern void  ora_print(const char * msg)
 extern void ora_print_w(const wchar_t * msg)
 {
 #ifndef _RELEASE
-    std::string message;
-    bw_wtoutf8(msg, message);
-
-    ora_print(message.c_str());
+    
 #endif
-}
-
-// used by rldb lua debugger.
-extern "C" char * rldb_full_path(char * absPath, const char * relPath, size_t maxLen)
-{
-    std::string path(relPath);
-
-    if (IFileSystem::FT_NOT_FOUND == BWResource::resolveToAbsolutePath(path))
-        return NULL;
-
-    ora::canonicalizePath(path);
-
-    if (path.length() + 1 <= maxLen)
-    {
-        strncpy(absPath, path.c_str(), path.length() + 1);
-        return absPath;
-    }
-    return NULL;
 }
 
 namespace LuaPlus
@@ -165,15 +135,10 @@ namespace ora
         
 
         // open libs exported by tolua++
-        tolua_util_open(luaState_);
-        tolua_engine_open(luaState_);
-        tolua_gui_open(luaState_);
 
 
         // registe global functions.
         luaL_Reg _methods[] = {
-            {"pick_model", pick_model},
-            {"pick_gizmo", pick_gizmo},
             {"instance__index", instance__index},
             {"module__index", module__index},
             {0, 0},
@@ -184,12 +149,6 @@ namespace ora
         if(!loadScript(scriptEntry))
             return false;
         
-        InputMgr::initInstance();
-        if (!InputMgr::instance()->init())
-        {
-            ORA_LOG_ERROR("Failed to init input system!");
-            return false;
-        }
         return true;
     }
     
@@ -198,14 +157,6 @@ namespace ora
         ORA_STACK_TRACE;
 
         gcCollect();
-
-        if(InputMgr::hasInstance())
-        {
-            InputMgr::instance()->fini();
-            InputMgr::instance()->finiInstance();
-        }
-
-        PyEffect::finialise();
 
         if(luaPlus_ != nullptr)
         {
@@ -256,7 +207,6 @@ namespace ora
 
     void ScriptMgr::tick(float elapse)
     {
-        PyEffect::updateAll();
     }
 
     void ScriptMgr::flushOutput()

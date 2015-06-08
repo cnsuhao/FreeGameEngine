@@ -17,13 +17,6 @@
 #include "util/watcher.h"
 #include "util/time_tool.h"
 
-#include "cstdmf/dprintf.hpp"
-#include "cstdmf/debug.hpp"
-#include "cstdmf/guard.hpp"
-#include "cstdmf/bgtask_manager.hpp"
-
-#include "network/HttpClient.h"
-
 #include "graphics/render_device.h"
 
 #include "core.h"
@@ -31,11 +24,11 @@
 
 #include <SDL/include/SDL.h>
 
-extern int g_mygui_widget_counter;
-extern int g_ref_counter;
 
 namespace ora
 {
+    int g_ref_counter = 0;
+    
     extern int g_effect_counter;
     extern int g_texture_counter;
     extern int g_vb_counter;
@@ -65,26 +58,16 @@ namespace ora
     Engine::Engine()
 		: exit_(false)
     {
-        BW_GUARD;
         ORA_STACK_TRACE;
-
-#ifdef ANDROID
-        registerAndroidLogListener();
-#elif !defined( WIN32 )
-        DebugFilter::shouldWriteToConsole(true);
-#endif
-
     }
     
     Engine::~Engine()
     {
-        BW_GUARD;
         ORA_STACK_TRACE;
     }
     
     bool Engine::preInit()
     {
-        BW_GUARD;
         ORA_STACK_TRACE;
         
         logEnvironment();
@@ -100,15 +83,12 @@ namespace ora
     
     bool Engine::init()
     {
-        BW_GUARD;
         ORA_STACK_TRACE;
 
         //initialize singleton instance
         SectionFactory::initInstance();
         Timer::initInstance();
 
-        BgTaskManager::instance().startThreads(2);
-        
         //initialize the config system
         g_sysConfig = SectionFactory::loadDS("config/system.cfg");
         if (!g_sysConfig)
@@ -141,7 +121,6 @@ namespace ora
         ADD_WATCHER("counter/texture", g_texture_counter);
         ADD_WATCHER("counter/buffer_vb", g_vb_counter);
         ADD_WATCHER("counter/buffer_ib", g_ib_counter);
-        ADD_WATCHER("counter/widget", g_mygui_widget_counter);
         ADD_WATCHER("counter/ref", g_ref_counter);
         ADD_WATCHER("time/ticktime", getTickTime);
 
@@ -151,7 +130,6 @@ namespace ora
     
     void Engine::mainLoop()
     {
-        BW_GUARD;
         ORA_STACK_TRACE;
         
         SDL_Event event;
@@ -222,7 +200,6 @@ namespace ora
             }
             else
             {
-                BgTaskManager::instance().tick();
                 World::instance()->update();
             }
         }
@@ -246,11 +223,8 @@ namespace ora
     
     void Engine::fini()
     {
-        BW_GUARD;
         ORA_STACK_TRACE;
 
-        BgTaskManager::instance().stopAll();
-        
         if (s_pRenderDev != nullptr)
         {
             s_pRenderDev->fini();
@@ -269,7 +243,6 @@ namespace ora
         //release singleton instance
         SectionFactory::finiInstance();
         Timer::finiInstance();
-        HttpClient::finiInstance();
 
 #ifndef _RELEASE
         WatchTime::finiInstance();

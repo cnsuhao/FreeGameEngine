@@ -45,16 +45,16 @@ namespace ora
         const std::string Warn  = "WARN : ";
         const std::string Error = "ERROR: ";
         const std::string Fatal = "FATAL: ";
-        
-        const std::string & getLogPrefix(int lvl)
-        {
-            if(lvl >= ORA_LOG_LVL_FATAL) return Fatal;
-            if(lvl >= ORA_LOG_LVL_ERROR) return Error;
-            if(lvl >= ORA_LOG_LVL_WARN) return Warn;
-            if(lvl >= ORA_LOG_LVL_INFO) return Info;
-            if(lvl >= ORA_LOG_LVL_DEBUG) return Debug;
-            return Trace;
-        }
+    }
+    
+    const std::string & getLogPrefix(int lvl)
+    {
+        if(lvl >= ORA_LOG_LVL_FATAL) return LogPrefix::Fatal;
+        if(lvl >= ORA_LOG_LVL_ERROR) return LogPrefix::Error;
+        if(lvl >= ORA_LOG_LVL_WARN) return LogPrefix::Warn;
+        if(lvl >= ORA_LOG_LVL_INFO) return LogPrefix::Info;
+        if(lvl >= ORA_LOG_LVL_DEBUG) return LogPrefix::Debug;
+        return LogPrefix::Trace;
     }
     
     
@@ -69,18 +69,29 @@ namespace ora
         
         va_end(va);
         
-        const std::string & prefix = LogPrefix::getLogPrefix(lvl);
-        msg.insert(0, prefix);
-        
+        ora_log_directly(lvl, msg.c_str());
+    }
+    
+    void ora_log_directly(int lvl, const char * msg)
+    {
 #ifdef WIN32
-        OutputDebugStringA((msg + "\r").c_str());
+        std::string temp = getLogPrefix(lvl);
+        temp += msg;
+        temp += '\n';
+        {
+            std::wstring out;
+            if(bw_utf8tow(temp, out))
+                OutputDebugStringW(out.c_str());
+            else
+                OutputDebugStringA(temp.c_str());
+        }
 #elif defined(ANDROID)
-        __android_log_print(logLvlOrangeToAndroid(lvl), "orange", "%s", msg.c_str());
+        __android_log_write(logLvlOrangeToAndroid(lvl), "orange", msg);
 #else
-        std::cout << msg << std::endl;
+        std::cout << getLogPrefix(lvl) << msg << std::endl;
 #endif
         
-        if(GlobalSender::hasInstance())
+        if (GlobalSender::hasInstance())
         {
             VariantVector args;
             build_arguments(args, lvl, msg);

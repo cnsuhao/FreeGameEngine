@@ -11,7 +11,6 @@
 
 
 #include "texture.h"
-#include "compressed_texture.h"
 #include "base_res_mgr.h"
 
 namespace ora
@@ -23,18 +22,6 @@ namespace ora
         ~TextureMgr();
     };
     
-#if defined(USE_PVRTC) || defined(USE_ETC)
-    class CompressedTextureMgr : public BaseResMgr<CompressedTextureMgr, CompressedTexture>
-    {
-    public:
-        CompressedTextureMgr();
-        ~CompressedTextureMgr();
-	};
-#else
-	typedef TextureMgr CompressedTextureMgr;
-#endif
-
-
 }//end namespace ora
 
 

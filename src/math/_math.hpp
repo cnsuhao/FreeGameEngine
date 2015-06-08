@@ -63,12 +63,11 @@ namespace ora
     const float DefaultEpsilon = 0.000001f;
 
 
-    ///×ø±êÖáË÷Òý
     enum AXIS_INDEX
     {
         AXIS_X = 0,
         AXIS_Y = 1,
-        AXIS_Z = 2
+        AXIS_Z = 2,
     };
 
     template<typename T>

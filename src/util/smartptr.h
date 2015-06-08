@@ -7,6 +7,7 @@
 
 namespace ora
 {
+    extern int g_ref_counter;
 
     ///引用计数基类。可以安全的用于智能指针。
     class IReferenceCount
@@ -16,44 +17,34 @@ namespace ora
     {
     public:
         IReferenceCount()
-            : _referenceCount(0)
-        {}
-
-        IReferenceCount(const IReferenceCount &)
-            : _referenceCount(0)
-        {}
+            : referenceCount_(0)
+        {
+            ++g_ref_counter;
+        }
 
         virtual ~IReferenceCount()
-        {}
-
-        const IReferenceCount & operator = (const IReferenceCount &)
         {
-            return *this;
+            --g_ref_counter;
         }
 
         void retain()
         {
-            ++_referenceCount;
+            ++referenceCount_;
         }
 
         void release()
         {
-            --_referenceCount;
-
-            ASSERT_2(_referenceCount >= 0, "IReferenceCount::release");
-
-            if (_referenceCount <= 0)
+            if (--referenceCount_ <= 0)
                 delete this;
         }
 
-        virtual bool isSafeReferenceType()
-        {
-            return true;
-        }
+        long refCount() const { return referenceCount_;}
 
-    protected:
-        unsigned int _referenceCount;
+    private:
+        long referenceCount_;
     };
+    
+    typedef IReferenceCount SafeReferenceCount;
 
 
     ///智能指针

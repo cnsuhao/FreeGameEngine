@@ -30,6 +30,8 @@ namespace ora
     //fatal级别的log，会使程序终止
     void ora_log(int lvl, const char * format, ...);
     
+    void ora_log_directly(int lvl, const char * msg);
+    
 } // end namespace ora
 
 #if ORA_LOG_LVL_TRACE >= ORA_LOG_LVL
