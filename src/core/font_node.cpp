@@ -171,7 +171,7 @@ namespace ora{
 				TexturePtr tex;
 
                 //try the given path first.
-                if(!textureFile.empty() && FileSystemMgr::fileSystem()->isFileExist(textureFile))
+                if(!textureFile.empty() && FileSystemMgr::instance()->isFileExist(textureFile))
                 {
                     tex = TextureMgr::instance()->get(textureFile);
                 }

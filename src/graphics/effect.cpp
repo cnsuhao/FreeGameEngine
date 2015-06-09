@@ -123,7 +123,7 @@ namespace ora
         {
             std::string tempname = resouce_ + ".temp";
             std::replace(tempname.begin(), tempname.end(), '/', ' ');
-            writeFile(codes, FileSystemMgr::instance()->getWritablePath() + tempname, true);
+            writeFile(codes, tempname, true);
         }
 #endif
 

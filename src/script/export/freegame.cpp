@@ -18,10 +18,11 @@ LUA_FUN_HEADER(lua_freeg_RootScene_create)
 int lua_freeg_register_RootScene(lua_State *L)
 {
     tolua_usertype(L, "freeg.RootScene");
-    tolua_cclass(L, "RootScene", "freeg.RootScene", nullptr, nullptr);
-    tolua_beginmodule(L, "freeg.RootScene");
+    tolua_cclass(L, "RootScene", "freeg.RootScene", "", nullptr);
+    
+    tolua_beginmodule(L, "RootScene");
     {
-        lua_freeg_RootScene_create(L);
+        tolua_function(L, "create", lua_freeg_RootScene_create);
     }
     tolua_endmodule(L);
     
@@ -31,6 +32,8 @@ int lua_freeg_register_RootScene(lua_State *L)
 
 int register_freegame(lua_State *L)
 {
+    tolua_open(L);
+    
     tolua_module(L, "freeg", 0);
     tolua_beginmodule(L, "freeg");
     {

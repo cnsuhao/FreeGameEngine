@@ -11,9 +11,7 @@
 
 namespace ora{
 
-	ProgressReference::ProgressReference():
-		mtl_(nullptr),
-		BillBoard()
+	ProgressReference::ProgressReference()
 	{
 		uint16 base[6] = {0, 2, 1, 0, 3, 2};
 		for ( int i = 0; i < sizeof(base) / sizeof(uint16); ++i )

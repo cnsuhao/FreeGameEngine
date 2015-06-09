@@ -123,14 +123,13 @@ namespace ora
         }
         
         luaState_ = luaPlus_->GetCState();
-
-
+        
         // open basic lua libs.
         luaL_openlibs(luaState_);
-        luaopen_lpeg(luaState_);
-        register_freegame(luaState_);
-
-
+        
+        lua_pushcfunction(luaState_, luaopen_lpeg);
+        lua_call(luaState_, 0, 0);
+        
         // open lua socket
         luaL_findtable(luaState_, LUA_REGISTRYINDEX, "_LOADED", 1);
         lua_pushstring(luaState_, "socket.core");
@@ -139,19 +138,23 @@ namespace ora
         lua_rawset(luaState_, -3);
         lua_pop(luaState_, 1); // pop the _LOADED tabel
         
-
-        // open libs exported by tolua++
-
-
+        int iTop = lua_gettop(luaState_);
+        
         // registe global functions.
         luaL_Reg _methods[] = {
             {"instance__index", instance__index},
             {"module__index", module__index},
             {0, 0},
         };
-        for(luaL_Reg *p = _methods; p->name != 0; ++p)
-            registe_global_function(luaState_, p->name, p->func);
+        luaL_register(luaState_, "_G", _methods);
+        
+        // open libs exported by tolua++
+        iTop = lua_gettop(luaState_);
+        lua_newtable(luaState_);
+        lua_setglobal(luaState_, FreeGameRefTable);
 
+        register_freegame(luaState_);
+        
         if(!loadScript(scriptEntry))
             return false;
         
@@ -254,7 +257,7 @@ namespace ora
             
             lua_getglobal(luaState_, FreeGameRefTable);
             lua_pushvalue(luaState_, -2);
-            lua_rawseti(luaState_, -3, ++luaIdCounter_);
+            lua_rawseti(luaState_, -2, ++luaIdCounter_);
             lua_pop(luaState_, 1); // pop FreeGameRefTable
 
             p->setScriptID(luaIdCounter_);
