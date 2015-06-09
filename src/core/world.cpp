@@ -32,6 +32,7 @@ namespace ora
         , totalFrame_(0)
 		, lineMode_(0)
     {
+        retain(); // sigleton object.
     }
 
     World::~World()

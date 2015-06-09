@@ -55,8 +55,8 @@ namespace ora
         void removeFromParent();
 
         void addChild(SceneNodePtr child);
-        void removeChild(SceneNodePtr child);
-        void removeChildByName(const std::string & name);
+        void delChild(SceneNodePtr child);
+        void delChildByName(const std::string & name);
 
         void clearChildren();
         

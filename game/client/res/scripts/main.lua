@@ -7,8 +7,10 @@ function init()
 	print(freeg)
 	print(freeg.RootScene)
 
-	local a = freeg.RootScene:create()
-	print(tolua.type(a))
-	
+	local root = freeg.RootScene:create()
+	print(tolua.type(root))
+
+	freeg.World:instance():setRoot(root)
+
 	return true
 end

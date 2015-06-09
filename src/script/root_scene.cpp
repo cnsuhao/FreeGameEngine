@@ -45,6 +45,12 @@ bool RootScene::init()
 
     testRenderTarget_ = new ora::RenderTarget();
     testRenderTarget_->create(device->getViewPort().width_, device->getViewPort().height_);
+    
+    CameraPtr camera = new Camera();
+    camera->setName("camera");
+    World::instance()->setCamera(camera);
+    camera->setPosition(Vector3(0.2, 2, -2));
+    camera->setRotationX(PI_FULL / 4);
 
     return true;
 }

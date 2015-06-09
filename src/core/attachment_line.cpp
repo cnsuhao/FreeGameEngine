@@ -68,7 +68,7 @@ namespace ora{
 
 	void AttachmentLine::undisplay()
 	{
-		World::instance()->getRoot()->removeChild(this);
+        removeFromParent();
 		//lineMesh_ = nullptr;
 	}
 

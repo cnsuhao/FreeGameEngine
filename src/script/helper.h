@@ -100,7 +100,7 @@ void tolua_object(lua_State* L, T* ret, const char* type)
 }
 
 template <class T>
-void tolua_object(lua_State* L, const char* type, const T * ret)
+void tolua_object(lua_State* L, const T * ret, const char* type)
 {
     tolua_object(L, const_cast<T*>(ret), type);
 }

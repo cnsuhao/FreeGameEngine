@@ -123,9 +123,9 @@ namespace ora
             child->enterWorld();
     }
 
-    void SceneNode::removeChild(SceneNodePtr child)
+    void SceneNode::delChild(SceneNodePtr child)
     {
-        ASSERT_2(child && child->parent_ == this, "SceneNode::removeChild");
+        ASSERT_2(child && child->parent_ == this, "SceneNode::delChild");
 
         child->parent_ = nullptr;
         children_.remove(child);
@@ -134,10 +134,10 @@ namespace ora
             child->leaveWorld();
     }
 
-    void SceneNode::removeChildByName(const std::string & name)
+    void SceneNode::delChildByName(const std::string & name)
     {
         SceneNode * child = getChild(name);
-        if(child) removeChild(child);
+        if(child) delChild(child);
     }
     
     void SceneNode::topmost()
@@ -153,7 +153,7 @@ namespace ora
     void SceneNode::removeFromParent()
     {
         if(parent_)
-            parent_->removeChild(this);
+            parent_->delChild(this);
     }
 
     void SceneNode::clearChildren()

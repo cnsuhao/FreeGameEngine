@@ -48,4 +48,15 @@ private:                                    \
 
 #define ORA_BREAK_NOT_IF(COND)  if(!(COND)) break;
 
+// NOMINMAX makes sure that windef.h doesn't add macros min and max
+#ifdef WIN32
+#define NOMINMAX
+#endif
+
+#ifdef CODE_INLINE
+#   define INLINE inline
+#else
+#   define INLINE
+#endif
+
 #endif /* defined(__liborange__util_config__) */

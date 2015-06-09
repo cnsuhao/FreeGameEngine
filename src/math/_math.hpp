@@ -9,58 +9,29 @@
 #ifndef liborange__math_h
 #define liborange__math_h
 
+#include "util/util_config.h"
 
 #include <iostream>
 #include <cmath>
 #include <cassert>
 
-// NOMINMAX makes sure that windef.h doesn't add macros min and max
-#ifdef WIN32
-#define NOMINMAX
-#endif
-
-#ifdef CODE_INLINE
-#   define INLINE inline
-#else
-#   define INLINE
-#endif
-
 #ifndef MF_ASSERT_DEBUG
 #define MF_ASSERT_DEBUG assert
 #endif
 
-#define MATH_FLOAT_SMALL            1.0e-37f
-#define MATH_TOLERANCE              2e-37f
-#define MATH_EPSILON                0.000001f
-
-#ifndef PI_FULL
-#define PI_FULL 3.14159265f
-#endif // PI_FULL
-
-#ifndef PI_HALF
-#define PI_HALF PI_FULL * 0.5f
-#endif // PI_HALF
-
-#ifndef PI_QUAR
-#define PI_QUAR PI_HALF * 0.5f
-#endif // PI_QUAR
-
 namespace ora
 {
-
-    typedef signed char     int8;
-    typedef unsigned char   uint8;
-    typedef short           int16;
-    typedef unsigned short  uint16;
-    typedef int             int32;
-    typedef unsigned int    uint32;
-
-    typedef uint32          uint;
-
-
     const float FloatMax = 1e30f;
     const float FloatMin = -FloatMax;
     const float DefaultEpsilon = 0.000001f;
+
+    const float MATH_FLOAT_SMALL  =          1.0e-37f;
+    const float MATH_TOLERANCE    =          2e-37f;
+    const float MATH_EPSILON      =          0.00001f;
+
+    const float PI_FULL = 3.14159265f;
+    const float PI_HALF = PI_FULL * 0.5f;
+    const float PI_QUAR = PI_HALF * 0.5f;
 
 
     enum AXIS_INDEX
