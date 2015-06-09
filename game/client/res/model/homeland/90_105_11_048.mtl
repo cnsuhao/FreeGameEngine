@@ -1,0 +1,6 @@
+material = 0
+{
+	identifier = lightonly01
+	fx = shaders/test3.shader
+	texture = model/homeland/90_105_10_a.png
+}

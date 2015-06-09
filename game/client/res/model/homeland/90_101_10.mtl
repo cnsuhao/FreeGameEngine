@@ -1,0 +1,6 @@
+material = 0
+{
+	identifier = Material \#25
+	fx = light_texture
+	texture = model/homeland/90_101_10_a.png
+}
