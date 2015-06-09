@@ -87,6 +87,7 @@ bool Application::onStart()
         return false;
     }
 
+    subscribeEvent(ora::ET::TickBeg);
     return true;
 }
 
@@ -107,6 +108,18 @@ void Application::onStop()
 	}
 
     ORA_LOG_DEBUG("game stop.");
+}
+
+void Application::onEvent(ora::IEventSender *sender, uint32 eventType, ora::VariantVector & args)
+{
+    if(eventType == ora::ET::TickBeg)
+    {
+        ASSERT_1(args.size() > 0);
+        
+        float elapse;
+        args[0].getv(elapse);
+        ora::ScriptMgr::instance()->tick(elapse);
+    }
 }
 
 DEFINE_APPLICATION_MAIN(Application);

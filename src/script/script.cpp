@@ -219,7 +219,7 @@ namespace ora
         std::vector<IReferenceCount*> collector;
         collector.swap(collector_);
         
-        for(IReferenceCount *p : collector_)
+        for(IReferenceCount *p : collector)
         {
             p->release();
         }

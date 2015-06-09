@@ -18,6 +18,8 @@ public:
     Application();
     ~Application();
     
+    virtual void onEvent(ora::IEventSender *sender, uint32 eventType, ora::VariantVector & args) override;
+    
 private:
     virtual bool onSetup() override;
     virtual bool onStart() override;
