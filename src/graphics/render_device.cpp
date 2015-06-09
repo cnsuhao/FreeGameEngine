@@ -38,9 +38,9 @@ namespace ora
 
     RenderDevice::RenderDevice()
         : dirty_(0)
+        , currentFrame_(0)
         , vertexBuffer_(nullptr)
         , indexBuffer_(nullptr)
-        , currentFrame_(0)
         , viewport_(0, 0, 640, 480)
     {
         matWorlds_.push_back(Matrix::identity);

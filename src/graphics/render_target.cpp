@@ -7,8 +7,8 @@ namespace ora
     RenderTarget::RenderTarget()
         : width_(0)
         , height_(0)
-        , depthBufferObject_(0)
         , frameBufferObject_(0)
+        , depthBufferObject_(0)
     {
 
     }

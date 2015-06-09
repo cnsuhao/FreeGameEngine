@@ -28,8 +28,7 @@
 
 namespace ora
 {
-    int g_ref_counter = 0;
-    
+    extern int g_ref_counter;
     extern int g_effect_counter;
     extern int g_texture_counter;
     extern int g_vb_counter;

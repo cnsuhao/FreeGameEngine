@@ -19,7 +19,6 @@
 
 #else
 
-#pragma message("platform unix")
 #include "platform/unix/file_tool_imp.h"
 
 #endif

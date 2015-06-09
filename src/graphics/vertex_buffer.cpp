@@ -55,10 +55,10 @@ namespace ora
     BufferBase::BufferBase(BufferType type, BufferUsage usage, size_t stride)
         : type_(type)
         , usage_(usage)
+        , vb_(0)
         , stride_(stride)
         , capacity_(0)
         , size_(0)
-        , vb_(0)
         , pData_(0)
         , dirty_(false)
     {

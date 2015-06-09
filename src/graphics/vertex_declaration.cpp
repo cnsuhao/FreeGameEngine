@@ -105,16 +105,16 @@ namespace ora
     VertexElement::VertexElement()
         : nComponent(0)
         , type(GL_FLOAT)
-        , normalized(GL_TRUE)
         , tpSize(sizeof(float))
+        , normalized(GL_TRUE)
     {}
 
     VertexElement::VertexElement(VertexUsage usage_, int nComponent_)
         : usage(usage_)
         , nComponent(nComponent_)
         , type(GL_FLOAT)
-        , normalized(GL_TRUE)
         , tpSize(sizeof(float))
+        , normalized(GL_TRUE)
     {}
 
     VertexElement::VertexElement(VertexUsage usage_, int nComponent_,

@@ -10,6 +10,8 @@
 #include "helper.h"
 #include <tolua++/include/tolua++.h>
 
+const char * FreeGameRefTable = "__freeg_r";
+
 extern "C"
 {
 #include "lualib.h"
@@ -18,6 +20,8 @@ extern "C"
     
 int luaopen_lpeg (lua_State *L);
 }
+
+extern int register_freegame(lua_State *L);
 
 #ifndef _RELEASE
 void printCB(const char *msg)
@@ -88,6 +92,7 @@ namespace ora
     ScriptMgr::ScriptMgr()
         : luaPlus_(nullptr)
         , luaState_(nullptr)
+        , luaIdCounter_(0)
     {
         ORA_STACK_TRACE;
     }
@@ -123,6 +128,7 @@ namespace ora
         // open basic lua libs.
         luaL_openlibs(luaState_);
         luaopen_lpeg(luaState_);
+        register_freegame(luaState_);
 
 
         // open lua socket
@@ -207,11 +213,56 @@ namespace ora
 
     void ScriptMgr::tick(float elapse)
     {
+        std::vector<IReferenceCount*> collector;
+        collector.swap(collector_);
+        
+        for(IReferenceCount *p : collector_)
+        {
+            p->release();
+        }
     }
 
     void ScriptMgr::flushOutput()
     {
         flush_output();
+    }
+    
+    void ScriptMgr::removeScriptObjecrt(long ID)
+    {
+        lua_getglobal(luaState_, FreeGameRefTable);
+        lua_pushnil(luaState_);
+        lua_rawseti(luaState_, -2, ID);
+        lua_pop(luaState_, 1); // pop FreeGameRefTable
+    }
+    
+    void ScriptMgr::pushScriptObject(IReferenceCount *p, const char * type)
+    {
+        if(nullptr == p)
+        {
+            lua_pushnil(luaState_);
+        }
+        else if(p->getScriptID() != 0)
+        {
+            lua_getglobal(luaState_, FreeGameRefTable);
+            lua_rawgeti(luaState_, -1, p->getScriptID());
+            lua_remove(luaState_, -2); // remove FreeGameRefTable
+        }
+        else
+        {
+            ASSERT_2(type != nullptr, "The lua type for p must not be null");
+            tolua_pushusertype(luaState_, p, type);
+            
+            lua_getglobal(luaState_, FreeGameRefTable);
+            lua_pushvalue(luaState_, -2);
+            lua_rawseti(luaState_, -3, ++luaIdCounter_);
+            lua_pop(luaState_, 1); // pop FreeGameRefTable
+
+            p->setScriptID(luaIdCounter_);
+            
+            // add to collect list
+            p->retain();
+            collector_.push_back(p);
+        }
     }
 
 } // end namespace ora

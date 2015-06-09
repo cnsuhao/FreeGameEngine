@@ -7,7 +7,6 @@
 
 namespace ora
 {
-    extern int g_ref_counter;
 
     ///引用计数基类。可以安全的用于智能指针。
     class IReferenceCount
@@ -16,16 +15,8 @@ namespace ora
 #endif
     {
     public:
-        IReferenceCount()
-            : referenceCount_(0)
-        {
-            ++g_ref_counter;
-        }
-
-        virtual ~IReferenceCount()
-        {
-            --g_ref_counter;
-        }
+        IReferenceCount();
+        virtual ~IReferenceCount();
 
         void retain()
         {
@@ -40,8 +31,12 @@ namespace ora
 
         long refCount() const { return referenceCount_;}
 
+        long getScriptID() const { return scriptID_; }
+        void setScriptID(long ID){ scriptID_ = ID; }
+        
     private:
         long referenceCount_;
+        long scriptID_;
     };
     
     typedef IReferenceCount SafeReferenceCount;

@@ -20,8 +20,8 @@ namespace ora
     SceneNode::SceneNode()
         : parent_(nullptr)
         , inWorld_(false)
-		, actions_(ActionContainerOder())
 		, color_(1.f, 1.f, 1.f, 1.f)
+		, actions_(ActionContainerOder())
     {
         if(s_numNode < 0)
         {

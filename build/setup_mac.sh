@@ -1,23 +1,17 @@
 
-pushd ./ #1
+pushd `dirname $0`
 
-cd `dirname $0`
 cmd_path=`pwd`
 root_path=$cmd_path/../
 
 cd $root_path
 pwd
 
-echo "---------------------------------"
-echo "-------generate lua script-------"
-echo "---------------------------------"
-python tool/tolua++/tolua.py src/script/pkg/ src/script/luamid
+if [ ! -d build.mac ]
+then
+	mkdir build.mac
+fi
 
-
-cd $root_path
-pwd
-
-mkdir build.mac
 cd build.mac
 
 echo "---------------------------------"

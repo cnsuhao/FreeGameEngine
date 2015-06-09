@@ -23,7 +23,7 @@ namespace ora
     {
     public:
         explicit IResMgr(const char * name);
-        ~IResMgr();
+        virtual ~IResMgr();
 
         virtual IRes * createRes() = 0;
 

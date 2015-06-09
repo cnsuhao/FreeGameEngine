@@ -27,9 +27,9 @@ namespace ora
     World::World()
         : pause_(0)
         , elapse_(0.0f)
+        , timeScale_(1.0f)
         , fps_(0.0f)
         , totalFrame_(0)
-        , timeScale_(1.0f)
 		, lineMode_(0)
     {
     }

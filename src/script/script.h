@@ -5,6 +5,7 @@
 #include "util/singleton.h"
 
 #include <string>
+#include <vector>
 
 //pre definations
 
@@ -36,12 +37,17 @@ namespace ora
 
         void tick(float elapse);
         
+        void removeScriptObjecrt(long ID);
+        void pushScriptObject(IReferenceCount *p, const char * type);
+        
     private:
         bool loadScript(const std::string & scriptEntry);
         
     private:
         LuaPlus::LuaState * luaPlus_;
-        lua_State * luaState_;
+        lua_State *         luaState_;
+        long                luaIdCounter_;
+        std::vector<IReferenceCount*> collector_;
     };
     
 } // end namespace ora

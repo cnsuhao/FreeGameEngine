@@ -15,8 +15,8 @@ namespace ora{
 
     IAction::IAction(): interval_(0.f)
     , elapse_(0.f)
-    , enable_(false)
     , owner_(nullptr)
+    , enable_(false)
     {
         if(g_numAction++ == 0)
         {
