@@ -103,6 +103,34 @@ int lua_freeg_register_RootScene(lua_State *L)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+
+LUA_FUN_HEADER(lua_freeg_MeshNode_create)
+{
+    int ut;
+    const char * path;
+    LUA_PARSE_FUN(L, "U(freeg.MeshNode)s", &ut, &path);
+    
+    MeshNode *p = MeshNode::create(path);
+    tolua_object(L, p, "freeg.MeshNode");
+    return 1;
+}
+
+int lua_freeg_register_MeshScene(lua_State *L)
+{
+    tolua_usertype(L, "freeg.MeshNode");
+    tolua_cclass(L, "MeshNode", "freeg.MeshNode", "freeg.SceneNode", nullptr);
+    
+    tolua_beginmodule(L, "MeshNode");
+    {
+        tolua_function(L, "create", lua_freeg_MeshNode_create);
+    }
+    tolua_endmodule(L);
+    
+    registerLuaTypeName<MeshNode>("freeg.Mesh");
+    return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 LUA_FUN_HEADER(lua_freeg_World_instance)
 {
     int ut;
@@ -158,6 +186,7 @@ int register_freegame(lua_State *L)
     {
         lua_freeg_register_SceneNode(L);
         lua_freeg_register_RootScene(L);
+        lua_freeg_register_MeshScene(L);
         lua_freeg_register_World(L);
     }
     tolua_endmodule(L);

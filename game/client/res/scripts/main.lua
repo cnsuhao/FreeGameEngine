@@ -12,5 +12,10 @@ function init()
 
 	freeg.World:instance():setRoot(root)
 
+	local mesh = freeg.MeshNode:create("model/homeland/90_100_10.mesh")
+	if mesh then
+		root:addChild(mesh)
+	end
+
 	return true
 end
