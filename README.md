@@ -1,57 +1,48 @@
 Hello freegame
 
-orange
 a cross-platform game engine.
-Copyright (c) 2014 jingjie(http://www.363.com). All rights reserved.
+Copyright (c) youlanhai. All rights reserved.
 
-started at 2014.6.3.
+started at 2015.6.1
 
-一.编译
+--------------------------------------------------
+#how to build
+==================================================
 
-需要cmake2.8以上。
-windows: visual studio 2013.
-mac & ios: xcode.
-android: sdk, ndk, ant.
+##1. requirements
+cmake2.8 or above is required.
+**windows**: visual studio 2013.
+**mac & ios**: xcode.
+**android**: sdk, ndk, ant.
 
-########################################################################
-### windows
-########################################################################
-1.执行build/setup_win32.bat。
-2.打开build.win32/orange_client.sln
+##2. windows
+run `build/setup_win32.bat`,
+then open `build.win32/freegame.sln`
 
-########################################################################
-### ios
-########################################################################
-1.执行build/setup_ios.sh
-2.打开game/yuefe/proj.ios/client.xcodeproj
+##3. mac
+run `build/setup_mac.sh`,
+then open `build.mac/freegame.xcodeproj`
 
-########################################################################
-### android
-########################################################################
-设置path环境变量，需要加的路径如下：
-ndk：	ANDROID_NDK = D:\develop\andriod\android-ndk-r9d
-sdk:	ANDROID_SDK = D:\develop\andriod\sdk
-ant: 	ANDROID_ANT = D:\develop\apache-ant-1.9.3\bin
+##4. ios
+run `build/setup_ios.sh`
+then open `game/yuefe/proj.ios/client.xcodeproj`
 
-设置path：
-	ANDROID_NDK
-	ANDROID_SDK\tools
-	ANDROID_SDK\platform-tools
-	ANDROID_ANT
+##5. android
+set the environment variable:
 
-编译c++
-1.执行build/setup_andoid.bat，生成工程文件。
-2.执行build/build_android.bat，编译c++，生成动态链接库，可供java调用。
+    ANDROID_NDK = D:\develop\andriod\android-ndk-r9d
+    ANDROID_SDK = D:\develop\andriod\sdk
+    ANDROID_ANT = D:\develop\apache-ant-1.9.3\bin
 
-进入目录game/yuefe/proj.android
-1.第一次编译，先执行android update project -p . -t 1
-2.启动adb服务：adb start-server
-3.usb连接android设备，开启usb调试模式（推荐真机调试，模拟器实在太慢）
-4.生成apk：ant debug
-5.安装：adb install bin/SDLActivity-debug.apk
+set the envrionment path:
 
-4、5步骤可以通过eclipse来完成。
+	PATH=%PATH%;%ANDROID_NDK%;%ANDROID_SDK%\tools;%ANDROID_SDK%\platform-tools;%ANDROID_ANT%
 
-########################################################################
-### mac
-########################################################################
+1. run `build/setup_andoid.bat`, to generate the project files.
+2. run `build/build_android.bat`, to build the dynamic c++ library.
+3. enter into directory "game/client/proj.android"
+4. update android project: `android update project -p . -t 1`
+5. build apk: `ant debug`
+6. start the adb service: `adb start-server`
+7. connect your mobile by useb, then run `adb install bin/SDLActivity-debug.apk` to install application. 
+8. run `adb shell am com.SDL.SDLActivity` to start application.
