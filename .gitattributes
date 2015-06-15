@@ -87,11 +87,15 @@
 *.aps   binary
 *.bmp   binary
 *.tga   binary
-*.hkx   binary
 *.primitives    binary
 *.animation     binary
-*.anca          binary
 *.ttf   binary
+
+*.dll	binary
+*.lib	binary
+*.dylib	binary
+*.so 	binary
+*.a 	binary
 
 ###############################################################################
 # diff behavior for common document formats
