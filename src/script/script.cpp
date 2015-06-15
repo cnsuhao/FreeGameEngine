@@ -1,5 +1,7 @@
 ﻿
 #include "script.h"
+#include "helper.h"
+#include "input_mgr.h"
 
 #include "util/data_stream.h"
 #include "util/assert_tool.h"
@@ -7,10 +9,8 @@
 #include "util/file_tool.h"
 #include "util/timer.h"
 
-#include "helper.h"
-#include <tolua++/include/tolua++.h>
 
-const char * FreeGameRefTable = "__freeg_r";
+#include <tolua++/include/tolua++.h>
 
 extern "C"
 {
@@ -21,6 +21,7 @@ extern "C"
 int luaopen_lpeg (lua_State *L);
 }
 
+const char * FreeGameRefTable = "__freeg_r";
 extern int register_freegame(lua_State *L);
 
 #ifndef _RELEASE
@@ -95,11 +96,13 @@ namespace ora
         , luaIdCounter_(0)
     {
         ORA_STACK_TRACE;
+        InputMgr::initInstance();
     }
     
     ScriptMgr::~ScriptMgr()
     {
         ORA_STACK_TRACE;
+        InputMgr::finiInstance();
     }
 
     bool ScriptMgr::init()
@@ -155,6 +158,8 @@ namespace ora
 
         register_freegame(luaState_);
         
+        InputMgr::instance()->init();
+        
         if(!loadScript(scriptEntry))
             return false;
         
@@ -173,6 +178,7 @@ namespace ora
             LuaPlus::LuaState::Destroy(luaPlus_);
         }
 
+        InputMgr::instance()->fini();
     }
     
     lua_State * ScriptMgr::getLuaState()

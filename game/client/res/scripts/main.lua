@@ -19,3 +19,25 @@ function init()
 
 	return true
 end
+
+function onTouchBegin(x, y, btn)
+	print("onTouchBegin", x, y, btn)
+end
+
+function onTouchEnd(x, y, btn)
+	print("onTouchEnd", x, y, btn)
+end
+
+function onTouchMove(x, y, btn, dx, dy)
+end
+
+function onMouseMove(x, y, btn, dx, dy)
+end
+
+function onMouseWheel(dx, dy)
+	print("onMouseWheel", dx, dy)
+end
+
+function onKeyEvent(isDown, code)
+	print("onKeyEvent", isDown, code)
+end
