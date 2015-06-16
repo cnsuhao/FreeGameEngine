@@ -9,4 +9,6 @@
 #include "core/transform.h"
 #include "core/world.h"
 
+#include "script/root_scene.h"
+
 #endif //H_FREEGAME_H

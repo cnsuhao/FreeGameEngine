@@ -1,13 +1,12 @@
-﻿
-#include <luaplus/LuaPlus.h>
-#include <tolua++/include/tolua++.h>
+﻿#ifndef H_SCRIPT_HELPER_H
+#define H_SCRIPT_HELPER_H
 
 #include "util/log_tool.h"
 #include "util/smartptr.h"
 #include "script.h"
 
 #include <cstdarg>
-#include <type_traits>
+#include <tolua++/include/tolua++.h>
 
 //这两个函数放在引擎里实现，是为了不让lua调试器单步执行到。
 int instance__index(lua_State * L);
@@ -65,43 +64,5 @@ if(!lua_parse_args(L, format, __VA_ARGS__, nullptr)){\
     return 0;\
 }
 
-const char * getLuaTypeName(const char * cppTypeName);
-bool registerLuaTypeName(const char * cppTypeName, const char * luaTypeName);
 
-template<typename T>
-bool registerLuaTypeName(const char * luaTypeName)
-{
-    return registerLuaTypeName(typeid(T).name(), luaTypeName);
-}
-
-template <class T>
-void tolua_object(lua_State* L, T* ret, const char* type)
-{
-    if(nullptr != ret)
-    {
-        if(type == nullptr)
-        {
-            type = getLuaTypeName(typeid(T).name());
-        }
-        
-        if (std::is_base_of<ora::IReferenceCount, T>::value)
-        {
-            ora::ScriptMgr::instance()->pushScriptObject(ret, type);
-        }
-        else
-        {
-            tolua_pushusertype(L, (void*)ret, type);
-        }
-    }
-    else
-    {
-        lua_pushnil(L);
-    }
-}
-
-template <class T>
-void tolua_object(lua_State* L, const T * ret, const char* type)
-{
-    tolua_object(L, const_cast<T*>(ret), type);
-}
-
+#endif //H_SCRIPT_HELPER_H

@@ -12,7 +12,7 @@ static int lua_${generator.prefix}_${current_class.class_name}_finalize(lua_Stat
 {
     printf("luabindings: finalizing LUA object (${current_class.class_name})");
 #if $generator.script_control_cpp
-\#if COCOS2D_DEBUG >= 1
+\#ifndef TOLUA_RELEASE
     tolua_Error tolua_err;
     if (
     !tolua_isusertype(tolua_S,1,"${current_class.class_name}",0,&tolua_err) ||
@@ -23,13 +23,13 @@ static int lua_${generator.prefix}_${current_class.class_name}_finalize(lua_Stat
 \#endif
     {
         ${current_class.namespaced_class_name}* self = (${current_class.namespaced_class_name}*)  tolua_tousertype(tolua_S,1,0);
-\#if COCOS2D_DEBUG >= 1
+\#ifndef TOLUA_RELEASE
         if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'", nullptr);
 \#endif
         delete self;
     }
     return 0;
-\#if COCOS2D_DEBUG >= 1
+\#ifndef TOLUA_RELEASE
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'delete'.",&tolua_err);
     return 0;
@@ -69,6 +69,6 @@ int lua_register_${generator.prefix}_${current_class.class_name}(lua_State* tolu
         tolua_function(tolua_S,"${m['name']}", ${fn.signature_name});
     #end for
     tolua_endmodule(tolua_S);
-    registerLuaTypeName<${current_class.namespaced_class_name}>("${script_name}";);
+    tolua_register_typename<${current_class.namespaced_class_name}>("${script_name}");
     return 1;
 }

@@ -39,7 +39,7 @@ namespace ora
         uint32  getTotalFrame() const { return totalFrame_; }
         
         void    setCamera(CameraPtr pCamera);
-        Camera* getCamera() const { return camera_.get(); }
+        CameraPtr getCamera() const { return camera_.get(); }
 
         float   getTimeScale() const { return timeScale_; }
         void    setTimeScale(float s) { timeScale_ = s; }

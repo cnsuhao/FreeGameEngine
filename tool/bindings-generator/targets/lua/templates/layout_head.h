@@ -1,4 +1,3 @@
-\#include "base/ccConfig.h"
 #if $macro_judgement
 $macro_judgement
 #end if 

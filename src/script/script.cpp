@@ -9,7 +9,7 @@
 #include "util/file_tool.h"
 #include "util/timer.h"
 
-
+#include <luaplus/LuaPlus.h>
 #include <tolua++/include/tolua++.h>
 
 extern "C"
@@ -22,7 +22,8 @@ int luaopen_lpeg (lua_State *L);
 }
 
 const char * FreeGameRefTable = "__freeg_r";
-extern int register_freegame(lua_State *L);
+extern int register_all_frg(lua_State* L);
+extern int register_frg_manual(lua_State *L);
 
 #ifndef _RELEASE
 void printCB(const char *msg)
@@ -156,7 +157,8 @@ namespace ora
         lua_newtable(luaState_);
         lua_setglobal(luaState_, FreeGameRefTable);
 
-        register_freegame(luaState_);
+        register_all_frg(luaState_);
+        register_frg_manual(luaState_);
         
         InputMgr::instance()->init();
         

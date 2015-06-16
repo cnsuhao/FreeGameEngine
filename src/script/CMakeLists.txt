@@ -2,9 +2,10 @@
 set (TARGET_NAME script)
 
 # Define source files
-file (GLOB SCRIPTS_FILES *.h *.cpp)
+file (GLOB SCRIPTS_FILES *.h *.cpp *.inl)
 file (GLOB EXPORTS_FILES export/*.cpp)
-set (SOURCE_FILES ${SCRIPTS_FILES} ${EXPORTS_FILES})
+file (GLOB AUTO_FILES auto/*.hpp auto/*.cpp)
+set (SOURCE_FILES ${SCRIPTS_FILES} ${EXPORTS_FILES} ${AUTO_FILES})
 
 # Define dependency libs
 set (INCLUDE_DIRECTORIES
@@ -14,8 +15,9 @@ set (INCLUDE_DIRECTORIES
 	${THIRD_PARTY_DIR}/tolua++/include
 )
 
-source_group ("scripts\\" FILES ${SCRIPTS_FILES})
-source_group ("exports\\" FILES ${EXPORTS_FILES})
+source_group ("helper\\" FILES ${SCRIPTS_FILES})
+source_group ("manual\\" FILES ${EXPORTS_FILES})
+source_group ("auto\\" FILES ${AUTO_FILES})
 
 add_definitions(
 	-DCODE_INLINE

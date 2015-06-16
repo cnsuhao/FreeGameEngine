@@ -367,26 +367,3 @@ bool lua_parse_args(lua_State *L, const char * format, ...)
 }
 
 #undef CASE_NUMBER
-
-static std::map<std::string, const char*> g_luaTypes;
-
-bool registerLuaTypeName(const char * cppTypeName, const char * luaTypeName)
-{
-    auto ret = g_luaTypes.insert(std::pair<std::string, const char *>(cppTypeName, luaTypeName));
-    if(!ret.second)
-    {
-        ORA_LOG_ERROR("the cpp type name '%s' has been exist.", cppTypeName);
-    }
-    return ret.second;
-}
-
-const char * getLuaTypeName(const char * cppTypeName)
-{
-    auto it = g_luaTypes.find(cppTypeName);
-    if(it != g_luaTypes.end())
-    {
-        return it->second;
-    }
-    
-    return nullptr;
-}
