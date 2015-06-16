@@ -20,6 +20,8 @@ namespace ora
         , rotationSpeed_(0)
         , translationSpeed_(0)
     {
+        invView_.setIdentity();
+        view_.setIdentity();
     }
     
     Camera::~Camera()
