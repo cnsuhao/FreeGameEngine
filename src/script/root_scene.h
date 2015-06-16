@@ -14,11 +14,16 @@
 
 typedef SmartPtr<class RootScene> RootScenePtr;
 
+namespace ora
+{
+
 class RootScene : public ora::SceneNode
 {
 public:
     RootScene();
     ~RootScene();
+    
+    static RootScene * create();
 
     virtual bool init() override;
     virtual void tick(float elapse) override;
@@ -31,4 +36,6 @@ private:
     ora::RenderTargetPtr testRenderTarget_;
 };
 
+}// end namespace ora
+    
 #endif /* defined(__client__root_scene__) */

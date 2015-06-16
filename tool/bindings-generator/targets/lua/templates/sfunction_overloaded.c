@@ -1,6 +1,8 @@
 ## ===== static function implementation template - for overloaded functions
 int ${signature_name}(lua_State* tolua_S)
 {
+    #set class_script_name = $generator.scriptname_from_native($namespaced_class_name, $namespace_name)
+    const char * lua_fun_name = "${class_script_name}:${func_name}";
     int argc = 0;
     bool ok  = true;
 \#ifndef TOLUA_RELEASE
@@ -73,7 +75,7 @@ int ${signature_name}(lua_State* tolua_S)
     #end while
     #end if
     #end for
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d", "${generator.scriptname_from_native($namespaced_class_name, $namespace_name)}:${func.func_name}",argc, ${func.min_args});
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d", lua_fun_name, argc, ${func.min_args});
     return 0;
 \#ifndef TOLUA_RELEASE
     tolua_lerror:

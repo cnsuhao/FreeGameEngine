@@ -41,34 +41,35 @@ static int lua_${generator.prefix}_${current_class.class_name}_finalize(lua_Stat
 int lua_register_${generator.prefix}_${current_class.class_name}(lua_State* tolua_S)
 {
     #set script_name = generator.scriptname_from_native($current_class.namespaced_class_name, $current_class.namespace_name)
-    tolua_usertype(tolua_S,"${script_name}");
+    const char * lua_cls_name = "$script_name";
+    tolua_usertype(tolua_S, lua_cls_name);
     #if len($current_class.parents) > 0
         #if $generator.script_control_cpp and $current_class.has_constructor
-    tolua_cclass(tolua_S,"${current_class.class_name}","${script_name}","${generator.scriptname_from_native($current_class.parents[0].namespaced_class_name,$current_class.parents[0].namespace_name)}",lua_${generator.prefix}_${current_class.class_name}_finalize);
+    tolua_cclass(tolua_S, "${current_class.class_name}", lua_cls_name, "${generator.scriptname_from_native($current_class.parents[0].namespaced_class_name,$current_class.parents[0].namespace_name)}",lua_${generator.prefix}_${current_class.class_name}_finalize);
         #else
-    tolua_cclass(tolua_S,"${current_class.class_name}","${script_name}","${generator.scriptname_from_native($current_class.parents[0].namespaced_class_name,$current_class.parents[0].namespace_name)}",nullptr);
+    tolua_cclass(tolua_S, "${current_class.class_name}", lua_cls_name, "${generator.scriptname_from_native($current_class.parents[0].namespaced_class_name,$current_class.parents[0].namespace_name)}",nullptr);
         #end if
     #else
         #if $generator.script_control_cpp and $current_class.has_constructor
-    tolua_cclass(tolua_S,"${current_class.class_name}","${script_name}","",lua_${generator.prefix}_${current_class.class_name}_finalize);
+    tolua_cclass(tolua_S, "${current_class.class_name}", lua_cls_name, "", lua_${generator.prefix}_${current_class.class_name}_finalize);
         #else
-    tolua_cclass(tolua_S,"${current_class.class_name}","${script_name}","",nullptr);
+    tolua_cclass(tolua_S, "${current_class.class_name}", lua_cls_name, "", nullptr);
         #end if
     #end if
 
     tolua_beginmodule(tolua_S,"${current_class.class_name}");
     #if has_constructor
-        tolua_function(tolua_S,"new",lua_${generator.prefix}_${current_class.class_name}_constructor);
+        tolua_function(tolua_S, "new", lua_${generator.prefix}_${current_class.class_name}_constructor);
     #end if
     #for m in methods
         #set fn = m['impl']
-        tolua_function(tolua_S,"${m['name']}",${fn.signature_name});
+        tolua_function(tolua_S, "${m['name']}", ${fn.signature_name});
     #end for
     #for m in st_methods
         #set fn = m['impl']
-        tolua_function(tolua_S,"${m['name']}", ${fn.signature_name});
+        tolua_function(tolua_S, "${m['name']}", ${fn.signature_name});
     #end for
     tolua_endmodule(tolua_S);
-    tolua_register_typename<${current_class.namespaced_class_name}>("${script_name}");
+    tolua_register_typename<${current_class.namespaced_class_name}>(lua_cls_name);
     return 1;
 }

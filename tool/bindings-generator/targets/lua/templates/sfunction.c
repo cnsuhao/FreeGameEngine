@@ -1,6 +1,8 @@
 ## ===== static function implementation template
 int ${signature_name}(lua_State* tolua_S)
 {
+    #set class_script_name = $generator.scriptname_from_native($namespaced_class_name, $namespace_name)
+    const char * lua_fun_name = "${class_script_name}:${func_name}";
     int argc = 0;
     bool ok  = true;
 
@@ -77,7 +79,7 @@ int ${signature_name}(lua_State* tolua_S)
         #set $arg_idx = $arg_idx + 1
     #end while
 #end if
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "${generator.scriptname_from_native($namespaced_class_name, $namespace_name)}:${func_name}",argc, ${min_args});
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", lua_fun_name, argc, ${min_args});
     return 0;
 \#ifndef TOLUA_RELEASE
     tolua_lerror:

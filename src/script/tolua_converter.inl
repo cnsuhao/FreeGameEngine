@@ -41,7 +41,7 @@ void object_to_luaval(lua_State* L, T* ret, const char* type)
         
         if (std::is_base_of<ora::IReferenceCount, T>::value)
         {
-            tolua_push_ref_object(ret, type);
+            tolua_push_ref_object((ora::IReferenceCount*)ret, type);
         }
         else
         {

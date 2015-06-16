@@ -5,7 +5,8 @@ int ${signature_name}(lua_State* tolua_S)
     tolua_Error tolua_err;
 \#endif
     #set class_script_name = $generator.scriptname_from_native($namespaced_class_name, $namespace_name)
-    const char * script_name = "$class_script_name";
+    const char * lua_cls_name = "$class_script_name";
+    const char * lua_fun_name = "${class_script_name}:${func_name}";
     ${namespaced_class_name}* self = nullptr;
     int argc = 0;
 #if $min_args > 0
@@ -14,7 +15,7 @@ int ${signature_name}(lua_State* tolua_S)
 
 #if not $is_constructor
 \#ifndef TOLUA_RELEASE
-    if (!tolua_isusertype(tolua_S,1,script_name,0,&tolua_err)) goto tolua_lerror;
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
 \#endif
     self = (${namespaced_class_name}*)tolua_tousertype(tolua_S,1,0);
 \#ifndef TOLUA_RELEASE
@@ -41,11 +42,9 @@ int ${signature_name}(lua_State* tolua_S)
         ${arg.to_string($generator)} arg${count};
             #set $count = $count + 1
         #end while
-
         #set $count = 0
         #set format_list = ""
         #if $arg_idx > 0
-        const char * lua_namespaced_fun_name = "${class_script_name}:${func_name}";
             #while $count < $arg_idx
                 #set $arg = $arguments[$count]
         $arg.to_native({
@@ -72,17 +71,17 @@ int ${signature_name}(lua_State* tolua_S)
         #set $arg_list = ", ".join($arg_array)
         #if $is_constructor
         self = new ${namespaced_class_name}($arg_list);
-#if not $generator.script_control_cpp
-    #if $is_ref_class
-        tolua_object(tolua_S, self, script_name);
-    #else
-        tolua_pushusertype(tolua_S, (void*)self, script_name);
+            #if not $generator.script_control_cpp
+                #if $is_ref_class
+        object_to_luaval(tolua_S, self, lua_cls_name);
+                #else
+        tolua_pushusertype(tolua_S, (void*)self, lua_cls_name);
         tolua_register_gc(tolua_S, lua_gettop(tolua_S));
-    #end if
-#else
-        tolua_pushusertype(tolua_S, (void*)self, script_name);
+                #end if
+            #else
+        tolua_pushusertype(tolua_S, (void*)self, lua_cls_name);
         tolua_register_gc(tolua_S, lua_gettop(tolua_S));
-#end if
+            #end if
         return 1;
         #else
             #if $ret_type.name != "void"
@@ -91,32 +90,33 @@ int ${signature_name}(lua_State* tolua_S)
                 #else
         ${ret_type.get_whole_name($generator)} ret = self->${func_name}($arg_list);
                 #end if
-        ${ret_type.from_native({"generator": $generator,
-                                "in_value": "ret",
-                                "out_value": "ret",
-                                "type_name": $ret_type.namespaced_name.replace("*", ""),
-                                "ntype": $ret_type.get_whole_name($generator),
-                                "class_name": $class_name,
-                                "level": 2,
-                                "scriptname": $generator.scriptname_from_native($ret_type.namespaced_name, $ret_type.namespace_name)})};
+        ${ret_type.from_native({
+            "generator": $generator,
+            "in_value": "ret",
+            "out_value": "ret",
+            "type_name": $ret_type.namespaced_name.replace("*", ""),
+            "ntype": $ret_type.get_whole_name($generator),
+            "class_name": $class_name,
+            "level": 2,
+            "scriptname": $generator.scriptname_from_native($ret_type.namespaced_name, $ret_type.namespace_name)})};
         return 1;
-                #else
+            #else
         self->${func_name}($arg_list);
         return 0;
-                #end if
-        #end if         
+            #end if
+        #end if
     }
         #set $arg_idx = $arg_idx + 1
     #end while
 #end if
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "${class_script_name}:${func_name}",argc, ${min_args});
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, ${min_args});
     return 0;
 
 \#ifndef TOLUA_RELEASE
 #if not $is_constructor
 tolua_lerror:
 #end if
-    tolua_error(tolua_S,"#ferror in function '${class_script_name}'.",&tolua_err);
+    tolua_error(tolua_S,"#ferror in function '${signature_name}'.",&tolua_err);
 \#endif
     return 0;
 }

@@ -15,7 +15,18 @@
 #include "graphics/render_target.h"
 #include "core/world.h"
 
-using namespace ora;
+namespace ora
+{
+/*static*/ RootScene * RootScene::create()
+{
+    RootScene *p = new RootScene();
+    if(p && p->init())
+    {
+        return p;
+    }
+    delete p;
+    return nullptr;
+}
 
 RootScene::RootScene()
 {}
@@ -120,3 +131,5 @@ void RootScene::testRendertarget()
         ora::renderDev()->popRenderTarget();
     }
 }
+
+} //namespace ora

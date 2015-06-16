@@ -1,26 +1,11 @@
 
 #include "script/helper.h"
 #include "script/tolua_converter.h"
-#include "script/root_scene.h"
 #include "core/world.h"
 
 using namespace ora;
 
 ////////////////////////////////////////////////////////////////////////////////
-LUA_FUN_HEADER(lua_frg_SceneNode_create)
-{
-    int ut;
-    LUA_PARSE_FUN(L, "U(frg.SceneNode)", &ut);
-    
-    SceneNode *p = new SceneNode();
-    if(!p->init())
-    {
-        delete p;
-        p = nullptr;
-    }
-    object_to_luaval(L, p, "frg.SceneNode");
-    return 1;
-}
 
 LUA_FUN_HEADER(lua_frg_SceneNode_getChildren)
 {
@@ -42,7 +27,6 @@ int lua_frg_register_SceneNode(lua_State *L)
 {
     tolua_beginmodule(L, "SceneNode");
     {
-        tolua_function(L, "create", lua_frg_SceneNode_create);
         tolua_function(L, "getChildren", lua_frg_SceneNode_getChildren);
     }
     tolua_endmodule(L);
