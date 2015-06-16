@@ -9,7 +9,6 @@ namespace ora
     INLINE
     Vector3::Vector3()
     {
-        this->setZero();
     }
 
 	INLINE

@@ -8,7 +8,6 @@ namespace ora
     INLINE
     Vector2::Vector2()
     {
-        this->setZero();
     }
 
 

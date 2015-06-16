@@ -167,6 +167,7 @@ namespace ora
     {
         if( camera_ )
         {
+            camera_->tick(elapse_);
             renderDev()->setView(camera_->getView());
         }
         else

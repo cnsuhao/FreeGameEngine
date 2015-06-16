@@ -303,6 +303,217 @@ tolua_lerror:
 #endif
     return 0;
 }
+int lua_frg_SceneNode_setMatrix(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:setMatrix";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        ora::Matrix arg0;
+        ok &= luaval_to_matrix(tolua_S, 2, &arg0, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->setMatrix(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 1);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_setMatrix'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_setRotationX(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:setRotationX";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        double arg0;
+        ok &= luaval_to_number(tolua_S, 2,&arg0, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->setRotationX(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 1);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_setRotationX'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_setScale(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:setScale";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        ora::Vector3 arg0;
+        ok &= luaval_to_vec3(tolua_S, 2, &arg0, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->setScale(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 1);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_setScale'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_getMatrix(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:getMatrix";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        const ora::Matrix& ret = self->getMatrix();
+        matrix_to_luaval(tolua_S, ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 0);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_getMatrix'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_getRightVector(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:getRightVector";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        ora::Vector3 ret = self->getRightVector();
+        vec3_to_luaval(tolua_S, ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 0);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_getRightVector'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_frg_SceneNode_clearChildren(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
@@ -340,6 +551,53 @@ tolua_lerror:
 #endif
     return 0;
 }
+int lua_frg_SceneNode_lookAt(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:lookAt";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 2) 
+    {
+        ora::Vector3 arg0;
+        ora::Vector3 arg1;
+        ok &= luaval_to_vec3(tolua_S, 2, &arg0, lua_fun_name);
+        ok &= luaval_to_vec3(tolua_S, 3, &arg1, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->lookAt(arg0, arg1);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 2);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_lookAt'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_frg_SceneNode_leaveWorld(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
@@ -374,6 +632,309 @@ int lua_frg_SceneNode_leaveWorld(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
 tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_leaveWorld'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_setPosition(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:setPosition";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        ora::Vector3 arg0;
+        ok &= luaval_to_vec3(tolua_S, 2, &arg0, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->setPosition(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 1);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_setPosition'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_getPitch(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:getPitch";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        double ret = self->getPitch();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 0);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_getPitch'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_getUpVector(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:getUpVector";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        ora::Vector3 ret = self->getUpVector();
+        vec3_to_luaval(tolua_S, ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 0);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_getUpVector'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_scale(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:scale";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        ora::Vector3 arg0;
+        ok &= luaval_to_vec3(tolua_S, 2, &arg0, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->scale(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 1);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_scale'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_rotateZ(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:rotateZ";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        double arg0;
+        ok &= luaval_to_number(tolua_S, 2,&arg0, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->rotateZ(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 1);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_rotateZ'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_setLook(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:setLook";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 2) 
+    {
+        ora::Vector3 arg0;
+        ora::Vector3 arg1;
+        ok &= luaval_to_vec3(tolua_S, 2, &arg0, lua_fun_name);
+        ok &= luaval_to_vec3(tolua_S, 3, &arg1, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->setLook(arg0, arg1);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 2);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_setLook'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_rotateY(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:rotateY";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        double arg0;
+        ok &= luaval_to_number(tolua_S, 2,&arg0, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->rotateY(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 1);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_rotateY'.",&tolua_err);
 #endif
     return 0;
 }
@@ -415,6 +976,82 @@ tolua_lerror:
 #endif
     return 0;
 }
+int lua_frg_SceneNode_getYaw(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:getYaw";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        double ret = self->getYaw();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 0);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_getYaw'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_getRoll(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:getRoll";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        double ret = self->getRoll();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 0);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_getRoll'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_frg_SceneNode_topmost(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
@@ -449,6 +1086,100 @@ int lua_frg_SceneNode_topmost(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
 tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_topmost'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_rotateX(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:rotateX";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        double arg0;
+        ok &= luaval_to_number(tolua_S, 2,&arg0, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->rotateX(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 1);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_rotateX'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_setTransform(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:setTransform";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 3) 
+    {
+        ora::Vector3 arg0;
+        ora::Quaternion arg1;
+        ora::Vector3 arg2;
+        ok &= luaval_to_vec3(tolua_S, 2, &arg0, lua_fun_name);
+        ok &= luaval_to_quaternion(tolua_S, 3, &arg1, lua_fun_name);
+        ok &= luaval_to_vec3(tolua_S, 4, &arg2, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->setTransform(arg0, arg1, arg2);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 3);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_setTransform'.",&tolua_err);
 #endif
     return 0;
 }
@@ -535,6 +1266,44 @@ tolua_lerror:
 #endif
     return 0;
 }
+int lua_frg_SceneNode_getPosition(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:getPosition";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        const ora::Vector3& ret = self->getPosition();
+        vec3_to_luaval(tolua_S, ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 0);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_getPosition'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_frg_SceneNode_getChild(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
@@ -615,6 +1384,141 @@ int lua_frg_SceneNode_destroy(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
 tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_destroy'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_translate(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:translate";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        ora::Vector3 arg0;
+        ok &= luaval_to_vec3(tolua_S, 2, &arg0, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->translate(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 1);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_translate'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_setRotationZ(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:setRotationZ";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        double arg0;
+        ok &= luaval_to_number(tolua_S, 2,&arg0, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->setRotationZ(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 1);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_setRotationZ'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_setRotationY(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:setRotationY";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        double arg0;
+        ok &= luaval_to_number(tolua_S, 2,&arg0, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->setRotationY(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 1);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_setRotationY'.",&tolua_err);
 #endif
     return 0;
 }
@@ -775,6 +1679,44 @@ tolua_lerror:
 #endif
     return 0;
 }
+int lua_frg_SceneNode_getForwardVector(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:getForwardVector";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        ora::Vector3 ret = self->getForwardVector();
+        vec3_to_luaval(tolua_S, ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 0);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_getForwardVector'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_frg_SceneNode_setWorldMatrix(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
@@ -817,6 +1759,96 @@ int lua_frg_SceneNode_setWorldMatrix(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
 tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_setWorldMatrix'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_rotate(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:rotate";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        ora::Quaternion arg0;
+        ok &= luaval_to_quaternion(tolua_S, 2, &arg0, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->rotate(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 1);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_rotate'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_setRotation(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:setRotation";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        ora::Quaternion arg0;
+        ok &= luaval_to_quaternion(tolua_S, 2, &arg0, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->setRotation(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 1);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_setRotation'.",&tolua_err);
 #endif
     return 0;
 }
@@ -948,6 +1980,44 @@ tolua_lerror:
 #endif
     return 0;
 }
+int lua_frg_SceneNode_getScale(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:getScale";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        const ora::Vector3& ret = self->getScale();
+        vec3_to_luaval(tolua_S, ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 0);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_getScale'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_frg_SceneNode_getRoot(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
@@ -1069,6 +2139,216 @@ tolua_lerror:
 #endif
     return 0;
 }
+int lua_frg_SceneNode_translateForward(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:translateForward";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        double arg0;
+        ok &= luaval_to_number(tolua_S, 2,&arg0, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->translateForward(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 1);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_translateForward'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_translateRight(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:translateRight";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        double arg0;
+        ok &= luaval_to_number(tolua_S, 2,&arg0, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->translateRight(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 1);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_translateRight'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_translateUp(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:translateUp";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+    bool ok  = true;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        double arg0;
+        ok &= luaval_to_number(tolua_S, 2,&arg0, lua_fun_name);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'frg.SceneNode'", nullptr);
+            return 0;
+        }
+        self->translateUp(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 1);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_translateUp'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_setTransformIdentity(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:setTransformIdentity";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        self->setTransformIdentity();
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 0);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_setTransformIdentity'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_frg_SceneNode_getRotation(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+    tolua_Error tolua_err;
+#endif
+    const char * lua_cls_name = "frg.SceneNode";
+    const char * lua_fun_name = "frg.SceneNode:getRotation";
+    ora::SceneNode* self = nullptr;
+    int argc = 0;
+
+#ifndef TOLUA_RELEASE
+    if (!tolua_isusertype(tolua_S,1,lua_cls_name,0,&tolua_err)) goto tolua_lerror;
+#endif
+    self = (ora::SceneNode*)tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+    if (!self) 
+    {
+        tolua_error(tolua_S,"invalid 'self' in function 'frg.SceneNode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        const ora::Quaternion& ret = self->getRotation();
+        quaternion_to_luaval(tolua_S, ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", lua_fun_name, argc, 0);
+    return 0;
+
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_frg_SceneNode_getRotation'.",&tolua_err);
+#endif
+    return 0;
+}
 int lua_frg_SceneNode_create(lua_State* tolua_S)
 {
     const char * lua_fun_name = "frg.SceneNode:create";
@@ -1148,25 +2428,55 @@ int lua_register_frg_SceneNode(lua_State* tolua_S)
         tolua_function(tolua_S, "addChild", lua_frg_SceneNode_addChild);
         tolua_function(tolua_S, "addAction", lua_frg_SceneNode_addAction);
         tolua_function(tolua_S, "clearActions", lua_frg_SceneNode_clearActions);
+        tolua_function(tolua_S, "setMatrix", lua_frg_SceneNode_setMatrix);
+        tolua_function(tolua_S, "setRotationX", lua_frg_SceneNode_setRotationX);
+        tolua_function(tolua_S, "setScale", lua_frg_SceneNode_setScale);
+        tolua_function(tolua_S, "getMatrix", lua_frg_SceneNode_getMatrix);
+        tolua_function(tolua_S, "getRightVector", lua_frg_SceneNode_getRightVector);
         tolua_function(tolua_S, "clearChildren", lua_frg_SceneNode_clearChildren);
+        tolua_function(tolua_S, "lookAt", lua_frg_SceneNode_lookAt);
         tolua_function(tolua_S, "leaveWorld", lua_frg_SceneNode_leaveWorld);
+        tolua_function(tolua_S, "setPosition", lua_frg_SceneNode_setPosition);
+        tolua_function(tolua_S, "getPitch", lua_frg_SceneNode_getPitch);
+        tolua_function(tolua_S, "getUpVector", lua_frg_SceneNode_getUpVector);
+        tolua_function(tolua_S, "scale", lua_frg_SceneNode_scale);
+        tolua_function(tolua_S, "rotateZ", lua_frg_SceneNode_rotateZ);
+        tolua_function(tolua_S, "setLook", lua_frg_SceneNode_setLook);
+        tolua_function(tolua_S, "rotateY", lua_frg_SceneNode_rotateY);
         tolua_function(tolua_S, "getName", lua_frg_SceneNode_getName);
+        tolua_function(tolua_S, "getYaw", lua_frg_SceneNode_getYaw);
+        tolua_function(tolua_S, "getRoll", lua_frg_SceneNode_getRoll);
         tolua_function(tolua_S, "topmost", lua_frg_SceneNode_topmost);
+        tolua_function(tolua_S, "rotateX", lua_frg_SceneNode_rotateX);
+        tolua_function(tolua_S, "setTransform", lua_frg_SceneNode_setTransform);
         tolua_function(tolua_S, "init", lua_frg_SceneNode_init);
         tolua_function(tolua_S, "delChildByName", lua_frg_SceneNode_delChildByName);
+        tolua_function(tolua_S, "getPosition", lua_frg_SceneNode_getPosition);
         tolua_function(tolua_S, "getChild", lua_frg_SceneNode_getChild);
         tolua_function(tolua_S, "destroy", lua_frg_SceneNode_destroy);
+        tolua_function(tolua_S, "translate", lua_frg_SceneNode_translate);
+        tolua_function(tolua_S, "setRotationZ", lua_frg_SceneNode_setRotationZ);
+        tolua_function(tolua_S, "setRotationY", lua_frg_SceneNode_setRotationY);
         tolua_function(tolua_S, "enterWorld", lua_frg_SceneNode_enterWorld);
         tolua_function(tolua_S, "getWorldMatrix", lua_frg_SceneNode_getWorldMatrix);
         tolua_function(tolua_S, "setName", lua_frg_SceneNode_setName);
         tolua_function(tolua_S, "removeFromParent", lua_frg_SceneNode_removeFromParent);
+        tolua_function(tolua_S, "getForwardVector", lua_frg_SceneNode_getForwardVector);
         tolua_function(tolua_S, "setWorldMatrix", lua_frg_SceneNode_setWorldMatrix);
+        tolua_function(tolua_S, "rotate", lua_frg_SceneNode_rotate);
+        tolua_function(tolua_S, "setRotation", lua_frg_SceneNode_setRotation);
         tolua_function(tolua_S, "removeAction", lua_frg_SceneNode_removeAction);
         tolua_function(tolua_S, "isInWorld", lua_frg_SceneNode_isInWorld);
         tolua_function(tolua_S, "setColor", lua_frg_SceneNode_setColor);
+        tolua_function(tolua_S, "getScale", lua_frg_SceneNode_getScale);
         tolua_function(tolua_S, "getRoot", lua_frg_SceneNode_getRoot);
         tolua_function(tolua_S, "getParent", lua_frg_SceneNode_getParent);
         tolua_function(tolua_S, "delChild", lua_frg_SceneNode_delChild);
+        tolua_function(tolua_S, "translateForward", lua_frg_SceneNode_translateForward);
+        tolua_function(tolua_S, "translateRight", lua_frg_SceneNode_translateRight);
+        tolua_function(tolua_S, "translateUp", lua_frg_SceneNode_translateUp);
+        tolua_function(tolua_S, "setTransformIdentity", lua_frg_SceneNode_setTransformIdentity);
+        tolua_function(tolua_S, "getRotation", lua_frg_SceneNode_getRotation);
         tolua_function(tolua_S, "create", lua_frg_SceneNode_create);
     tolua_endmodule(tolua_S);
     tolua_register_typename<ora::SceneNode>(lua_cls_name);

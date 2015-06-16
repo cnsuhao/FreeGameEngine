@@ -52,7 +52,7 @@ namespace ora
     
     void Camera::dirty(int flag)
     {
-        Transform::dirty(flag);
+        SceneNode::dirty(flag);
         dirtyBits_ |= CAMERA_DIRTY_VIEW | CAMERA_DIRTY_INV_VIEW;
     }
 
@@ -65,7 +65,9 @@ namespace ora
 
         if (!almostZero(rotationSpeed_))
         {
-            this->rotate(rotationAxis_, rotationSpeed_ * elapse);
+            Quaternion quat;
+            quat.fromAngleAxis(rotationSpeed_ * elapse, rotationAxis_);
+            this->rotate(quat);
         }
 
         if (!almostZero(translationSpeed_))

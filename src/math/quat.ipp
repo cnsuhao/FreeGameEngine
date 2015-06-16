@@ -19,7 +19,6 @@ namespace ora
     INLINE
     Quaternion::Quaternion()
     {
-        this->setIdentity();
     }
 
 

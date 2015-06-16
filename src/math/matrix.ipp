@@ -7,7 +7,6 @@ namespace ora
     INLINE
     Matrix::Matrix()
     {
-        this->setIdentity();
     }
 
     /**

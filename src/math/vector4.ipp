@@ -6,7 +6,6 @@ namespace ora
     INLINE
     Vector4::Vector4()
     {
-        this->setZero();
     }
 
 	INLINE

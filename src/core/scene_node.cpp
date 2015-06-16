@@ -7,21 +7,30 @@
 //
 
 #include "scene_node.h"
-#include "graphics/render_device.h"
 #include "world.h"
+#include "action_container.h"
+
+#include "graphics/render_device.h"
 
 #include "util/watcher.h"
 #include "util/assert_tool.h"
+
+#ifndef CODE_INLINE
+#include "scene_node.inl"
+#endif
 
 namespace ora
 {
     static int s_numNode = -1;
     
     SceneNode::SceneNode()
-        : parent_(nullptr)
+        : position_(0.f, 0.f, 0.f)
+        , scale_(1.0f, 1.0f, 1.0f)
+        , matrixDirtyBits_(DIRTY_ALL)
+        , parent_(nullptr)
         , inWorld_(false)
 		, color_(1.f, 1.f, 1.f, 1.f)
-		, actions_(ActionContainerOder())
+		, actions_(new ActionContainerOder())
     {
         if(s_numNode < 0)
         {
@@ -29,8 +38,12 @@ namespace ora
             s_numNode = 0;
         }
         
+        rotation_.setIdentity();
+        matrix_.setIdentity();
+        matWorld_.setIdentity();
+
         ++s_numNode;
-		actions_.owner(this);
+		actions_->owner(this);
     }
 
     SceneNode::~SceneNode()
@@ -133,12 +146,6 @@ namespace ora
         if(child->isInWorld())
             child->leaveWorld();
     }
-
-    void SceneNode::delChildByName(const std::string & name)
-    {
-        SceneNode * child = getChild(name);
-        if(child) delChild(child);
-    }
     
     void SceneNode::topmost()
     {
@@ -148,12 +155,6 @@ namespace ora
 
         parent_->children_.remove(pThis);
         parent_->children_.push_back(pThis);
-    }
-
-    void SceneNode::removeFromParent()
-    {
-        if(parent_)
-            parent_->delChild(this);
     }
 
     void SceneNode::clearChildren()
@@ -169,7 +170,7 @@ namespace ora
 
     void SceneNode::tick(float elapse)
     {
-        actions_.tick(elapse);
+        actions_->tick(elapse);
         
         children_.lock();
 
@@ -183,7 +184,7 @@ namespace ora
 
     void SceneNode::draw()
     {
-        actions_.draw();
+        actions_->draw();
 
         children_.lock();
 
@@ -202,7 +203,7 @@ namespace ora
 
     void SceneNode::dirty(int matrixDirtyBits)
     {
-        Transform::dirty(matrixDirtyBits);
+        matrixDirtyBits_ |= matrixDirtyBits;
 
         for(SceneNodePtr child : children_)
         {
@@ -269,19 +270,106 @@ namespace ora
     void SceneNode::addAction(ActionPtr action)
     {
         ASSERT_2(action && action->owner() == nullptr, "SceneNode::addAction");
-        actions_.push(action);
+        actions_->push(action);
     }
 
     void SceneNode::removeAction(ActionPtr action)
     {
         ASSERT_2(action && action->owner() == this, "SceneNode::removeAction");
-        actions_.pop(action);
+        actions_->pop(action);
     }
     
     void SceneNode::clearActions()
     {
-        actions_.clear();
+        actions_->clear();
     }
     
+    const Matrix& SceneNode::getMatrix() const
+    {
+        if (matrixDirtyBits_)
+        {
+            matrixDirtyBits_ = 0;
+            
+            matrix_.setScale(scale_);
+        
+            Matrix temp;
+            temp.setRotate(rotation_);
+            matrix_.postMultiply(temp);
+            
+            matrix_.translation(position_);
+        }
+        return matrix_;
+    }
+
+    void SceneNode::lookAt(const Vector3& up, const Vector3& target)
+    {
+        Vector3 Up;
+        Vector3 Look(target - position_);
+        Vector3 Right;
+
+        Look.normalise( );
+        Right.crossProduct( up, Look );
+        Right.normalise( );
+        Up.crossProduct( Look, Right );
+        Up.normalise();
+
+        Matrix rot;
+        rot.m00 = Right.x;
+        rot.m01 = Right.y;
+        rot.m02 = Right.z;
+        rot.m03 = 0.f;
+
+        rot.m10 = Up.x;
+        rot.m11 = Up.y;
+        rot.m12 = Up.z;
+        rot.m13 = 0.f;
+
+        rot.m20 = Look.x;
+        rot.m21 = Look.y;
+        rot.m22 = Look.z;
+        rot.m23 = 0.f;
+
+        rot.m30 = 0;
+        rot.m31 = 0;
+        rot.m32 = 0;
+        rot.m33 = 1.f;
+
+        setRotation(rot);
+    }
+
+    void SceneNode::setLook(const Vector3 & look, const Vector3 & up)
+    {
+        Vector3 Look = look;
+        Vector3 Up = up;
+        Vector3 Right;
+
+        Right.crossProduct( up, Look );
+        Right.normalise( );
+        Up.crossProduct( Look, Right );
+        Up.normalise();
+
+        Matrix rot;
+        rot.m00 = Right.x;
+        rot.m01 = Right.y;
+        rot.m02 = Right.z;
+        rot.m03 = 0.f;
+
+        rot.m10 = Up.x;
+        rot.m11 = Up.y;
+        rot.m12 = Up.z;
+        rot.m13 = 0.f;
+
+        rot.m20 = Look.x;
+        rot.m21 = Look.y;
+        rot.m22 = Look.z;
+        rot.m23 = 0.f;
+
+        rot.m30 = 0;
+        rot.m31 = 0;
+        rot.m32 = 0;
+        rot.m33 = 1.f;
+
+        setRotation(rot);
+    }
 
 }; // end of namespace ora
