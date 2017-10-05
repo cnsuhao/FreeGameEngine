@@ -1,33 +1,33 @@
 Hello freegame
 
-a cross-platform game engine.
+a cross-platform game engine, not complete.
 Copyright (c) youlanhai. All rights reserved.
 
 started at 2015.6.1
 
 --------------------------------------------------
-#how to build
+# how to build
 ==================================================
 
-##1. requirements
+## 1. requirements
 cmake2.8 or above is required.
 **windows**: visual studio 2013.
 **mac & ios**: xcode.
 **android**: sdk, ndk, ant.
 
-##2. windows
+## 2. windows
 run `build/setup_win32.bat`,
 then open `build.win32/freegame.sln`
 
-##3. mac
+## 3. mac
 run `build/setup_mac.sh`,
 then open `build.mac/freegame.xcodeproj`
 
-##4. ios
+## 4. ios
 run `build/setup_ios.sh`
 then open `game/yuefe/proj.ios/client.xcodeproj`
 
-##5. android
+## 5. android
 set the environment variable:
 
     ANDROID_NDK = D:\develop\andriod\android-ndk-r9d
